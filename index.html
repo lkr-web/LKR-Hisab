@@ -9,7 +9,7 @@
 <title>LKR Hisab</title>
 
 <link rel="icon" type="image/png"
-href="https://img.magnific.com/premium-vector/closed-book-icon-flat-illustration-closed-book-vector-icon-web_96318-36456.jpg">
+href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-8AU39pYkLU8R8OfpvptnZBnpn5IH6ToP3d8NV6r8qT25ddFDP_wI2k-b&s=10">
 
 <style>
 *{
@@ -65,6 +65,44 @@ button:active{
 }
 
 /* LOGIN */
+
+#registerModal .modal-box,
+#resetPasswordModal .modal-box{
+  background:#f5f8fc;
+}
+
+.auth-small-btn{
+  width:100%;
+  border:none;
+  background:transparent;
+  color:#0754a6;
+  font-size:12px;
+  font-weight:900;
+  padding:12px 5px 3px;
+}
+
+.auth-info{
+  margin-top:10px;
+  padding:10px 11px;
+  border-radius:11px;
+  background:#edf7ff;
+  color:#0754a6;
+  font-size:11px;
+  line-height:1.5;
+  text-align:left;
+}
+
+.auth-error{
+  display:none;
+  margin-top:10px;
+  padding:10px;
+  border-radius:11px;
+  background:var(--red-bg);
+  color:var(--red);
+  font-size:12px;
+  font-weight:800;
+  line-height:1.45;
+}
 
 #loginScreen{
   position:fixed;
@@ -1213,6 +1251,12 @@ button:active{
       <span>Continue with Google</span>
     </button>
 
+    <button
+      class="auth-small-btn"
+      onclick="forgotPassword()">
+      पासवर्ड भूल गए?
+    </button>
+
     <div id="loginError" class="login-error"></div>
 
     <div class="login-note">
@@ -1595,6 +1639,65 @@ button:active{
 </div>
 
 
+<!-- REGISTER MODAL -->
+<div class="modal" id="registerModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h2>🔐 LKR Hisab Register</h2>
+      <button class="close" onclick="closeModal('registerModal')">×</button>
+    </div>
+
+    <div class="auth-info">
+      Google account verify हो चुका है। अब अपना नाम और LKR Hisab का password बनाइए।
+      अगली बार इसी Google account से आने पर यह form दोबारा नहीं आएगा।
+    </div>
+
+    <form id="registerForm" style="margin-top:14px;">
+      <div class="form-group">
+        <label>नाम</label>
+        <input id="registerName" class="input" placeholder="जैसे शिवम कुमार" required>
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input id="registerPassword" class="input" type="password" minlength="6" placeholder="कम से कम 6 अक्षर" required>
+      </div>
+      <div class="form-group">
+        <label>Confirm Password</label>
+        <input id="registerConfirmPassword" class="input" type="password" minlength="6" placeholder="Password फिर से लिखें" required>
+      </div>
+      <div id="registerError" class="auth-error"></div>
+      <button class="save-btn" type="submit">💾 Register करके सेव करें</button>
+    </form>
+  </div>
+</div>
+
+<!-- RESET PASSWORD MODAL -->
+<div class="modal" id="resetPasswordModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h2>🔑 Password बदलें</h2>
+      <button class="close" onclick="closeModal('resetPasswordModal')">×</button>
+    </div>
+
+    <div class="auth-info">
+      पहले उसी Google account से verification होगा जिससे आपका LKR Hisab register हुआ था।
+    </div>
+
+    <form id="resetPasswordForm" style="margin-top:14px;">
+      <div class="form-group">
+        <label>नया Password</label>
+        <input id="resetPassword" class="input" type="password" minlength="6" placeholder="नया Password" required>
+      </div>
+      <div class="form-group">
+        <label>Confirm Password</label>
+        <input id="resetConfirmPassword" class="input" type="password" minlength="6" placeholder="Password फिर से लिखें" required>
+      </div>
+      <div id="resetError" class="auth-error"></div>
+      <button class="save-btn" type="submit">🔄 Password बदलकर सेव करें</button>
+    </form>
+  </div>
+</div>
+
 <!-- PERSON MODAL -->
 
 <div class="modal" id="personModal">
@@ -1916,13 +2019,16 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   onAuthStateChanged,
-  signOut
+  signOut,
+  setPersistence,
+  browserLocalPersistence
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 
 import {
   getFirestore,
   collection,
   doc,
+  getDoc,
   getDocs,
   setDoc,
   deleteDoc,
@@ -2018,89 +2124,238 @@ function userDoc(collectionName,id){
 
 
 /* =====================================================
-   LOGIN
+   AUTH + REGISTER + PASSWORD
 ===================================================== */
 
-window.loginWithGoogle = async function(){
+async function hashPassword(password){
+  const data=new TextEncoder().encode(password);
+  const hash=await crypto.subtle.digest("SHA-256",data);
+  return Array.from(new Uint8Array(hash))
+    .map(b=>b.toString(16).padStart(2,"0"))
+    .join("");
+}
 
-  const errorBox =
-    document.getElementById("loginError");
+function romanizeHindi(text){
+  const value=String(text||"").trim();
+  if(!value) return "";
+  if(!/[\u0900-\u097F]/.test(value)) return value;
 
-  errorBox.style.display="none";
+  const map={
+    "अ":"a","आ":"aa","इ":"i","ई":"ee","उ":"u","ऊ":"oo","ऋ":"ri","ए":"e","ऐ":"ai","ओ":"o","औ":"au",
+    "क":"k","ख":"kh","ग":"g","घ":"gh","ङ":"ng","च":"ch","छ":"chh","ज":"j","झ":"jh","ञ":"ny",
+    "ट":"t","ठ":"th","ड":"d","ढ":"dh","ण":"n","त":"t","थ":"th","द":"d","ध":"dh","न":"n",
+    "प":"p","फ":"ph","ब":"b","भ":"bh","म":"m","य":"y","र":"r","ल":"l","व":"v","श":"sh","ष":"sh","स":"s","ह":"h",
+    "क्ष":"ksh","त्र":"tra","ज्ञ":"gya","श्र":"shra","ड़":"r","ढ़":"rh","़":"",
+    "ा":"aa","ि":"i","ी":"ee","ु":"u","ू":"oo","ृ":"ri","े":"e","ै":"ai","ो":"o","ौ":"au","ं":"n","ः":"h","ँ":"n","्":"",
+    "अं":"an","।":".","॥":".","₹":"Rs "
+  };
 
-  try{
+  let out="";
+  const chars=[...value];
+  for(let i=0;i<chars.length;i++){
+    const two=chars[i]+(chars[i+1]||"");
+    if(map[two]){out+=map[two];i++;continue;}
+    out+=map[chars[i]] ?? chars[i];
+  }
+  return out.replace(/\s+/g," ").trim();
+}
 
-    await signInWithPopup(
-      auth,
-      provider
-    );
+function profileDoc(){
+  return doc(db,"users",currentUser.uid,"profile","main");
+}
 
-  }catch(error){
+async function getUserProfile(){
+  if(!currentUser) return null;
+  const snap=await getDoc(profileDoc());
+  return snap.exists()?snap.data():null;
+}
 
-    console.error(error);
+function showAuthError(id,message){
+  const el=document.getElementById(id);
+  if(!el) return;
+  el.textContent=message;
+  el.style.display="block";
+}
 
-    errorBox.textContent =
-      "Google Login नहीं हो पाया। कृपया फिर कोशिश करें।";
+function hideAuthError(id){
+  const el=document.getElementById(id);
+  if(el) el.style.display="none";
+}
 
-    errorBox.style.display="block";
+function showRegister(){
+  hideAuthError("registerError");
+  document.getElementById("registerForm").reset();
+  openModal("registerModal");
+}
 
+async function finishGoogleLogin(user,mode="normal"){
+  currentUser=user;
+  const profile=await getUserProfile();
+
+  if(mode==="reset"){
+    if(!profile){
+      toast("इस Google account से अभी Register नहीं हुआ है।");
+      return;
+    }
+    document.getElementById("resetPasswordForm").reset();
+    hideAuthError("resetError");
+    openModal("resetPasswordModal");
+    return;
   }
 
+  if(!profile){
+    document.getElementById("loginScreen").style.display="none";
+    showRegister();
+    return;
+  }
+
+  document.getElementById("loginScreen").style.display="none";
+  document.getElementById("app").style.display="block";
+  await loadAllData();
+}
+
+window.loginWithGoogle=async function(){
+  const errorBox=document.getElementById("loginError");
+  errorBox.style.display="none";
+  try{
+    await setPersistence(auth,browserLocalPersistence);
+    const result=await signInWithPopup(auth,provider);
+    await finishGoogleLogin(result.user,"normal");
+  }catch(error){
+    console.error(error);
+    errorBox.textContent="Google Login नहीं हो पाया। कृपया फिर कोशिश करें।";
+    errorBox.style.display="block";
+  }
 };
 
+window.forgotPassword=async function(){
+  const errorBox=document.getElementById("loginError");
+  errorBox.style.display="none";
+  try{
+    await setPersistence(auth,browserLocalPersistence);
+    const result=await signInWithPopup(auth,provider);
+    await finishGoogleLogin(result.user,"reset");
+  }catch(error){
+    console.error(error);
+    errorBox.textContent="Google verification नहीं हो पाई। कृपया वही Google account चुनिए जिससे Register किया था।";
+    errorBox.style.display="block";
+  }
+};
 
-window.logoutUser = async function(){
-
+window.logoutUser=async function(){
   openConfirm(
     "क्या आप LKR Hisab से Logout करना चाहते हैं?",
-    async ()=>{
-
-      await signOut(auth);
-
-    }
+    async()=>{ await signOut(auth); }
   );
-
 };
 
+document.getElementById("registerForm").addEventListener("submit",async function(e){
+  e.preventDefault();
+  hideAuthError("registerError");
+
+  const name=document.getElementById("registerName").value.trim();
+  const password=document.getElementById("registerPassword").value;
+  const confirm=document.getElementById("registerConfirmPassword").value;
+
+  if(!name){showAuthError("registerError","नाम लिखिए।");return;}
+  if(password.length<6){showAuthError("registerError","Password कम से कम 6 अक्षर का रखें।");return;}
+  if(password!==confirm){showAuthError("registerError","Password और Confirm Password एक जैसे नहीं हैं।");return;}
+  if(!currentUser){showAuthError("registerError","Google account verify नहीं है।");return;}
+
+  try{
+    const existing=await getUserProfile();
+    if(existing){
+      closeModal("registerModal");
+      document.getElementById("app").style.display="block";
+      await loadAllData();
+      return;
+    }
+
+    const passwordHash=await hashPassword(password);
+    await setDoc(profileDoc(),{
+      displayName:name,
+      nameRoman:romanizeHindi(name),
+      passwordHash,
+      provider:"google",
+      googleUid:currentUser.uid,
+      googleEmail:currentUser.email||"",
+      createdAt:new Date().toISOString(),
+      updatedAt:new Date().toISOString()
+    });
+
+    closeModal("registerModal");
+    document.getElementById("app").style.display="block";
+    await loadAllData();
+    toast("✓ Register सफल हुआ और Firebase में सुरक्षित हो गया।");
+  }catch(error){
+    console.error(error);
+    showAuthError("registerError",`Register सेव नहीं हुआ। Firebase error: ${error.code||"unknown"}`);
+  }
+});
+
+document.getElementById("resetPasswordForm").addEventListener("submit",async function(e){
+  e.preventDefault();
+  hideAuthError("resetError");
+
+  const password=document.getElementById("resetPassword").value;
+  const confirm=document.getElementById("resetConfirmPassword").value;
+
+  if(password.length<6){showAuthError("resetError","Password कम से कम 6 अक्षर का रखें।");return;}
+  if(password!==confirm){showAuthError("resetError","Password और Confirm Password एक जैसे नहीं हैं।");return;}
+
+  try{
+    const profile=await getUserProfile();
+    if(!profile){showAuthError("resetError","इस Google account का Register profile नहीं मिला।");return;}
+
+    await setDoc(profileDoc(),{
+      passwordHash:await hashPassword(password),
+      updatedAt:new Date().toISOString()
+    },{merge:true});
+
+    closeModal("resetPasswordModal");
+    document.getElementById("loginScreen").style.display="none";
+    document.getElementById("app").style.display="block";
+    await loadAllData();
+    toast("✓ Password सफलतापूर्वक बदल गया।");
+  }catch(error){
+    console.error(error);
+    showAuthError("resetError",`Password सेव नहीं हुआ। Firebase error: ${error.code||"unknown"}`);
+  }
+});
 
 /* =====================================================
    AUTH STATE
 ===================================================== */
 
-onAuthStateChanged(
-  auth,
-  async user=>{
+onAuthStateChanged(auth,async user=>{
+  document.getElementById("loadingScreen").style.display="none";
 
-    document.getElementById("loadingScreen")
-      .style.display="none";
-
-    if(user){
-
-      currentUser=user;
-
-      document.getElementById("loginScreen")
-        .style.display="none";
-
-      document.getElementById("app")
-        .style.display="block";
-
-      await loadAllData();
-
-    }else{
-
-      currentUser=null;
-
-      document.getElementById("app")
-        .style.display="none";
-
-      document.getElementById("loginScreen")
-        .style.display="flex";
-
+  if(user){
+    currentUser=user;
+    try{
+      const profile=await getUserProfile();
+      if(profile){
+        document.getElementById("loginScreen").style.display="none";
+        document.getElementById("app").style.display="block";
+        await loadAllData();
+      }else{
+        document.getElementById("app").style.display="none";
+        document.getElementById("loginScreen").style.display="none";
+        showRegister();
+      }
+    }catch(error){
+      console.error(error);
+      document.getElementById("app").style.display="none";
+      document.getElementById("loginScreen").style.display="flex";
+      document.getElementById("loginError").textContent=`Firebase से profile नहीं पढ़ी गई: ${error.code||"unknown"}`;
+      document.getElementById("loginError").style.display="block";
     }
-
+  }else{
+    currentUser=null;
+    document.getElementById("app").style.display="none";
+    document.getElementById("loginScreen").style.display="flex";
   }
-);
-
+});
 
 /* =====================================================
    HELPERS
@@ -2203,21 +2458,26 @@ async function loadAllData(){
 
 
     people=
-      peopleSnap.docs.map(
-        d=>({
+      peopleSnap.docs.map(d=>{
+        const data=d.data();
+        return {
           id:d.id,
-          ...d.data()
-        })
-      );
+          ...data,
+          name:data.displayName ?? data.name ?? "",
+          type:data.typeKey==="Mistri"?"मिस्त्री":data.typeKey==="Majdoor"?"मजदूर":data.type ?? "मजदूर"
+        };
+      });
 
 
     places=
-      placesSnap.docs.map(
-        d=>({
+      placesSnap.docs.map(d=>{
+        const data=d.data();
+        return {
           id:d.id,
-          ...d.data()
-        })
-      );
+          ...data,
+          name:data.displayName ?? data.name ?? ""
+        };
+      });
 
 
     paymentAmounts=
@@ -2246,12 +2506,23 @@ async function loadAllData(){
 ===================================================== */
 
 async function savePerson(person){
-
-  await setDoc(
-    userDoc("people",person.id),
-    person
-  );
-
+  const payload=JSON.parse(JSON.stringify(person));
+  payload.displayName=person.name;
+  payload.nameRoman=romanizeHindi(person.name);
+  payload.name=payload.nameRoman;
+  payload.typeDisplay=person.type;
+  payload.typeKey=person.type==="मिस्त्री"?"Mistri":"Majdoor";
+  Object.values(payload.records||{}).forEach(record=>{
+    (record.entries||[]).forEach(entry=>{
+      if(entry.placeName){
+        entry.placeNameDisplay=entry.placeName;
+        entry.placeNameRoman=romanizeHindi(entry.placeName);
+        entry.placeName=entry.placeNameRoman;
+      }
+    });
+  });
+  if(Array.isArray(payload.records)) payload.records=[];
+  await setDoc(userDoc("people",person.id),payload);
 }
 
 
@@ -2260,12 +2531,11 @@ async function savePerson(person){
 ===================================================== */
 
 async function savePlace(place){
-
-  await setDoc(
-    userDoc("places",place.id),
-    place
-  );
-
+  const payload={...place};
+  payload.displayName=place.name;
+  payload.nameRoman=romanizeHindi(place.name);
+  payload.name=payload.nameRoman;
+  await setDoc(userDoc("places",place.id),payload);
 }
 
 
