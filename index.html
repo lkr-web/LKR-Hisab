@@ -1246,8 +1246,15 @@ button:active{
       सुरक्षित तरीके से रखें
     </div>
 
-    <button class="google-btn" onclick="loginWithGoogle()">
-      <span class="google-icon">G</span>
+    <button class="google-btn" onclick="loginWithGoogle()" type="button">
+      <span class="google-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="22" height="22">
+          <path fill="#4285F4" d="M21.35 12.23c0-.79-.07-1.55-.23-2.27H12v4.3h5.24a4.48 4.48 0 0 1-1.94 2.94v2.45h3.14c1.84-1.69 2.91-4.18 2.91-7.42z"/>
+          <path fill="#34A853" d="M12 21.5c2.63 0 4.84-.87 6.45-2.35l-3.14-2.45c-.87.58-1.98.92-3.31.92-2.54 0-4.69-1.72-5.46-4.03H3.3v2.52A9.74 9.74 0 0 0 12 21.5z"/>
+          <path fill="#FBBC05" d="M6.54 13.59A5.86 5.86 0 0 1 6.23 12c0-.55.1-1.09.31-1.59V7.89H3.3A9.5 9.5 0 0 0 2.25 12c0 1.53.37 2.98 1.05 4.11l3.24-2.52z"/>
+          <path fill="#EA4335" d="M12 6.38c1.43 0 2.71.49 3.72 1.45l2.79-2.79C16.84 3.48 14.63 2.5 12 2.5a9.74 9.74 0 0 0-8.7 5.39l3.24 2.52C7.31 8.1 9.46 6.38 12 6.38z"/>
+        </svg>
+      </span>
       <span>Continue with Google</span>
     </button>
 
@@ -2092,6 +2099,7 @@ let currentCategory="all";
 let currentPage="home";
 
 let deleteAction=null;
+let googleFlowActive=false;
 
 
 /* =====================================================
@@ -2160,13 +2168,13 @@ function romanizeHindi(text){
   return out.replace(/\s+/g," ").trim();
 }
 
-function profileDoc(){
-  return doc(db,"users",currentUser.uid,"profile","main");
+function profileDoc(uid=currentUser?.uid){
+  return doc(db,"users",uid,"profile","main");
 }
 
-async function getUserProfile(){
-  if(!currentUser) return null;
-  const snap=await getDoc(profileDoc());
+async function getUserProfile(uid=currentUser?.uid){
+  if(!uid) return null;
+  const snap=await getDoc(profileDoc(uid));
   return snap.exists()?snap.data():null;
 }
 
@@ -2182,21 +2190,47 @@ function hideAuthError(id){
   if(el) el.style.display="none";
 }
 
+function friendlyGoogleError(error){
+  const code=error?.code||"";
+  if(code==="auth/popup-closed-by-user") return "Google window बंद हो गया। फिर से Continue with Google दबाइए।";
+  if(code==="auth/popup-blocked") return "Browser ने Google window block कर दी। Popup allow करके फिर कोशिश करें।";
+  if(code==="auth/unauthorized-domain") return "इस website का domain Firebase में Authorized Domains में नहीं है। Live Server के लिए localhost और 127.0.0.1 जोड़िए।";
+  if(code==="auth/cancelled-popup-request") return "Google login की दूसरी window पहले से खुली है। उसे पूरा कीजिए।";
+  if(code==="permission-denied" || code==="firestore/permission-denied") return "Google login हो गया, लेकिन Firebase Firestore Rules ने profile पढ़ने की अनुमति नहीं दी। Firestore Rules में authenticated user की अनुमति लगाइए।";
+  return `Google login पूरा नहीं हुआ। Error: ${code||"unknown"}`;
+}
+
 function showRegister(){
   hideAuthError("registerError");
   document.getElementById("registerForm").reset();
   openModal("registerModal");
 }
 
-async function finishGoogleLogin(user,mode="normal"){
+function showApp(){
+  document.getElementById("loginScreen").style.display="none";
+  document.getElementById("app").style.display="block";
+}
+
+async function afterGoogleAccountSelected(user,mode="login"){
   currentUser=user;
-  const profile=await getUserProfile();
+
+  let profile=null;
+  try{
+    profile=await getUserProfile(user.uid);
+  }catch(error){
+    console.error("PROFILE READ ERROR:",error);
+    document.getElementById("app").style.display="none";
+    document.getElementById("loginScreen").style.display="flex";
+    showAuthError("loginError",friendlyGoogleError(error));
+    return;
+  }
 
   if(mode==="reset"){
     if(!profile){
-      toast("इस Google account से अभी Register नहीं हुआ है।");
+      showAuthError("loginError","इस Google account से अभी Register नहीं हुआ है। पहले Continue with Google करके Register कीजिए।");
       return;
     }
+    document.getElementById("loginScreen").style.display="none";
     document.getElementById("resetPasswordForm").reset();
     hideAuthError("resetError");
     openModal("resetPasswordModal");
@@ -2204,41 +2238,56 @@ async function finishGoogleLogin(user,mode="normal"){
   }
 
   if(!profile){
+    /* पहली बार: Google verification के बाद Register खुलेगा */
+    document.getElementById("app").style.display="none";
     document.getElementById("loginScreen").style.display="none";
     showRegister();
     return;
   }
 
-  document.getElementById("loginScreen").style.display="none";
-  document.getElementById("app").style.display="block";
-  await loadAllData();
+  /* पहले से registered account: सीधे app */
+  showApp();
+  try{
+    await loadAllData();
+  }catch(error){
+    console.error("DATA LOAD ERROR:",error);
+    showAuthError("loginError",`Google login हो गया, लेकिन हिसाब load नहीं हुआ। Error: ${error.code||"unknown"}`);
+    document.getElementById("app").style.display="none";
+    document.getElementById("loginScreen").style.display="flex";
+  }
 }
 
 window.loginWithGoogle=async function(){
-  const errorBox=document.getElementById("loginError");
-  errorBox.style.display="none";
+  hideAuthError("loginError");
+  googleFlowActive=true;
   try{
     await setPersistence(auth,browserLocalPersistence);
     const result=await signInWithPopup(auth,provider);
-    await finishGoogleLogin(result.user,"normal");
+    await afterGoogleAccountSelected(result.user,"login");
   }catch(error){
-    console.error(error);
-    errorBox.textContent="Google Login नहीं हो पाया। कृपया फिर कोशिश करें।";
-    errorBox.style.display="block";
+    console.error("GOOGLE LOGIN ERROR:",error);
+    document.getElementById("app").style.display="none";
+    document.getElementById("loginScreen").style.display="flex";
+    showAuthError("loginError",friendlyGoogleError(error));
+  }finally{
+    googleFlowActive=false;
   }
 };
 
 window.forgotPassword=async function(){
-  const errorBox=document.getElementById("loginError");
-  errorBox.style.display="none";
+  hideAuthError("loginError");
+  googleFlowActive=true;
   try{
     await setPersistence(auth,browserLocalPersistence);
     const result=await signInWithPopup(auth,provider);
-    await finishGoogleLogin(result.user,"reset");
+    await afterGoogleAccountSelected(result.user,"reset");
   }catch(error){
-    console.error(error);
-    errorBox.textContent="Google verification नहीं हो पाई। कृपया वही Google account चुनिए जिससे Register किया था।";
-    errorBox.style.display="block";
+    console.error("GOOGLE RESET VERIFICATION ERROR:",error);
+    document.getElementById("app").style.display="none";
+    document.getElementById("loginScreen").style.display="flex";
+    showAuthError("loginError",friendlyGoogleError(error));
+  }finally{
+    googleFlowActive=false;
   }
 };
 
@@ -2260,19 +2309,19 @@ document.getElementById("registerForm").addEventListener("submit",async function
   if(!name){showAuthError("registerError","नाम लिखिए।");return;}
   if(password.length<6){showAuthError("registerError","Password कम से कम 6 अक्षर का रखें।");return;}
   if(password!==confirm){showAuthError("registerError","Password और Confirm Password एक जैसे नहीं हैं।");return;}
-  if(!currentUser){showAuthError("registerError","Google account verify नहीं है।");return;}
+  if(!currentUser){showAuthError("registerError","पहले Google account verify कीजिए।");return;}
 
   try{
-    const existing=await getUserProfile();
+    const existing=await getUserProfile(currentUser.uid);
     if(existing){
       closeModal("registerModal");
-      document.getElementById("app").style.display="block";
+      showApp();
       await loadAllData();
       return;
     }
 
     const passwordHash=await hashPassword(password);
-    await setDoc(profileDoc(),{
+    await setDoc(profileDoc(currentUser.uid),{
       displayName:name,
       nameRoman:romanizeHindi(name),
       passwordHash,
@@ -2284,12 +2333,12 @@ document.getElementById("registerForm").addEventListener("submit",async function
     });
 
     closeModal("registerModal");
-    document.getElementById("app").style.display="block";
+    showApp();
     await loadAllData();
     toast("✓ Register सफल हुआ और Firebase में सुरक्षित हो गया।");
   }catch(error){
-    console.error(error);
-    showAuthError("registerError",`Register सेव नहीं हुआ। Firebase error: ${error.code||"unknown"}`);
+    console.error("REGISTER ERROR:",error);
+    showAuthError("registerError",`Register सेव नहीं हुआ। Error: ${error.code||"unknown"}`);
   }
 });
 
@@ -2304,22 +2353,21 @@ document.getElementById("resetPasswordForm").addEventListener("submit",async fun
   if(password!==confirm){showAuthError("resetError","Password और Confirm Password एक जैसे नहीं हैं।");return;}
 
   try{
-    const profile=await getUserProfile();
+    const profile=await getUserProfile(currentUser?.uid);
     if(!profile){showAuthError("resetError","इस Google account का Register profile नहीं मिला।");return;}
 
-    await setDoc(profileDoc(),{
+    await setDoc(profileDoc(currentUser.uid),{
       passwordHash:await hashPassword(password),
       updatedAt:new Date().toISOString()
     },{merge:true});
 
     closeModal("resetPasswordModal");
-    document.getElementById("loginScreen").style.display="none";
-    document.getElementById("app").style.display="block";
+    showApp();
     await loadAllData();
     toast("✓ Password सफलतापूर्वक बदल गया।");
   }catch(error){
-    console.error(error);
-    showAuthError("resetError",`Password सेव नहीं हुआ। Firebase error: ${error.code||"unknown"}`);
+    console.error("RESET PASSWORD ERROR:",error);
+    showAuthError("resetError",`Password सेव नहीं हुआ। Error: ${error.code||"unknown"}`);
   }
 });
 
@@ -2330,30 +2378,36 @@ document.getElementById("resetPasswordForm").addEventListener("submit",async fun
 onAuthStateChanged(auth,async user=>{
   document.getElementById("loadingScreen").style.display="none";
 
-  if(user){
-    currentUser=user;
-    try{
-      const profile=await getUserProfile();
-      if(profile){
-        document.getElementById("loginScreen").style.display="none";
-        document.getElementById("app").style.display="block";
-        await loadAllData();
-      }else{
-        document.getElementById("app").style.display="none";
-        document.getElementById("loginScreen").style.display="none";
-        showRegister();
-      }
-    }catch(error){
-      console.error(error);
-      document.getElementById("app").style.display="none";
-      document.getElementById("loginScreen").style.display="flex";
-      document.getElementById("loginError").textContent=`Firebase से profile नहीं पढ़ी गई: ${error.code||"unknown"}`;
-      document.getElementById("loginError").style.display="block";
-    }
-  }else{
+  if(!user){
     currentUser=null;
+    googleFlowActive=false;
     document.getElementById("app").style.display="none";
     document.getElementById("loginScreen").style.display="flex";
+    return;
+  }
+
+  currentUser=user;
+
+  /* Popup login के दौरान loginWithGoogle()/forgotPassword() खुद आगे का flow संभालते हैं. */
+  if(googleFlowActive) return;
+
+  /* Page refresh के बाद Firebase ने Google session restore किया है. */
+  try{
+    const profile=await getUserProfile(user.uid);
+
+    if(profile){
+      showApp();
+      await loadAllData();
+    }else{
+      document.getElementById("app").style.display="none";
+      document.getElementById("loginScreen").style.display="none";
+      showRegister();
+    }
+  }catch(error){
+    console.error("AUTH RESTORE ERROR:",error);
+    document.getElementById("app").style.display="none";
+    document.getElementById("loginScreen").style.display="flex";
+    showAuthError("loginError",friendlyGoogleError(error));
   }
 });
 
