@@ -8,37 +8,92 @@
 <style>
 :root{--orange:#f97316;--orange2:#ea580c;--bg:#fff7ed;--card:#fff;--text:#1f2937;--muted:#6b7280;--line:#fed7aa;--green:#15803d;--red:#dc2626;--blue:#2563eb;--shadow:0 8px 24px rgba(124,45,18,.08)}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-button,input,select{font:inherit}button{cursor:pointer;border:0}.app{min-height:100vh;max-width:760px;margin:auto;padding-bottom:82px}
+button,input,select{font:inherit}button{cursor:pointer;border:0}.app{min-height:100vh;width:100%;max-width:760px;margin:auto;padding-bottom:92px;overflow-x:hidden}
 .top{position:sticky;top:0;z-index:20;background:rgba(255,247,237,.94);backdrop-filter:blur(12px);padding:14px 16px 10px;border-bottom:1px solid #ffedd5}
 .brand{font-size:22px;font-weight:900;color:var(--orange2)}.sub{font-size:12px;color:var(--muted)}
-main{padding:14px 14px 20px}.screen-title{font-size:24px;font-weight:900;margin:4px 0 14px}.section-title{font-size:17px;font-weight:850;margin:18px 0 10px}
+main{padding:14px 12px 24px;overflow-x:hidden}.screen-title{font-size:24px;font-weight:900;margin:4px 0 14px}.section-title{font-size:17px;font-weight:850;margin:18px 0 10px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:var(--shadow);margin-bottom:12px}
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .stat{padding:13px;border-radius:15px;background:#fff7ed;border:1px solid #ffedd5}.stat b{display:block;font-size:21px}.stat span{font-size:12px;color:var(--muted)}
 .row{display:flex;align-items:center;justify-content:space-between;gap:10px}.wrap{flex-wrap:wrap}
-label{display:block;font-size:13px;font-weight:750;margin:12px 0 6px}input,select{width:100%;padding:13px;border:1px solid #fdba74;border-radius:12px;background:white;outline:none}input:focus,select:focus{border-color:var(--orange);box-shadow:0 0 0 3px #ffedd5}
-.btn{padding:12px 14px;border-radius:12px;font-weight:800;background:#ffedd5;color:#9a3412}.btn.primary{background:var(--orange);color:white}.btn.danger{background:#fee2e2;color:#b91c1c}.btn.ghost{background:white;border:1px solid var(--line)}.btn.small{padding:8px 10px;font-size:12px}.btn.full{width:100%}
+label{display:block;font-size:13px;font-weight:750;margin:12px 0 6px}input,select{width:100%;min-height:48px;padding:13px;border:1px solid #fdba74;border-radius:12px;background:white;outline:none}input:focus,select:focus{border-color:var(--orange);box-shadow:0 0 0 3px #ffedd5}
+.btn{min-height:46px;padding:12px 14px;border-radius:12px;font-weight:800;background:#ffedd5;color:#9a3412}.btn.primary{background:var(--orange);color:white}.btn.danger{background:#fee2e2;color:#b91c1c}.btn.ghost{background:white;border:1px solid var(--line)}.btn.small{min-height:42px;padding:9px 11px;font-size:13px}.btn.full{width:100%}
 .pill{display:inline-flex;padding:5px 9px;border-radius:999px;background:#fff7ed;color:#9a3412;font-size:11px;font-weight:800}.muted{color:var(--muted);font-size:13px}.money{font-weight:900}.positive{color:var(--green)}.negative{color:var(--red)}
 .site-name{font-size:17px;font-weight:900}.person-name{font-size:18px;font-weight:900}
 .tabs{display:flex;gap:8px;margin-bottom:12px}.tabs .btn{flex:1}.tabs .active{background:var(--orange);color:white}
-.bottom{position:fixed;bottom:0;left:0;right:0;z-index:30;background:white;border-top:1px solid var(--line);display:flex;justify-content:center}.nav{max-width:760px;width:100%;display:grid;grid-template-columns:repeat(4,1fr)}.nav button{padding:9px 4px 10px;background:white;color:#6b7280;font-size:11px;font-weight:800}.nav button.active{color:var(--orange2)}.nav .ico{display:block;font-size:20px;margin-bottom:2px}
+.bottom{position:fixed;bottom:0;left:0;right:0;z-index:30;background:white;border-top:1px solid var(--line);display:flex;justify-content:center}.nav{max-width:760px;width:100%;display:grid;grid-template-columns:repeat(4,1fr)}.nav button{min-height:62px;padding:8px 4px 9px;background:white;color:#6b7280;font-size:11px;font-weight:800}.nav button.active{color:var(--orange2)}.nav .ico{display:block;font-size:20px;margin-bottom:2px}
 .auth{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:22px;background:linear-gradient(180deg,#fff7ed,#fff)}
 .authbox{width:100%;max-width:430px}.logo{font-size:38px;font-weight:950;color:var(--orange2);text-align:center}.tag{text-align:center;color:var(--muted);margin:4px 0 22px}
 .empty{text-align:center;padding:25px;color:var(--muted)}.back{margin-bottom:10px}.monthbar{display:grid;grid-template-columns:44px 1fr 44px;gap:8px;align-items:center}.monthbar .btn{height:44px;padding:0}.monthlabel{text-align:center;font-weight:900;font-size:17px}
-.day{border:1px solid var(--line);border-radius:16px;margin:10px 0;background:white;overflow:hidden}.dayhead{padding:11px 12px;background:#fffaf5}.daybody{padding:10px}.daydate{font-weight:900}.work-entry{padding:11px;border:1px solid #ffedd5;border-radius:13px;margin:8px 0;background:#fffaf5}.entry-actions{display:flex;gap:6px;margin-top:8px}.choice{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.choice.three{grid-template-columns:repeat(3,1fr)}.choice button{padding:12px;border:1px solid #fdba74;border-radius:12px;background:white;font-weight:800}.choice button.selected{background:var(--orange);color:white;border-color:var(--orange)}
+.day{border:1px solid var(--line);border-radius:16px;margin:10px 0;background:white;overflow:hidden}.dayhead{padding:11px 12px;background:#fffaf5}.daybody{padding:10px}.daydate{font-weight:900}.work-entry{padding:11px;border:1px solid #ffedd5;border-radius:13px;margin:8px 0;background:#fffaf5}.entry-actions{display:flex;gap:6px;margin-top:8px}.choice{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.choice.three{grid-template-columns:repeat(3,1fr)}.choice button{min-height:50px;padding:12px;border:1px solid #fdba74;border-radius:12px;background:white;font-weight:800}.choice button.selected{background:var(--orange);color:white;border-color:var(--orange)}
 .hide{display:none!important}.notice{padding:11px;border-radius:12px;background:#eff6ff;color:#1d4ed8;font-size:13px}.danger-note{padding:11px;border-radius:12px;background:#fef2f2;color:#b91c1c;font-size:13px}
 .kpi{font-size:28px;font-weight:950}.divider{height:1px;background:#ffedd5;margin:12px 0}
+@media(max-width:390px){.screen-title{font-size:22px}.grid{gap:8px}.stat{padding:11px}.stat b{font-size:18px}.card{padding:12px;border-radius:16px}.row{gap:7px}.daybody{padding:8px}.choice.three{grid-template-columns:1fr}.monthlabel{font-size:15px}}
 @media(min-width:700px){main{padding:20px}.card{padding:17px}}
 </style>
 </head>
 <body>
 <div id="root"></div>
+<noscript><div style="padding:24px;font-family:system-ui">LKR Hisab chalane ke liye JavaScript ON karein.</div></noscript>
+<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore-compat.js"></script>
 <script>
+const firebaseConfig={apiKey:"AIzaSyAz4vnf3BJ_Hs54lksg3Og8n5a7fr7DhyU",authDomain:"lkr-hisab.firebaseapp.com",projectId:"lkr-hisab",storageBucket:"lkr-hisab.firebasestorage.app",messagingSenderId:"1054769717706",appId:"1:1054769717706:web:b6011c1a2023c6dc7b2f33"};
+firebase.initializeApp(firebaseConfig);
+const firebaseAuth=firebase.auth();
+const firestore=firebase.firestore();
+// Compatibility helpers keep the existing app code readable and also allow the HTML to work when opened directly.
+const doc=(db,...path)=>db.doc(path.join("/"));
+const collection=(db,...path)=>db.collection(path.join("/"));
+const getDoc=ref=>ref.get();
+const getDocs=ref=>ref.get();
+const setDoc=(ref,data,options)=>ref.set(data,options);
+const writeBatch=db=>db.batch();
+const signInAnonymously=auth=>auth.signInAnonymously();
+let cloudReady=false,cloudBusy=false,cloudDirty=false;
 const KEY="lkr_hisab_v1";
 const state={screen:"home",personType:"Labour",selectedPerson:null,selectedSite:null,month:new Date().toISOString().slice(0,7),editingSite:null,more:false};
 let db=load();
 function load(){try{return JSON.parse(localStorage.getItem(KEY))||{user:null,sites:[],people:[],works:[]}}catch(e){return {user:null,sites:[],people:[],works:[]}}}
-function save(){localStorage.setItem(KEY,JSON.stringify(db))}
+function save(){localStorage.setItem(KEY,JSON.stringify(db));if(cloudReady&&db.user)syncCloud().catch(showCloudError)}
+function normalizeMobile(m){return String(m||"").replace(/\D/g,"")}
+function userKey(){return "m_"+normalizeMobile(db.user?.mobile)}
+function cloudUserRef(){return doc(firestore,"users",userKey())}
+function cleanForFirestore(o){return JSON.parse(JSON.stringify(o))}
+function showCloudError(err){console.error("Firestore:",err);const el=document.getElementById("cloudStatus");if(el){el.textContent="☁ Sync error";el.style.color="#dc2626"}}
+async function syncCollection(col,items){
+  const existing=await getDocs(collection(firestore,"users",userKey(),col));
+  const wanted=new Set(items.map(x=>x.id));
+  const ops=[];
+  existing.forEach(d=>{if(!wanted.has(d.id))ops.push({type:"delete",ref:d.ref})});
+  items.forEach(item=>ops.push({type:"set",ref:doc(firestore,"users",userKey(),col,item.id),data:cleanForFirestore(item)}));
+  for(let i=0;i<ops.length;i+=400){
+    const batch=writeBatch(firestore);
+    ops.slice(i,i+400).forEach(op=>op.type==="delete"?batch.delete(op.ref):batch.set(op.ref,op.data));
+    await batch.commit();
+  }
+}
+async function syncCloud(){
+  if(!cloudReady||!db.user){return}
+  cloudDirty=true;
+  if(cloudBusy)return;
+  cloudBusy=true;
+  try{
+    while(cloudDirty){
+      cloudDirty=false;
+      await setDoc(cloudUserRef(),{name:db.user.name,mobile:db.user.mobile,updatedAt:new Date().toISOString()},{merge:true});
+      await syncCollection("sites",db.sites);
+      await syncCollection("people",db.people);
+      await syncCollection("works",db.works);
+      localStorage.setItem(KEY,JSON.stringify(db));
+    }
+    const el=document.getElementById("cloudStatus");
+    if(el){el.textContent="☁ Synced";el.style.color="#15803d"}
+  }finally{cloudBusy=false}
+}
+async function loadCloudForMobile(mobile){const key="m_"+normalizeMobile(mobile);const ref=doc(firestore,"users",key);const snap=await getDoc(ref);if(!snap.exists())return false;const p=snap.data();const [ss,ps,ws]=await Promise.all([getDocs(collection(firestore,"users",key,"sites")),getDocs(collection(firestore,"users",key,"people")),getDocs(collection(firestore,"users",key,"works"))]);db.user={name:p.name||"",mobile:p.mobile||mobile};db.sites=ss.docs.map(d=>d.data());db.people=ps.docs.map(d=>d.data());db.works=ws.docs.map(d=>d.data());localStorage.setItem(KEY,JSON.stringify(db));return true}
+async function bootCloud(){try{await signInAnonymously(firebaseAuth);cloudReady=true;const local=db.user;if(local?.mobile){const found=await loadCloudForMobile(local.mobile);if(!found)await syncCloud()}}catch(err){console.error("Firebase boot failed:",err);cloudReady=false;const el=document.getElementById("cloudStatus");if(el){el.textContent="☁ Offline";el.style.color="#b45309"}}}
 const $=id=>document.getElementById(id);
 const money=n=>"₹"+Math.round(n||0).toLocaleString("en-IN");
 const units=n=>Number(n||0).toLocaleString("en-IN",{maximumFractionDigits:2});
@@ -68,7 +123,7 @@ function go(screen){state.screen=screen;state.selectedPerson=null;state.selected
 function nav(screen){go(screen)}
 function layout(content){
  if(!db.user)return `<div class="auth"><div class="authbox">${content}</div></div>`;
- return `<div class="app"><div class="top"><div class="brand">LKR Hisab</div><div class="sub">${esc(db.user.name)} • ${esc(db.user.mobile)}</div></div><main>${content}</main>${bottom()}</div>`;
+ return `<div class="app"><div class="top"><div class="brand">LKR Hisab</div><div class="sub">${esc(db.user.name)} • ${esc(db.user.mobile)} <span id="cloudStatus" style="float:right;color:#15803d">☁ Cloud</span></div></div><main>${content}</main>${bottom()}</div>`;
 }
 function bottom(){return `<div class="bottom"><div class="nav">
 <button class="${state.screen==='home'?'active':''}" onclick="nav('home')"><span class="ico">⌂</span>Home</button>
@@ -89,8 +144,8 @@ function route(){
  if(state.screen==="profile")return profile();
  return home();
 }
-function auth(){return `<div class="logo">LKR Hisab</div><div class="tag">Simple • Mobile • Hisab clear</div><div class="card"><h2 style="margin-top:0">Shuru karein</h2><label>Full Name</label><input id="regName" placeholder="Jaise: Shivam Kumar"><label>Mobile Number</label><input id="regMobile" inputmode="tel" placeholder="10 digit mobile number"><button class="btn primary full" style="margin-top:16px" onclick="register()">Register & Continue</button></div>`}
-function register(){let n=$("regName").value.trim(),m=$("regMobile").value.trim();if(!n||!m){alert("Name aur Mobile Number bhariye.");return}db.user={name:n,mobile:m};save();render()}
+function auth(){return `<div class="logo">LKR Hisab</div><div class="tag">Simple • Mobile • Hisab clear</div><div class="card"><h2 style="margin-top:0">Shuru karein</h2><label>Full Name</label><input id="regName" placeholder="Jaise: Shivam Kumar"><label>Mobile Number</label><input id="regMobile" inputmode="tel" placeholder="10 digit mobile number"><button class="btn primary full" style="margin-top:16px" onclick="register()">Register & Continue</button><div class="muted" style="margin-top:10px;text-align:center">Data cloud me save hoga; internet connection required.</div></div>`}
+async function register(){let n=$("regName").value.trim(),m=$("regMobile").value.trim();if(!n||!m){alert("Name aur Mobile Number bhariye.");return}db.user={name:n,mobile:m};localStorage.setItem(KEY,JSON.stringify(db));if(cloudReady){try{const found=await loadCloudForMobile(m);if(!found)await syncCloud()}catch(e){console.error(e);alert("Cloud save/load mein problem hui. Internet connection check karein.")}}render()}
 function home(){
  let m=state.month,l=calcHome("Labour",m),mi=calcHome("Mistri",m),c=commission(m);
  return `<div class="row"><div><div class="screen-title">Home</div><div class="muted">${monthName(m)} ka hisab</div></div><button class="btn small" onclick="todayMonth()">Aaj</button></div>
@@ -131,8 +186,9 @@ function dayCard(p,d,m){
  </div></div>`;
 }
 function entryView(e,i){let s=site(e.siteId);return `<div class="work-entry"><div class="row"><b>काम ${i+1}</b><button class="btn small danger" onclick="deleteWork('${e.id}')">Delete</button></div><div style="margin-top:7px;font-weight:850">${esc(s?.name||'Deleted Site')}</div><div class="muted">${e.units==.5?'Half Day':e.units==1?'Full Day':'Double Day'} • ${e.paymentYes?'Payment: '+money(e.paymentAmount):'Payment: Nahi'}</div></div>`}
-function shiftPersonMonth(delta){let [y,mo]=state.month.split("-").map(Number);let d=new Date(y,mo-1+delta,1);state.month=d.toISOString().slice(0,7);render()}
-function shiftMonth(delta){let [y,mo]=state.month.split("-").map(Number);let d=new Date(y,mo-1+delta,1);state.month=d.toISOString().slice(0,7);render()}
+function shiftMonthValue(value,delta){let [y,mo]=value.split("-").map(Number);mo+=delta;if(mo<1){y--;mo=12}if(mo>12){y++;mo=1}return `${y}-${String(mo).padStart(2,"0")}`}
+function shiftPersonMonth(delta){state.month=shiftMonthValue(state.month,delta);render()}
+function shiftMonth(delta){state.month=shiftMonthValue(state.month,delta);render()}
 function todayMonth(){state.month=new Date().toISOString().slice(0,7);render()}
 function setDayOff(pid,date){let old=entriesForDay(pid,date);if(old.length){alert("Is date par pehle se work entries hain. Unhe delete karke Chhutti set karein.");return}db.works.push({id:uid(),personId:pid,type:person(pid).type,date,status:"off",siteId:null,units:0,paymentYes:false,paymentAmount:0});save();render()}
 function setDayWork(pid,date){let off=entriesForDay(pid,date).find(e=>e.status==="off");if(off){db.works=db.works.filter(w=>w.id!==off.id);save();render()}}
@@ -159,11 +215,12 @@ function sitePage(){let s=site(state.selectedSite);if(!s){nav('sites');return""}
 }
 function sitePeople(type,ids,c,s){return `<div class="section-title">${type}</div><div class="card">${ids.length?ids.map(id=>{let p=person(id),ws=c.entries.filter(w=>w.personId===id),u=ws.reduce((a,w)=>a+Number(w.units),0),amt=u*(type==="Labour"?Number(s.labourRate):Number(s.mistriRate));return `<div class="row" style="padding:8px 0;border-bottom:1px solid #ffedd5"><div><b>${esc(p.name)}</b><div class="muted">${units(u)} Work Units</div></div><b>${money(amt)}</b></div>`}).join(""):`<div class="empty">Is month me ${type} work nahi hai.</div>`}</div>`}
 function commissionPage(){let c=commission(state.month);return `<button class="btn back" onclick="nav('more')">← Back</button><div class="screen-title">Commission</div><div class="muted">App use karne wale ka Commission</div><div class="monthbar" style="margin:14px 0"><button class="btn" onclick="shiftMonth(-1)">‹</button><div class="monthlabel">${monthName(state.month)}</div><button class="btn" onclick="shiftMonth(1)">›</button></div><div class="card"><div class="stat"><span>Labour Commission</span><div class="kpi">${money(c.lc)}</div></div><div class="stat" style="margin-top:10px"><span>Mistri Commission</span><div class="kpi">${money(c.mc)}</div></div><div class="divider"></div><div class="row"><b>Total Commission</b><b class="kpi">${money(c.total)}</b></div><div class="muted" style="margin-top:12px">Commission = (Owner Rate − Worker Rate) × Work Units</div></div>`}
-function more(){return `<div class="screen-title">More</div><div class="card"><button class="btn ghost full" onclick="nav('profile')">👤 Profile</button><button class="btn ghost full" style="margin-top:8px" onclick="state.screen='commission';render()">💰 Commission</button><button class="btn danger full" style="margin-top:8px" onclick="logout()">↪ Logout</button></div><div class="card"><div class="muted">Data isi device/browser ke localStorage me save hai. Browser data clear karne par local data bhi clear ho sakta hai.</div></div>`}
+function more(){return `<div class="screen-title">More</div><div class="card"><button class="btn ghost full" onclick="nav('profile')">👤 Profile</button><button class="btn ghost full" style="margin-top:8px" onclick="state.screen='commission';render()">💰 Commission</button><button class="btn danger full" style="margin-top:8px" onclick="logout()">↪ Logout</button></div><div class="card"><div class="muted">Main data Firebase Firestore me save hota hai. Browser cache/local data clear hone par mobile number se cloud data dobara load kiya ja sakta hai.</div></div>`}
 function profile(){return `<button class="btn back" onclick="nav('more')">← Back</button><div class="screen-title">Profile</div><div class="card"><label>Full Name</label><input id="profName" value="${esc(db.user.name)}"><label>Mobile Number</label><input id="profMobile" value="${esc(db.user.mobile)}" inputmode="tel"><button class="btn primary full" style="margin-top:16px" onclick="saveProfile()">Update Profile</button></div>`}
 function saveProfile(){db.user.name=$("profName").value.trim()||db.user.name;db.user.mobile=$("profMobile").value.trim()||db.user.mobile;save();nav('more')}
-function logout(){if(confirm("Logout karna hai?")){db.user=null;save();state.screen="home";render()}}
-render();
+function logout(){if(confirm("Logout karna hai?")){db.user=null;localStorage.setItem(KEY,JSON.stringify(db));state.screen="home";render()}}
+Object.assign(window,{register,nav,go,render,home,people,personPage,sites,sitePage,more,profile,commissionPage,addPersonForm,savePerson,deletePerson,openPerson,shiftPersonMonth,shiftMonth,todayMonth,setDayOff,setDayWork,addWorkEntry,chooseUnit,choosePay,saveWork,deleteWork,siteForm,saveSite,deleteSite,openSite,saveProfile,logout});
+(async function init(){try{render();await bootCloud();render()}catch(err){console.error("LKR Hisab startup error:",err);document.getElementById("root").innerHTML='<div class="auth"><div class="authbox"><div class="logo">LKR Hisab</div><div class="card"><h2>App start nahi ho paaya</h2><div class="danger-note">Browser ko refresh karein. Agar phir bhi problem ho to latest ZIP/file use karein.</div><button class="btn primary full" style="margin-top:12px" onclick="location.reload()">Refresh</button></div></div></div>'}})();
 </script>
 </body>
 </html>
