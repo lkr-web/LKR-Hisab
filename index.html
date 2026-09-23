@@ -227,15 +227,61 @@
     return `<div class="view-title">Labour / Mistri</div><div class="subtitle">Workers और उनका daily हिसाब</div><div class="grid grid-2"><button class="btn btn-primary" onclick="openPersonForm('Labour')">+ Labour</button><button class="btn btn-outline" onclick="openPersonForm('Mistri')">+ Mistri</button></div><div style="height:14px"></div><div class="segmented"><button class="seg ${peopleFilter==='Labour'?'active':''}" onclick="setPeopleFilter('Labour')">Labour (${state.people.filter(p=>p.type==='Labour').length})</button><button class="seg ${peopleFilter==='Mistri'?'active':''}" onclick="setPeopleFilter('Mistri')">Mistri (${state.people.filter(p=>p.type==='Mistri').length})</button></div><div style="height:12px"></div><div class="person-list">${renderPeopleList()}</div>`;
   }
   let peopleFilter='Labour'; window.setPeopleFilter=t=>{peopleFilter=t;render()};
-  function renderPeopleList(){const list=state.people.filter(p=>p.type===peopleFilter);if(!list.length)return `<div class="empty"><strong>अभी कोई ${peopleFilter} नहीं है</strong><span>ऊपर से + ${peopleFilter} दबाकर जोड़ें।</span></div>`;return list.map(p=>`<div class="list-item"><div class="row"><div class="avatar">${esc((p.name||'?').trim().charAt(0).toUpperCase())}</div><div style="min-width:0;flex:1"><div class="name">${esc(p.name)}</div><div class="meta">${esc(p.type)} • Worker Rate ${money(p.rate)}/day</div></div><button class="btn btn-outline btn-sm" onclick="openPerson(${JSON.stringify(p.id)})">Open</button></div><div class="actions"><button class="btn btn-light btn-sm" onclick="openPersonForm('${p.type}','${p.id}')">Edit</button><button class="btn btn-danger btn-sm" onclick="deletePerson('${p.id}')">Delete</button></div></div>`).join('')}
-  window.openPerson=id=>{state.selectedPersonId=id;state.selectedDate=null;render()};
+  function renderPeopleList(){const list=state.people.filter(p=>p.type===peopleFilter);if(!list.length)return `<div class="empty"><strong>अभी कोई ${peopleFilter} नहीं है</strong><span>ऊपर से + ${peopleFilter} दबाकर जोड़ें।</span></div>`;return list.map(p=>`<div class="list-item"><div class="row"><div class="avatar">${esc((p.name||'?').trim().charAt(0).toUpperCase())}</div><div style="min-width:0;flex:1"><div class="name">${esc(p.name)}</div><div class="meta">${esc(p.type)} • Worker Rate ${money(p.rate)}/day</div></div><button type="button" class="btn btn-outline btn-sm" data-person-open="${esc(p.id)}" onclick="openPerson(this.dataset.personOpen)">Open</button></div><div class="actions"><button class="btn btn-light btn-sm" onclick="openPersonForm('${p.type}','${p.id}')">Edit</button><button class="btn btn-danger btn-sm" onclick="deletePerson('${p.id}')">Delete</button></div></div>`).join('')}
+  window.openPerson=id=>{
+    const personId=String(id||'').trim();
+    const person=getPerson(personId);
+    if(!person){ toast('Worker नहीं मिला।'); return; }
+    state.view='people';
+    state.selectedPersonId=personId;
+    state.selectedSiteId=null;
+    state.selectedDate=null;
+    state.modal=null;
+    render();
+  };
+  window.backToPeopleList=()=>{
+    state.view='people';
+    state.selectedPersonId=null;
+    state.selectedDate=null;
+    state.modal=null;
+    render();
+  };
 
-  function personDetailView(id){const p=getPerson(id);if(!p){state.selectedPersonId=null;return peopleView()}const entries=workForPersonMonth(id);const u=personUnits(id),b=personBana(id),pay=personPayment(id),bal=b-pay;return `<button class="btn btn-light btn-sm" onclick="go('people')" style="margin-bottom:10px">← Workers</button><div class="view-title">${esc(p.name)}</div><div class="subtitle">${esc(p.type)} • Worker Rate ${money(p.rate)}/day</div>${monthNav()}<div class="card orange-card"><div class="grid grid-2"><div><div class="stat-label">Total Work</div><div class="stat-value">${units(u)}</div></div><div><div class="stat-label">Total Bana</div><div class="stat-value">${money(b)}</div></div><div><div class="stat-label">Actual Payment</div><div class="stat-value">${money(pay)}</div></div><div><div class="stat-label">${bal>=0?'Baki':'Jyada diya'}</div><div class="stat-value ${bal>=0?'positive':'negative'}">${money(Math.abs(bal))}</div></div></div></div><div style="height:13px"></div><div class="section-title">Monthly Calendar</div>${calendarHtml(id)}<div style="height:13px"></div>${selectedDatePanel(id)}</div>`;}
+  function personDetailView(id){const p=getPerson(id);if(!p){state.selectedPersonId=null;return peopleView()}const entries=workForPersonMonth(id);const u=personUnits(id),b=personBana(id),pay=personPayment(id),bal=b-pay;return `<button type="button" class="btn btn-light btn-sm" onclick="backToPeopleList()" style="margin-bottom:10px">← Labour / Mistri</button><div class="view-title">${esc(p.name)}</div><div class="subtitle">${esc(p.type)} • Worker Rate ${money(p.rate)}/day</div>${monthNav()}<div class="card orange-card"><div class="grid grid-2"><div><div class="stat-label">Total Work</div><div class="stat-value">${units(u)}</div></div><div><div class="stat-label">Total Bana</div><div class="stat-value">${money(b)}</div></div><div><div class="stat-label">Actual Payment</div><div class="stat-value">${money(pay)}</div></div><div><div class="stat-label">${bal>=0?'Baki':'Jyada diya'}</div><div class="stat-value ${bal>=0?'positive':'negative'}">${money(Math.abs(bal))}</div></div></div></div><div style="height:13px"></div><div class="section-title">Monthly Calendar</div>${calendarHtml(id)}<div style="height:13px"></div>${selectedDatePanel(id)}</div>`;}
   function calendarHtml(personId){
     const first=firstOfMonth(state.month),start=new Date(first);start.setDate(1-first.getDay());const days=[];for(let i=0;i<42;i++){const d=new Date(start);d.setDate(start.getDate()+i);const key=dateKey(d);const ws=state.works.filter(w=>w.personId===personId&&w.date===key);const work=ws.filter(w=>w.status==='work');const off=ws.some(w=>w.status==='off');const u=work.reduce((s,w)=>s+Number(w.units||0),0);const classes=[isSameMonth(d,state.month)?'':'muted-day',work.length?'has-work':'',off&&!work.length?'off':'',state.selectedDate===key?'selected':'',dateKey(new Date())===key?'today':''].join(' ');days.push(`<button class="day ${classes}" onclick="selectWorkDate('${key}')"><div class="day-num">${d.getDate()}</div>${u?`<span class="units-badge">${units(u)}</span>`:''}<div class="day-status">${work.length?`काम${work.length>1?' ×'+work.length:''}`:off?'छुट्टी':''}</div></button>`)}return `<div class="calendar"><div class="weekdays"><div class="weekday">रवि</div><div class="weekday">सोम</div><div class="weekday">मंगल</div><div class="weekday">बुध</div><div class="weekday">गुरु</div><div class="weekday">शुक्र</div><div class="weekday">शनि</div></div><div class="days">${days.join('')}</div></div>`;
   }
   window.selectWorkDate=key=>{state.selectedDate=key;render()};
-  function selectedDatePanel(personId){if(!state.selectedDate)return `<div class="card"><div class="section-title">Daily Entry</div><div class="muted small">Calendar में कोई date चुनें। उस date का काम/छुट्टी यहीं manage होगा।</div></div>`;const p=getPerson(personId),key=state.selectedDate,ws=state.works.filter(w=>w.personId===personId&&w.date===key);return `<div class="card"><div class="row-between"><div><div class="section-title" style="margin:0">${formatDateHindi(parseDate(key))}</div><div class="small muted">${ws.length?'Saved entries':'अभी entry नहीं है'}</div></div><button class="btn btn-primary btn-sm" onclick="openWorkForm('${personId}','${key}')">+ काम जोड़ें</button></div><div style="height:10px"></div>${ws.length?ws.map(w=>workEntryHtml(w,p)).join(''):`<div class="empty"><strong>Kaam kiya?</strong><span>Haan या Nahi चुनकर entry save करें।</span></div>`}</div>`}
+  function selectedDatePanel(personId){
+    if(!state.selectedDate)return `<div class="card"><div class="section-title">Daily Entry</div><div class="muted small">Calendar में कोई date चुनें। उस date का काम/छुट्टी यहीं manage होगा।</div></div>`;
+    const p=getPerson(personId),key=state.selectedDate;
+    const ws=state.works.filter(w=>w.personId===personId&&w.date===key);
+    const workEntries=ws.filter(w=>w.status==='work');
+    const hasOff=ws.some(w=>w.status==='off');
+    return `<div class="card">
+      <div class="row-between">
+        <div><div class="section-title" style="margin:0">${formatDateHindi(parseDate(key))}</div><div class="small muted">${workEntries.length?`${workEntries.length} work ${workEntries.length===1?'entry':'entries'}`:hasOff?'Chhutti / No Work':'अभी entry नहीं है'}</div></div>
+      </div>
+      <div style="height:10px"></div>
+      <div class="field">
+        <label>Kaam kiya?</label>
+        <div class="segmented">
+          <button type="button" class="seg ${workEntries.length?'active':''}" onclick="openWorkForm('${personId}','${key}')">Haan — Kaam kiya</button>
+          <button type="button" class="seg ${hasOff&&!workEntries.length?'active':''}" onclick="saveOffDay('${personId}','${key}')">Nahi — Chhutti / No Work</button>
+        </div>
+      </div>
+      ${workEntries.length?`<div class="row-between" style="margin:10px 0 8px"><strong>इस date का काम</strong><span class="pill orange">${units(workEntries.reduce((a,w)=>a+Number(w.units||0),0))} total units</span></div>${workEntries.map(w=>workEntryHtml(w,p)).join('')}<button type="button" class="btn btn-outline btn-block" onclick="openWorkForm('${personId}','${key}')">+ दूसरी जगह का काम जोड़ें</button>`:''}
+      ${hasOff&&!workEntries.length?ws.filter(w=>w.status==='off').map(w=>workEntryHtml(w,p)).join(''):''}
+    </div>`;
+  }
+  window.saveOffDay=async(personId,date)=>{
+    const same=state.works.filter(w=>w.personId===personId&&w.date===date);
+    if(same.some(w=>w.status==='work'))return toast('इस date पर work entries मौजूद हैं। पहले उन्हें delete करें।');
+    if(same.some(w=>w.status==='off'))return toast('इस date पर Chhutti पहले से saved है।');
+    const item={id:uid(),personId,type:getPerson(personId)?.type||'',date,status:'off',siteId:null,units:0,paymentYes:false,paymentAmount:0};
+    await persistAdd('works',item);
+    render();
+  };
   function formatDateHindi(d){return d.toLocaleDateString('hi-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}
   function workEntryHtml(w,p){if(w.status==='off')return `<div class="work-entry off-entry"><div class="row-between"><div><strong>Chhutti / No Work</strong><div class="small muted">इस date पर कोई काम नहीं</div></div><button class="btn btn-danger btn-sm" onclick="deleteWork('${w.id}')">Delete</button></div></div>`;const s=getSite(w.siteId);return `<div class="work-entry"><div class="row-between"><div><strong>${esc(s?s.name:'Deleted Site')}</strong><div class="small muted">${esc(p.type)} • ${units(w.units)} unit • ${w.paymentYes?'Payment '+money(w.paymentAmount):'Payment नहीं'}</div></div><button class="btn btn-danger btn-sm" onclick="deleteWork('${w.id}')">Delete</button></div><div class="row wrap" style="margin-top:8px"><span class="pill orange">${Number(w.units)===.5?'Half Day':Number(w.units)===1?'Full Day':'Double Day'}</span>${w.paymentYes?'<span class="pill green">Payment दिया</span>':'<span class="pill">Payment बाकी</span>'}</div></div>`}
 
