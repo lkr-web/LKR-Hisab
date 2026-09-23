@@ -1,226 +1,295 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="hi">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#f97316">
-<title>LKR Hisab</title>
-<style>
-:root{--orange:#f97316;--orange2:#ea580c;--bg:#fff7ed;--card:#fff;--text:#1f2937;--muted:#6b7280;--line:#fed7aa;--green:#15803d;--red:#dc2626;--blue:#2563eb;--shadow:0 8px 24px rgba(124,45,18,.08)}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-button,input,select{font:inherit}button{cursor:pointer;border:0}.app{min-height:100vh;width:100%;max-width:760px;margin:auto;padding-bottom:92px;overflow-x:hidden}
-.top{position:sticky;top:0;z-index:20;background:rgba(255,247,237,.94);backdrop-filter:blur(12px);padding:14px 16px 10px;border-bottom:1px solid #ffedd5}
-.brand{font-size:22px;font-weight:900;color:var(--orange2)}.sub{font-size:12px;color:var(--muted)}
-main{padding:14px 12px 24px;overflow-x:hidden}.screen-title{font-size:24px;font-weight:900;margin:4px 0 14px}.section-title{font-size:17px;font-weight:850;margin:18px 0 10px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:var(--shadow);margin-bottom:12px}
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.stat{padding:13px;border-radius:15px;background:#fff7ed;border:1px solid #ffedd5}.stat b{display:block;font-size:21px}.stat span{font-size:12px;color:var(--muted)}
-.row{display:flex;align-items:center;justify-content:space-between;gap:10px}.wrap{flex-wrap:wrap}
-label{display:block;font-size:13px;font-weight:750;margin:12px 0 6px}input,select{width:100%;min-height:48px;padding:13px;border:1px solid #fdba74;border-radius:12px;background:white;outline:none}input:focus,select:focus{border-color:var(--orange);box-shadow:0 0 0 3px #ffedd5}
-.btn{min-height:46px;padding:12px 14px;border-radius:12px;font-weight:800;background:#ffedd5;color:#9a3412}.btn.primary{background:var(--orange);color:white}.btn.danger{background:#fee2e2;color:#b91c1c}.btn.ghost{background:white;border:1px solid var(--line)}.btn.small{min-height:42px;padding:9px 11px;font-size:13px}.btn.full{width:100%}
-.pill{display:inline-flex;padding:5px 9px;border-radius:999px;background:#fff7ed;color:#9a3412;font-size:11px;font-weight:800}.muted{color:var(--muted);font-size:13px}.money{font-weight:900}.positive{color:var(--green)}.negative{color:var(--red)}
-.site-name{font-size:17px;font-weight:900}.person-name{font-size:18px;font-weight:900}
-.tabs{display:flex;gap:8px;margin-bottom:12px}.tabs .btn{flex:1}.tabs .active{background:var(--orange);color:white}
-.bottom{position:fixed;bottom:0;left:0;right:0;z-index:30;background:white;border-top:1px solid var(--line);display:flex;justify-content:center}.nav{max-width:760px;width:100%;display:grid;grid-template-columns:repeat(4,1fr)}.nav button{min-height:62px;padding:8px 4px 9px;background:white;color:#6b7280;font-size:11px;font-weight:800}.nav button.active{color:var(--orange2)}.nav .ico{display:block;font-size:20px;margin-bottom:2px}
-.auth{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:22px;background:linear-gradient(180deg,#fff7ed,#fff)}
-.authbox{width:100%;max-width:430px}.logo{font-size:38px;font-weight:950;color:var(--orange2);text-align:center}.tag{text-align:center;color:var(--muted);margin:4px 0 22px}
-.empty{text-align:center;padding:25px;color:var(--muted)}.back{margin-bottom:10px}.monthbar{display:grid;grid-template-columns:44px 1fr 44px;gap:8px;align-items:center}.monthbar .btn{height:44px;padding:0}.monthlabel{text-align:center;font-weight:900;font-size:17px}
-.day{border:1px solid var(--line);border-radius:16px;margin:10px 0;background:white;overflow:hidden}.dayhead{padding:11px 12px;background:#fffaf5}.daybody{padding:10px}.daydate{font-weight:900}.work-entry{padding:11px;border:1px solid #ffedd5;border-radius:13px;margin:8px 0;background:#fffaf5}.entry-actions{display:flex;gap:6px;margin-top:8px}.choice{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.choice.three{grid-template-columns:repeat(3,1fr)}.choice button{min-height:50px;padding:12px;border:1px solid #fdba74;border-radius:12px;background:white;font-weight:800}.choice button.selected{background:var(--orange);color:white;border-color:var(--orange)}
-.hide{display:none!important}.notice{padding:11px;border-radius:12px;background:#eff6ff;color:#1d4ed8;font-size:13px}.danger-note{padding:11px;border-radius:12px;background:#fef2f2;color:#b91c1c;font-size:13px}
-.kpi{font-size:28px;font-weight:950}.divider{height:1px;background:#ffedd5;margin:12px 0}
-@media(max-width:390px){.screen-title{font-size:22px}.grid{gap:8px}.stat{padding:11px}.stat b{font-size:18px}.card{padding:12px;border-radius:16px}.row{gap:7px}.daybody{padding:8px}.choice.three{grid-template-columns:1fr}.monthlabel{font-size:15px}}
-@media(min-width:700px){main{padding:20px}.card{padding:17px}}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f97316">
+  <meta name="description" content="LKR Hisab - Personal Labour, Mistri aur Site hisab app">
+  <title>LKR Hisab</title>
+  <style>
+    :root{
+      --orange:#f97316;--orange-dark:#ea580c;--orange-soft:#fff7ed;--orange-pale:#ffedd5;
+      --bg:#f7f8fa;--card:#fff;--text:#1f2937;--muted:#6b7280;--border:#e5e7eb;
+      --green:#16a34a;--green-soft:#f0fdf4;--red:#dc2626;--red-soft:#fef2f2;--blue:#2563eb;--blue-soft:#eff6ff;
+      --shadow:0 8px 24px rgba(15,23,42,.07);--radius:18px;
+    }
+    *{box-sizing:border-box}html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans Devanagari",sans-serif}body{min-height:100vh}
+    button,input,select{font:inherit}button{cursor:pointer}.hidden{display:none!important}
+    .app{min-height:100vh}.topbar{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:12px 14px 10px}
+    .topbar-row{max-width:760px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:10px}.brand{font-weight:850;font-size:21px;letter-spacing:-.4px}.brand span{color:var(--orange)}
+    .cloud{font-size:12px;font-weight:750;padding:7px 10px;border-radius:999px;background:#f3f4f6;color:var(--muted);white-space:nowrap}.cloud.connected,.cloud.saved{background:var(--green-soft);color:var(--green)}.cloud.offline{background:#fff7ed;color:#c2410c}.cloud.error{background:var(--red-soft);color:var(--red)}
+    main{max-width:760px;margin:0 auto;padding:16px 14px 100px}.view-title{font-size:25px;font-weight:850;margin:4px 0 3px}.subtitle{font-size:13px;color:var(--muted);margin-bottom:16px}
+    .monthbar{display:flex;align-items:center;justify-content:space-between;background:var(--card);border:1px solid var(--border);border-radius:15px;padding:7px;margin:0 0 15px;box-shadow:0 3px 12px rgba(15,23,42,.04)}.monthbar button{width:42px;height:42px;border:0;border-radius:12px;background:var(--orange-soft);color:var(--orange-dark);font-size:25px}.month-label{text-align:center;font-weight:800;font-size:16px;flex:1}
+    .grid{display:grid;gap:12px}.grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:15px}.section-title{font-weight:850;font-size:16px;margin:0 0 11px}.stat-card{padding:14px}.stat-label{font-size:12px;color:var(--muted)}.stat-value{font-size:22px;font-weight:850;margin-top:3px}.stat-small{font-size:12px;color:var(--muted);margin-top:2px}.orange-card{background:linear-gradient(135deg,#fff7ed,#fff)}
+    .btn{border:0;border-radius:13px;min-height:44px;padding:10px 14px;font-weight:800;transition:.15s transform,.15s opacity}.btn:active{transform:scale(.98)}.btn-primary{background:var(--orange);color:#fff}.btn-primary:hover{background:var(--orange-dark)}.btn-light{background:#f3f4f6;color:var(--text)}.btn-danger{background:var(--red-soft);color:var(--red)}.btn-success{background:var(--green);color:#fff}.btn-outline{background:#fff;color:var(--orange-dark);border:1px solid #fed7aa}.btn-block{width:100%}.btn-sm{min-height:36px;padding:7px 10px;border-radius:10px;font-size:12px}
+    .row{display:flex;align-items:center;gap:10px}.row-between{display:flex;align-items:center;justify-content:space-between;gap:10px}.wrap{flex-wrap:wrap}.muted{color:var(--muted)}.right{text-align:right}.money{font-variant-numeric:tabular-nums}.positive{color:var(--green)}.negative{color:var(--red)}
+    .person-list,.site-list{display:grid;gap:10px}.list-item{background:#fff;border:1px solid var(--border);border-radius:16px;padding:13px}.avatar{width:42px;height:42px;border-radius:13px;background:var(--orange-pale);color:var(--orange-dark);display:grid;place-items:center;font-weight:900;flex:0 0 auto}.name{font-weight:850}.meta{font-size:12px;color:var(--muted);margin-top:3px}.actions{display:flex;gap:7px;margin-top:10px}.actions .btn{flex:1}
+    .empty{padding:28px 14px;text-align:center;color:var(--muted);background:#fff;border:1px dashed var(--border);border-radius:16px}.empty strong{display:block;color:var(--text);margin-bottom:4px}
+    label{display:block;font-size:13px;font-weight:750;margin:0 0 6px}.field{margin-bottom:13px}.input,.select{width:100%;min-height:46px;padding:11px 12px;border:1px solid #d1d5db;border-radius:12px;background:#fff;color:var(--text);outline:none}.input:focus,.select:focus{border-color:var(--orange);box-shadow:0 0 0 3px rgba(249,115,22,.12)}
+    .segmented{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;background:#f3f4f6;padding:5px;border-radius:13px}.segmented.three{grid-template-columns:repeat(3,1fr)}.seg{min-height:42px;border:0;border-radius:9px;background:transparent;font-weight:800;color:var(--muted)}.seg.active{background:#fff;color:var(--orange-dark);box-shadow:0 2px 7px rgba(15,23,42,.08)}
+    .bottom-nav{position:fixed;z-index:30;left:0;right:0;bottom:0;background:rgba(255,255,255,.97);backdrop-filter:blur(14px);border-top:1px solid var(--border);padding:7px max(8px,env(safe-area-inset-left)) calc(7px + env(safe-area-inset-bottom));display:grid;grid-template-columns:repeat(4,1fr)}.nav-btn{border:0;background:none;color:#6b7280;min-height:52px;border-radius:12px;font-size:11px;font-weight:800;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}.nav-icon{font-size:21px;line-height:1}.nav-btn.active{color:var(--orange-dark);background:var(--orange-soft)}
+    .calendar{background:#fff;border:1px solid var(--border);border-radius:18px;overflow:hidden}.weekdays,.days{display:grid;grid-template-columns:repeat(7,1fr)}.weekday{padding:9px 2px;text-align:center;color:var(--muted);font-size:11px;font-weight:800;border-bottom:1px solid var(--border)}.day{min-height:65px;border:0;border-right:1px solid var(--border);border-bottom:1px solid var(--border);background:#fff;padding:5px 3px;text-align:left;position:relative}.day:nth-child(7n){border-right:0}.day.muted-day{background:#fafafa;color:#c4c7cc}.day-num{font-size:12px;font-weight:850}.day-status{font-size:9px;margin-top:4px;font-weight:800;line-height:1.15}.day.work .day-status{color:var(--green)}.day.off .day-status{color:var(--red)}.day.has-work{background:#f7fff9}.day.selected{outline:2px solid var(--orange);outline-offset:-2px;z-index:1}.day.today .day-num{display:inline-grid;width:24px;height:24px;place-items:center;border-radius:50%;background:var(--orange);color:#fff}.units-badge{position:absolute;right:3px;top:4px;background:var(--orange-pale);color:var(--orange-dark);border-radius:8px;padding:2px 4px;font-size:9px;font-weight:900}
+    .work-entry{border:1px solid var(--border);border-radius:14px;padding:11px;margin-bottom:9px;background:#fff}.work-entry.off-entry{background:#fafafa}.pill{display:inline-flex;align-items:center;border-radius:999px;padding:4px 8px;font-size:11px;font-weight:800;background:#f3f4f6;color:var(--muted)}.pill.orange{background:var(--orange-soft);color:var(--orange-dark)}.pill.green{background:var(--green-soft);color:var(--green)}.pill.red{background:var(--red-soft);color:var(--red)}
+    .modal-backdrop{position:fixed;inset:0;background:rgba(15,23,42,.45);z-index:50;display:flex;align-items:flex-end;justify-content:center}.modal{width:100%;max-width:760px;background:#fff;border-radius:24px 24px 0 0;max-height:92vh;overflow:auto;padding:16px 14px calc(18px + env(safe-area-inset-bottom));box-shadow:0 -12px 35px rgba(15,23,42,.18)}.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}.modal-title{font-size:19px;font-weight:900}.close{width:38px;height:38px;border:0;border-radius:11px;background:#f3f4f6;font-size:21px}.confirm-text{line-height:1.55;color:#4b5563;font-size:14px}
+    .login{min-height:100vh;display:grid;place-items:center;padding:22px;background:linear-gradient(160deg,#fff7ed 0%,#fff 55%,#f8fafc 100%)}.login-card{width:100%;max-width:420px;background:#fff;border:1px solid #fed7aa;border-radius:25px;padding:23px;box-shadow:0 20px 60px rgba(15,23,42,.1)}.login-logo{width:62px;height:62px;border-radius:18px;background:var(--orange);color:#fff;display:grid;place-items:center;font-weight:950;font-size:25px;margin-bottom:14px}.login h1{font-size:29px;margin:0 0 4px}.login p{margin:0 0 22px;color:var(--muted);font-size:14px}.login-error{background:var(--red-soft);color:var(--red);padding:10px;border-radius:11px;font-size:13px;margin-bottom:12px}
+    .toast{position:fixed;z-index:100;left:50%;bottom:84px;transform:translateX(-50%);background:#111827;color:#fff;padding:10px 14px;border-radius:12px;font-size:13px;font-weight:750;box-shadow:0 8px 30px rgba(0,0,0,.2);max-width:90%;text-align:center}.divider{height:1px;background:var(--border);margin:14px 0}.info{padding:11px 12px;background:var(--blue-soft);color:#1e40af;border-radius:12px;font-size:12px;line-height:1.5}.warning{padding:11px 12px;background:#fff7ed;color:#9a3412;border-radius:12px;font-size:12px;line-height:1.5}.summary-row{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid #f0f0f0}.summary-row:last-child{border-bottom:0}.summary-row span:first-child{color:var(--muted);font-size:13px}.summary-row strong{font-size:14px}.breakdown{display:grid;gap:8px}.breakdown-item{display:flex;justify-content:space-between;gap:10px;padding:10px;border-radius:12px;background:#fafafa}.small{font-size:12px}.sticky-actions{position:sticky;bottom:0;background:#fff;padding-top:10px}
+    @media(min-width:700px){.bottom-nav{left:50%;right:auto;transform:translateX(-50%);width:min(760px,100%);border-left:1px solid var(--border);border-right:1px solid var(--border);border-radius:18px 18px 0 0}.modal-backdrop{align-items:center;padding:20px}.modal{border-radius:22px;max-height:88vh}.toast{bottom:95px}}
+  </style>
 </head>
 <body>
 <div id="root"></div>
-<noscript><div style="padding:24px;font-family:system-ui">LKR Hisab chalane ke liye JavaScript ON karein.</div></noscript>
-<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
 <script>
-const firebaseConfig={apiKey:"AIzaSyAz4vnf3BJ_Hs54lksg3Og8n5a7fr7DhyU",authDomain:"lkr-hisab.firebaseapp.com",projectId:"lkr-hisab",storageBucket:"lkr-hisab.firebasestorage.app",messagingSenderId:"1054769717706",appId:"1:1054769717706:web:b6011c1a2023c6dc7b2f33"};
-firebase.initializeApp(firebaseConfig);
-const firebaseAuth=firebase.auth();
-const firestore=firebase.firestore();
-// Compatibility helpers keep the existing app code readable and also allow the HTML to work when opened directly.
-const doc=(db,...path)=>db.doc(path.join("/"));
-const collection=(db,...path)=>db.collection(path.join("/"));
-const getDoc=ref=>ref.get();
-const getDocs=ref=>ref.get();
-const setDoc=(ref,data,options)=>ref.set(data,options);
-const writeBatch=db=>db.batch();
-const signInAnonymously=auth=>auth.signInAnonymously();
-let cloudReady=false,cloudBusy=false,cloudDirty=false;
-const KEY="lkr_hisab_v1";
-const state={screen:"home",personType:"Labour",selectedPerson:null,selectedSite:null,month:new Date().toISOString().slice(0,7),editingSite:null,more:false};
-let db=load();
-function load(){try{return JSON.parse(localStorage.getItem(KEY))||{user:null,sites:[],people:[],works:[]}}catch(e){return {user:null,sites:[],people:[],works:[]}}}
-function save(){localStorage.setItem(KEY,JSON.stringify(db));if(cloudReady&&db.user)syncCloud().catch(showCloudError)}
-function normalizeMobile(m){return String(m||"").replace(/\D/g,"")}
-function userKey(){return "m_"+normalizeMobile(db.user?.mobile)}
-function cloudUserRef(){return doc(firestore,"users",userKey())}
-function cleanForFirestore(o){return JSON.parse(JSON.stringify(o))}
-function showCloudError(err){console.error("Firestore:",err);const el=document.getElementById("cloudStatus");if(el){el.textContent="☁ Sync error";el.style.color="#dc2626"}}
-async function syncCollection(col,items){
-  const existing=await getDocs(collection(firestore,"users",userKey(),col));
-  const wanted=new Set(items.map(x=>x.id));
-  const ops=[];
-  existing.forEach(d=>{if(!wanted.has(d.id))ops.push({type:"delete",ref:d.ref})});
-  items.forEach(item=>ops.push({type:"set",ref:doc(firestore,"users",userKey(),col,item.id),data:cleanForFirestore(item)}));
-  for(let i=0;i<ops.length;i+=400){
-    const batch=writeBatch(firestore);
-    ops.slice(i,i+400).forEach(op=>op.type==="delete"?batch.delete(op.ref):batch.set(op.ref,op.data));
-    await batch.commit();
+(() => {
+  'use strict';
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAz4vnf3BJ_Hs54lksg3Og8n5a7fr7DhyU",
+    authDomain: "lkr-hisab.firebaseapp.com",
+    projectId: "lkr-hisab",
+    storageBucket: "lkr-hisab.firebasestorage.app",
+    messagingSenderId: "1054769717706",
+    appId: "1:1054769717706:web:b6011c1a2023c6dc7b2f33"
+  };
+
+  const APP_USER = { name: 'Shivam Kumar', password: '14141414', id: 'shivam-kumar' };
+  const LOGIN_KEY = 'lkr_hisab_logged_in';
+  const CACHE_KEY = 'lkr_hisab_cache_v1';
+  const state = {
+    loggedIn: false,
+    view: 'home',
+    month: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+    people: [], sites: [], works: [],
+    selectedPersonId: null, selectedSiteId: null,
+    selectedDate: null,
+    cloud: 'offline',
+    loaded: false,
+    modal: null,
+    editing: null,
+    loginError: '',
+    busy: false
+  };
+
+  let db = null;
+  let unsubscribe = null;
+
+  const $ = id => document.getElementById(id);
+  const esc = value => String(value ?? '').replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+  const money = n => '₹' + Math.round(Number(n) || 0).toLocaleString('en-IN');
+  const units = n => Number(n || 0).toLocaleString('en-IN',{maximumFractionDigits:2});
+  const uid = () => (crypto && crypto.randomUUID) ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).slice(2);
+  const pad = n => String(n).padStart(2,'0');
+  const dateKey = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+  const parseDate = s => { const [y,m,d] = String(s).split('-').map(Number); return new Date(y,m-1,d); };
+  const monthKey = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}`;
+  const currentMonthKey = () => monthKey(state.month);
+  const monthLabel = d => d.toLocaleDateString('en-IN',{month:'long',year:'numeric'});
+  const isSameMonth = (date, month) => date.getFullYear()===month.getFullYear() && date.getMonth()===month.getMonth();
+  const firstOfMonth = d => new Date(d.getFullYear(),d.getMonth(),1);
+  const getPerson = id => state.people.find(p=>p.id===id);
+  const getSite = id => state.sites.find(s=>s.id===id);
+  const worksInMonth = (month=state.month) => state.works.filter(w => String(w.date).startsWith(monthKey(month)));
+  const workForPersonMonth = (personId, month=state.month) => worksInMonth(month).filter(w=>w.personId===personId);
+  const activeWorkEntries = (personId, month=state.month) => workForPersonMonth(personId,month).filter(w=>w.status==='work');
+  const personUnits = (personId, month=state.month) => activeWorkEntries(personId,month).reduce((s,w)=>s+Number(w.units||0),0);
+  const personPayment = (personId, month=state.month) => activeWorkEntries(personId,month).reduce((s,w)=>s+(w.paymentYes?Number(w.paymentAmount||0):0),0);
+  const personBana = (personId, month=state.month) => { const p=getPerson(personId); return (p?Number(p.rate||0):0)*personUnits(personId,month); };
+  const personBalance = (personId, month=state.month) => personBana(personId,month)-personPayment(personId,month);
+
+  function setCloud(status){
+    state.cloud=status;
+    const el=$('cloudStatus'); if(!el)return;
+    const map={connected:['☁ Cloud • Connected','connected'],saved:['☁ Cloud • Saved','saved'],offline:['☁ Cloud • Offline','offline'],error:['☁ Sync error','error']};
+    el.textContent=map[status]?.[0]||'☁ Cloud • Offline'; el.className='cloud '+(map[status]?.[1]||'');
   }
-}
-async function syncCloud(){
-  if(!cloudReady||!db.user){return}
-  cloudDirty=true;
-  if(cloudBusy)return;
-  cloudBusy=true;
-  try{
-    while(cloudDirty){
-      cloudDirty=false;
-      await setDoc(cloudUserRef(),{name:db.user.name,mobile:db.user.mobile,updatedAt:new Date().toISOString()},{merge:true});
-      await syncCollection("sites",db.sites);
-      await syncCollection("people",db.people);
-      await syncCollection("works",db.works);
-      localStorage.setItem(KEY,JSON.stringify(db));
+
+  function saveLocalCache(){
+    try{ localStorage.setItem(CACHE_KEY,JSON.stringify({people:state.people,sites:state.sites,works:state.works})); }catch(e){}
+  }
+  function loadLocalCache(){
+    try{ const raw=localStorage.getItem(CACHE_KEY); if(!raw)return; const d=JSON.parse(raw); state.people=Array.isArray(d.people)?d.people:[]; state.sites=Array.isArray(d.sites)?d.sites:[]; state.works=Array.isArray(d.works)?d.works:[]; }catch(e){}
+  }
+
+  async function initFirebase(){
+    try{
+      if(!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+      db=firebase.firestore();
+      setCloud('connected');
+      return true;
+    }catch(e){ console.error(e); setCloud('error'); return false; }
+  }
+
+  const userRef = () => db.collection('users').doc(APP_USER.id);
+  const col = name => userRef().collection(name);
+
+  async function ensureUserDoc(){
+    try{ await userRef().set({name:APP_USER.name,updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true}); }catch(e){console.warn('user doc',e)}
+  }
+
+  async function loadFirestore(){
+    if(!db) return false;
+    state.busy=true; render();
+    try{
+      const [sitesSnap,peopleSnap,worksSnap]=await Promise.all([col('sites').get(),col('people').get(),col('works').get()]);
+      state.sites=sitesSnap.docs.map(d=>({id:d.id,...d.data()}));
+      state.people=peopleSnap.docs.map(d=>({id:d.id,...d.data()}));
+      state.works=worksSnap.docs.map(d=>({id:d.id,...d.data()}));
+      saveLocalCache(); state.loaded=true; setCloud('saved');
+      state.busy=false; render();
+      return true;
+    }catch(e){
+      console.error(e); setCloud('error'); state.loaded=true; state.busy=false; render();
+      toast('Firestore load नहीं हो पाया। Cache से app चला रहा हूँ।');
+      return false;
     }
-    const el=document.getElementById("cloudStatus");
-    if(el){el.textContent="☁ Synced";el.style.color="#15803d"}
-  }finally{cloudBusy=false}
-}
-async function loadCloudForMobile(mobile){const key="m_"+normalizeMobile(mobile);const ref=doc(firestore,"users",key);const snap=await getDoc(ref);if(!snap.exists())return false;const p=snap.data();const [ss,ps,ws]=await Promise.all([getDocs(collection(firestore,"users",key,"sites")),getDocs(collection(firestore,"users",key,"people")),getDocs(collection(firestore,"users",key,"works"))]);db.user={name:p.name||"",mobile:p.mobile||mobile};db.sites=ss.docs.map(d=>d.data());db.people=ps.docs.map(d=>d.data());db.works=ws.docs.map(d=>d.data());localStorage.setItem(KEY,JSON.stringify(db));return true}
-async function bootCloud(){try{await signInAnonymously(firebaseAuth);cloudReady=true;const local=db.user;if(local?.mobile){const found=await loadCloudForMobile(local.mobile);if(!found)await syncCloud()}}catch(err){console.error("Firebase boot failed:",err);cloudReady=false;const el=document.getElementById("cloudStatus");if(el){el.textContent="☁ Offline";el.style.color="#b45309"}}}
-const $=id=>document.getElementById(id);
-const money=n=>"₹"+Math.round(n||0).toLocaleString("en-IN");
-const units=n=>Number(n||0).toLocaleString("en-IN",{maximumFractionDigits:2});
-const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
-const monthName=m=>new Date(m+"-01T00:00:00").toLocaleDateString("en-IN",{month:"long",year:"numeric"});
-function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,8)}
-function daysIn(m){return new Date(Number(m.slice(0,4)),Number(m.slice(5,7)),0).getDate()}
-function fmtDate(iso){let d=new Date(iso+"T00:00:00");return d.toLocaleDateString("en-IN",{day:"numeric",month:"long",year:"numeric"})}
-function site(id){return db.sites.find(x=>x.id===id)}
-function person(id){return db.people.find(x=>x.id===id)}
-function workForPerson(pid,m){return db.works.filter(w=>w.personId===pid&&w.date.startsWith(m))}
-function entriesForDay(pid,date){return db.works.filter(w=>w.personId===pid&&w.date===date)}
-function activeWorks(pid,m){return workForPerson(pid,m).filter(w=>w.status==="work")}
-function calcPerson(pid,m){
- const p=person(pid), ws=workForPerson(pid,m), work=ws.filter(w=>w.status==="work");
- const totalWork=work.reduce((a,w)=>a+Number(w.units),0);
- const amount=totalWork*Number(p?.rate||0);
- const paid=work.reduce((a,w)=>a+(w.paymentYes?Number(w.paymentAmount||0):0),0);
- const leaveDays=ws.filter(w=>w.status==="off").length;
- const daysWorked=new Set(work.map(w=>w.date)).size;
- return {totalWork,amount,paid,balance:amount-paid,leaveDays,daysWorked};
-}
-function calcHome(type,m){const ps=db.people.filter(p=>p.type===type);let work=amount=paid=0;ps.forEach(p=>{let c=calcPerson(p.id,m);work+=c.totalWork;amount+=c.amount;paid+=c.paid});return {count:ps.length,work,amount,paid,balance:amount-paid}}
-function ownerCalc(sid,m){let ws=db.works.filter(w=>w.siteId===sid&&w.status==="work"&&w.date.startsWith(m));let labour=ws.filter(w=>person(w.personId)?.type==="Labour"),mistri=ws.filter(w=>person(w.personId)?.type==="Mistri");let lw=labour.reduce((a,w)=>a+Number(w.units),0),mw=mistri.reduce((a,w)=>a+Number(w.units),0);let s=site(sid)||{};return {lw,mw,la:lw*Number(s.labourRate||0),ma:mw*Number(s.mistriRate||0),entries:ws}}
-function commission(m){let lc=0,mc=0;db.works.filter(w=>w.status==="work"&&w.date.startsWith(m)).forEach(w=>{let p=person(w.personId),s=site(w.siteId);if(!p||!s)return;if(p.type==="Labour")lc+=(Number(s.labourRate)-Number(p.rate))*Number(w.units);else mc+=(Number(s.mistriRate)-Number(p.rate))*Number(w.units)});return {lc,mc,total:lc+mc}}
-function go(screen){state.screen=screen;state.selectedPerson=null;state.selectedSite=null;state.editingSite=null;render()}
-function nav(screen){go(screen)}
-function layout(content){
- if(!db.user)return `<div class="auth"><div class="authbox">${content}</div></div>`;
- return `<div class="app"><div class="top"><div class="brand">LKR Hisab</div><div class="sub">${esc(db.user.name)} • ${esc(db.user.mobile)} <span id="cloudStatus" style="float:right;color:#15803d">☁ Cloud</span></div></div><main>${content}</main>${bottom()}</div>`;
-}
-function bottom(){return `<div class="bottom"><div class="nav">
-<button class="${state.screen==='home'?'active':''}" onclick="nav('home')"><span class="ico">⌂</span>Home</button>
-<button class="${['people','person'].includes(state.screen)?'active':''}" onclick="nav('people')"><span class="ico">👷</span>Labour/Mistri</button>
-<button class="${['sites','site'].includes(state.screen)?'active':''}" onclick="nav('sites')"><span class="ico">🏠</span>Owner/Site</button>
-<button class="${state.screen==='more'?'active':''}" onclick="nav('more')"><span class="ico">☰</span>More</button>
-</div></div>`}
-function render(){document.getElementById("root").innerHTML=layout(route());}
-function route(){
- if(!db.user)return auth();
- if(state.screen==="home")return home();
- if(state.screen==="people")return people();
- if(state.screen==="person")return personPage();
- if(state.screen==="sites")return sites();
- if(state.screen==="site")return sitePage();
- if(state.screen==="more")return more();
- if(state.screen==="commission")return commissionPage();
- if(state.screen==="profile")return profile();
- return home();
-}
-function auth(){return `<div class="logo">LKR Hisab</div><div class="tag">Simple • Mobile • Hisab clear</div><div class="card"><h2 style="margin-top:0">Shuru karein</h2><label>Full Name</label><input id="regName" placeholder="Jaise: Shivam Kumar"><label>Mobile Number</label><input id="regMobile" inputmode="tel" placeholder="10 digit mobile number"><button class="btn primary full" style="margin-top:16px" onclick="register()">Register & Continue</button><div class="muted" style="margin-top:10px;text-align:center">Data cloud me save hoga; internet connection required.</div></div>`}
-async function register(){let n=$("regName").value.trim(),m=$("regMobile").value.trim();if(!n||!m){alert("Name aur Mobile Number bhariye.");return}db.user={name:n,mobile:m};localStorage.setItem(KEY,JSON.stringify(db));if(cloudReady){try{const found=await loadCloudForMobile(m);if(!found)await syncCloud()}catch(e){console.error(e);alert("Cloud save/load mein problem hui. Internet connection check karein.")}}render()}
-function home(){
- let m=state.month,l=calcHome("Labour",m),mi=calcHome("Mistri",m),c=commission(m);
- return `<div class="row"><div><div class="screen-title">Home</div><div class="muted">${monthName(m)} ka hisab</div></div><button class="btn small" onclick="todayMonth()">Aaj</button></div>
- <div class="monthbar" style="margin:12px 0"><button class="btn" onclick="shiftMonth(-1)">‹</button><div class="monthlabel">${monthName(m)}</div><button class="btn" onclick="shiftMonth(1)">›</button></div>
- ${homeStatCard("Labour",l)}${homeStatCard("Mistri",mi)}
- <div class="section-title">Commission</div><div class="card"><div class="grid"><div class="stat"><span>Labour Commission</span><b>${money(c.lc)}</b></div><div class="stat"><span>Mistri Commission</span><b>${money(c.mc)}</b></div></div><div class="row" style="margin-top:12px"><b>Total Commission</b><b class="money">${money(c.total)}</b></div><button class="btn ghost full" style="margin-top:10px" onclick="state.screen='commission';render()">Pura hisab dekhein</button></div>`;
-}
-function homeStatCard(type,x){return `<div class="section-title">Total ${type}</div><div class="card"><div class="grid"><div class="stat"><span>${type}s</span><b>${x.count}</b></div><div class="stat"><span>Total Work</span><b>${units(x.work)}</b></div><div class="stat"><span>Total Bana</span><b>${money(x.amount)}</b></div><div class="stat"><span>Actual Payment</span><b>${money(x.paid)}</b></div></div><div class="divider"></div><div class="row"><span class="muted">${x.balance>=0?"Total Baki":"Jyada diya"}</span><b class="${x.balance>=0?'positive':'negative'}">${money(Math.abs(x.balance))}</b></div></div>`}
-function people(){
- let type=state.personType, ps=db.people.filter(p=>p.type===type);
- return `<div class="screen-title">Labour / Mistri</div><div class="tabs"><button class="btn ${type==='Labour'?'active':''}" onclick="state.personType='Labour';render()">Labour</button><button class="btn ${type==='Mistri'?'active':''}" onclick="state.personType='Mistri';render()">Mistri</button></div>
- <button class="btn primary full" onclick="addPersonForm()">+ ${type} Add Karein</button>
- <div class="section-title">${type} List</div>${ps.length?ps.map(p=>`<div class="card"><div class="row"><div><div class="person-name">${esc(p.name)}</div><span class="pill">${type}</span></div><div class="money">${money(p.rate)}/day</div></div><div class="row" style="margin-top:12px"><button class="btn" onclick="openPerson('${p.id}')">Open</button><button class="btn danger" onclick="deletePerson('${p.id}')">Delete</button></div></div>`).join(""):`<div class="card empty">Abhi koi ${type} nahi hai.</div>`}`;
-}
-function addPersonForm(editId=null){
- let p=editId?person(editId):null,type=p?.type||state.personType;
- document.getElementById("root").innerHTML=layout(`<button class="btn back" onclick="nav('people')">← Back</button><div class="screen-title">${p?'Edit':'Add'} ${type}</div><div class="card"><label>Name</label><input id="pName" value="${esc(p?.name||'')}" placeholder="Worker name"><label>${type} ko user khud kitna dega? (₹/day)</label><input id="pRate" type="number" min="0" value="${p?.rate??''}" placeholder="Jaise: 450"><button class="btn primary full" style="margin-top:16px" onclick="savePerson('${editId||""}','${type}')">Save</button></div>`);
-}
-function savePerson(id,type){let n=$("pName").value.trim(),r=Number($("pRate").value);if(!n||r<0){alert("Name aur valid rate bhariye.");return}if(id){let p=person(id);p.name=n;p.rate=r}else db.people.push({id:uid(),name:n,rate:r,type});save();nav('people')}
-function deletePerson(id){let p=person(id);if(!confirm(`${p.name} ko delete karne par uski saari work/payment entries bhi delete hongi. Kya aap continue karna chahte hain?`))return;db.people=db.people.filter(x=>x.id!==id);db.works=db.works.filter(w=>w.personId!==id);save();render()}
-function openPerson(id){state.selectedPerson=id;state.screen="person";render()}
-function personPage(){
- let p=person(state.selectedPerson);if(!p){nav('people');return""}let m=state.month,c=calcPerson(p.id,m);
- let days=Array.from({length:daysIn(m)},(_,i)=>i+1);
- return `<button class="btn back" onclick="nav('people')">← Back</button><div class="row"><div><div class="screen-title" style="margin-bottom:3px">${esc(p.name)}</div><span class="pill">${p.type}</span></div><button class="btn small" onclick="addPersonForm('${p.id}')">Edit</button></div>
- <div class="card"><div class="grid"><div class="stat"><span>Kaam kiye din</span><b>${c.daysWorked}</b></div><div class="stat"><span>Chhutti</span><b>${c.leaveDays}</b></div><div class="stat"><span>Total Work</span><b>${units(c.totalWork)}</b></div><div class="stat"><span>Total Bana</span><b>${money(c.amount)}</b></div><div class="stat"><span>Abhi tak diya</span><b>${money(c.paid)}</b></div><div class="stat"><span>${c.balance>=0?'Baki':'Jyada diya'}</span><b class="${c.balance>=0?'positive':'negative'}">${money(Math.abs(c.balance))}</b></div></div><div class="muted" style="margin-top:10px">Worker rate: ${money(p.rate)}/day • Owner rate is summary/payment calculation se separate hai.</div></div>
- <div class="monthbar" style="margin:12px 0"><button class="btn" onclick="shiftPersonMonth(-1)">‹</button><div class="monthlabel">${monthName(m)}</div><button class="btn" onclick="shiftPersonMonth(1)">›</button></div>
- <div>${days.map(d=>dayCard(p,d,m)).join("")}</div>`;
-}
-function dayCard(p,d,m){
- let date=m+"-"+String(d).padStart(2,"0"), es=entriesForDay(p.id,date),off=es.find(e=>e.status==="off");
- let total=es.filter(e=>e.status==="work").reduce((a,e)=>a+Number(e.units),0);
- return `<div class="day"><div class="dayhead"><div class="row"><span class="daydate">${d} ${new Date(date+"T00:00:00").toLocaleDateString("en-IN",{month:"long"})}</span><span class="pill">${off?'Chhutti':total?`Total Work: ${units(total)}`:'No entry'}</span></div></div><div class="daybody">
- ${off?`<div class="muted">Chhutti / Kaam nahi hua</div><div class="entry-actions"><button class="btn small danger" onclick="deleteWork('${off.id}')">Delete</button><button class="btn small" onclick="setDayWork('${p.id}','${date}')">Kaam hua</button></div>`:
- es.filter(e=>e.status==="work").map((e,i)=>entryView(e,i)).join("")}
- ${!off && es.filter(e=>e.status==="work").length===0?`<div class="choice" style="margin-top:8px"><button onclick="setDayOff('${p.id}','${date}')">Nahi</button><button class="selected" onclick="addWorkEntry('${p.id}','${date}')">Haan</button></div>`:""}
- ${!off && es.filter(e=>e.status==="work").length>0?`<button class="btn primary full" style="margin-top:8px" onclick="addWorkEntry('${p.id}','${date}')">+ दूसरी जगह का काम जोड़ें</button>`:""}
- </div></div>`;
-}
-function entryView(e,i){let s=site(e.siteId);return `<div class="work-entry"><div class="row"><b>काम ${i+1}</b><button class="btn small danger" onclick="deleteWork('${e.id}')">Delete</button></div><div style="margin-top:7px;font-weight:850">${esc(s?.name||'Deleted Site')}</div><div class="muted">${e.units==.5?'Half Day':e.units==1?'Full Day':'Double Day'} • ${e.paymentYes?'Payment: '+money(e.paymentAmount):'Payment: Nahi'}</div></div>`}
-function shiftMonthValue(value,delta){let [y,mo]=value.split("-").map(Number);mo+=delta;if(mo<1){y--;mo=12}if(mo>12){y++;mo=1}return `${y}-${String(mo).padStart(2,"0")}`}
-function shiftPersonMonth(delta){state.month=shiftMonthValue(state.month,delta);render()}
-function shiftMonth(delta){state.month=shiftMonthValue(state.month,delta);render()}
-function todayMonth(){state.month=new Date().toISOString().slice(0,7);render()}
-function setDayOff(pid,date){let old=entriesForDay(pid,date);if(old.length){alert("Is date par pehle se work entries hain. Unhe delete karke Chhutti set karein.");return}db.works.push({id:uid(),personId:pid,type:person(pid).type,date,status:"off",siteId:null,units:0,paymentYes:false,paymentAmount:0});save();render()}
-function setDayWork(pid,date){let off=entriesForDay(pid,date).find(e=>e.status==="off");if(off){db.works=db.works.filter(w=>w.id!==off.id);save();render()}}
-function addWorkEntry(pid,date){let sites=db.sites;if(!sites.length){alert("Pehle Owner/Site add karein.");return}
- document.getElementById("root").innerHTML=layout(`<button class="btn back" onclick="render()">← Back</button><div class="screen-title">Kaam Add Karein</div><div class="card"><div class="notice">${fmtDate(date)}</div><label>Kahan kaam hua?</label><select id="wSite">${sites.map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join("")}</select><label>Kitna kaam kiya?</label><div class="choice three" id="unitsChoice"><button data-u=".5" onclick="chooseUnit(this)">Half Day</button><button class="selected" data-u="1" onclick="chooseUnit(this)">Full Day</button><button data-u="2" onclick="chooseUnit(this)">Double Day</button></div><label>Payment diya?</label><div class="choice" id="payChoice"><button class="selected" data-p="false" onclick="choosePay(this)">Nahi</button><button data-p="true" onclick="choosePay(this)">Haan</button></div><div id="payBox" class="hide"><label>Kitna payment diya? ₹</label><input id="wPayment" type="number" min="0" placeholder="Amount"></div><input type="hidden" id="wUnits" value="1"><input type="hidden" id="wPay" value="false"><button class="btn primary full" style="margin-top:16px" onclick="saveWork('${pid}','${date}')">Save Work</button></div>`);
-}
-function chooseUnit(btn){document.querySelectorAll("#unitsChoice button").forEach(b=>b.classList.remove("selected"));btn.classList.add("selected");$("wUnits").value=btn.dataset.u}
-function choosePay(btn){document.querySelectorAll("#payChoice button").forEach(b=>b.classList.remove("selected"));btn.classList.add("selected");$("wPay").value=btn.dataset.p;$("payBox").classList.toggle("hide",btn.dataset.p!=="true")}
-function saveWork(pid,date){let siteId=$("wSite").value,u=Number($("wUnits").value),py=$("wPay").value==="true",pa=py?Number($("wPayment").value):0;if(py&&pa<0){alert("Valid payment amount bhariye.");return}db.works.push({id:uid(),personId:pid,type:person(pid).type,date,status:"work",siteId,units:u,paymentYes:py,paymentAmount:pa});save();render()}
-function deleteWork(id){if(!confirm("Sirf ye work/payment entry delete hogi. Continue?"))return;db.works=db.works.filter(w=>w.id!==id);save();render()}
-function sites(){
- return `<div class="screen-title">Owner / Site</div><button class="btn primary full" onclick="siteForm()">+ Owner/Site Add Karein</button><div class="section-title">Site List</div>${db.sites.length?db.sites.map(s=>`<div class="card"><div class="site-name">${esc(s.name)}</div><div class="muted" style="margin-top:5px">Labour: ${money(s.labourRate)}/day • Mistri: ${money(s.mistriRate)}/day</div><div class="row" style="margin-top:12px"><button class="btn" onclick="openSite('${s.id}')">Open</button><button class="btn" onclick="siteForm('${s.id}')">Edit</button><button class="btn danger" onclick="deleteSite('${s.id}')">Delete</button></div></div>`).join(""):`<div class="card empty">Abhi koi Owner/Site nahi hai.</div>`}`;
-}
-function siteForm(id=null){let s=id?site(id):null;document.getElementById("root").innerHTML=layout(`<button class="btn back" onclick="nav('sites')">← Back</button><div class="screen-title">${s?'Edit':'Add'} Owner / Site</div><div class="card"><label>Owner / Site Name</label><input id="sName" value="${esc(s?.name||'')}" placeholder="Rajesh ji ka do talla ka makan"><label>Malik se Labour rate (₹/day)</label><input id="sL" type="number" min="0" value="${s?.labourRate??''}" placeholder="500"><label>Malik se Mistri rate (₹/day)</label><input id="sM" type="number" min="0" value="${s?.mistriRate??''}" placeholder="800"><button class="btn primary full" style="margin-top:16px" onclick="saveSite('${id||""}')">Save Site</button></div>${s?`<div class="notice">Edit karne se purani work/payment entries delete nahi hongi.</div>`:""}`);
-}
-function saveSite(id){let n=$("sName").value.trim(),l=Number($("sL").value),m=Number($("sM").value);if(!n||l<0||m<0){alert("Name aur dono valid rates bhariye.");return}if(id){let s=site(id);s.name=n;s.labourRate=l;s.mistriRate=m}else db.sites.push({id:uid(),name:n,labourRate:l,mistriRate:m});save();nav('sites')}
-function deleteSite(id){let s=site(id),count=db.works.filter(w=>w.siteId===id).length;if(!confirm(`इस Site से जुड़ी ${count} work entries भी delete होंगी। क्या आप जारी रखना चाहते हैं?`))return;db.sites=db.sites.filter(x=>x.id!==id);db.works=db.works.filter(w=>w.siteId!==id);save();render()}
-function openSite(id){state.selectedSite=id;state.screen="site";render()}
-function sitePage(){let s=site(state.selectedSite);if(!s){nav('sites');return""}let m=state.month,c=ownerCalc(s.id,m), peopleIds=[...new Set(c.entries.map(w=>w.personId))];let lp=peopleIds.filter(id=>person(id)?.type==="Labour"),mp=peopleIds.filter(id=>person(id)?.type==="Mistri");
- return `<button class="btn back" onclick="nav('sites')">← Back</button><div class="row"><div><div class="screen-title" style="margin-bottom:3px">${esc(s.name)}</div><div class="muted">Owner rates: Labour ${money(s.labourRate)} • Mistri ${money(s.mistriRate)}</div></div><button class="btn small" onclick="siteForm('${s.id}')">Edit</button></div>
- <div class="monthbar" style="margin:12px 0"><button class="btn" onclick="shiftMonth(-1)">‹</button><div class="monthlabel">${monthName(m)}</div><button class="btn" onclick="shiftMonth(1)">›</button></div>
- ${sitePeople("Labour",lp,c,s)}${sitePeople("Mistri",mp,c,s)}
- <div class="card"><div class="grid"><div class="stat"><span>Total Labour Work</span><b>${units(c.lw)}</b></div><div class="stat"><span>Total Mistri Work</span><b>${units(c.mw)}</b></div><div class="stat"><span>Labour Amount</span><b>${money(c.la)}</b></div><div class="stat"><span>Mistri Amount</span><b>${money(c.ma)}</b></div></div><div class="divider"></div><div class="row"><b>Total Work</b><b>${units(c.lw+c.mw)}</b></div><div class="row" style="margin-top:8px"><b>Total Owner Amount</b><b class="money">${money(c.la+c.ma)}</b></div><div class="muted" style="margin-top:10px">Worker ko diya gaya payment yahan subtract nahi hota.</div></div>`;
-}
-function sitePeople(type,ids,c,s){return `<div class="section-title">${type}</div><div class="card">${ids.length?ids.map(id=>{let p=person(id),ws=c.entries.filter(w=>w.personId===id),u=ws.reduce((a,w)=>a+Number(w.units),0),amt=u*(type==="Labour"?Number(s.labourRate):Number(s.mistriRate));return `<div class="row" style="padding:8px 0;border-bottom:1px solid #ffedd5"><div><b>${esc(p.name)}</b><div class="muted">${units(u)} Work Units</div></div><b>${money(amt)}</b></div>`}).join(""):`<div class="empty">Is month me ${type} work nahi hai.</div>`}</div>`}
-function commissionPage(){let c=commission(state.month);return `<button class="btn back" onclick="nav('more')">← Back</button><div class="screen-title">Commission</div><div class="muted">App use karne wale ka Commission</div><div class="monthbar" style="margin:14px 0"><button class="btn" onclick="shiftMonth(-1)">‹</button><div class="monthlabel">${monthName(state.month)}</div><button class="btn" onclick="shiftMonth(1)">›</button></div><div class="card"><div class="stat"><span>Labour Commission</span><div class="kpi">${money(c.lc)}</div></div><div class="stat" style="margin-top:10px"><span>Mistri Commission</span><div class="kpi">${money(c.mc)}</div></div><div class="divider"></div><div class="row"><b>Total Commission</b><b class="kpi">${money(c.total)}</b></div><div class="muted" style="margin-top:12px">Commission = (Owner Rate − Worker Rate) × Work Units</div></div>`}
-function more(){return `<div class="screen-title">More</div><div class="card"><button class="btn ghost full" onclick="nav('profile')">👤 Profile</button><button class="btn ghost full" style="margin-top:8px" onclick="state.screen='commission';render()">💰 Commission</button><button class="btn danger full" style="margin-top:8px" onclick="logout()">↪ Logout</button></div><div class="card"><div class="muted">Main data Firebase Firestore me save hota hai. Browser cache/local data clear hone par mobile number se cloud data dobara load kiya ja sakta hai.</div></div>`}
-function profile(){return `<button class="btn back" onclick="nav('more')">← Back</button><div class="screen-title">Profile</div><div class="card"><label>Full Name</label><input id="profName" value="${esc(db.user.name)}"><label>Mobile Number</label><input id="profMobile" value="${esc(db.user.mobile)}" inputmode="tel"><button class="btn primary full" style="margin-top:16px" onclick="saveProfile()">Update Profile</button></div>`}
-function saveProfile(){db.user.name=$("profName").value.trim()||db.user.name;db.user.mobile=$("profMobile").value.trim()||db.user.mobile;save();nav('more')}
-function logout(){if(confirm("Logout karna hai?")){db.user=null;localStorage.setItem(KEY,JSON.stringify(db));state.screen="home";render()}}
-Object.assign(window,{register,nav,go,render,home,people,personPage,sites,sitePage,more,profile,commissionPage,addPersonForm,savePerson,deletePerson,openPerson,shiftPersonMonth,shiftMonth,todayMonth,setDayOff,setDayWork,addWorkEntry,chooseUnit,choosePay,saveWork,deleteWork,siteForm,saveSite,deleteSite,openSite,saveProfile,logout});
-(async function init(){try{render();await bootCloud();render()}catch(err){console.error("LKR Hisab startup error:",err);document.getElementById("root").innerHTML='<div class="auth"><div class="authbox"><div class="logo">LKR Hisab</div><div class="card"><h2>App start nahi ho paaya</h2><div class="danger-note">Browser ko refresh karein. Agar phir bhi problem ho to latest ZIP/file use karein.</div><button class="btn primary full" style="margin-top:12px" onclick="location.reload()">Refresh</button></div></div></div>'}})();
+  }
+
+  async function saveDoc(collectionName, item){
+    if(!db){setCloud('error');throw new Error('Firebase unavailable');}
+    await col(collectionName).doc(item.id).set({...item,updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
+  }
+  async function deleteDoc(collectionName,id){
+    if(!db) throw new Error('Firebase unavailable');
+    await col(collectionName).doc(id).delete();
+  }
+
+  async function persistAdd(collectionName,item){
+    state[collectionName].push(item); saveLocalCache(); render();
+    try{await saveDoc(collectionName,item);setCloud('saved');}catch(e){setCloud('error');toast('Cloud save fail हुआ। Internet/Firestore rules check करें।');}
+  }
+  async function persistUpdate(collectionName,item){
+    const arr=state[collectionName]; const i=arr.findIndex(x=>x.id===item.id); if(i>=0)arr[i]=item; saveLocalCache(); render();
+    try{await saveDoc(collectionName,item);setCloud('saved');}catch(e){setCloud('error');toast('Cloud update fail हुआ।');}
+  }
+  async function persistDelete(collectionName,id){
+    const arr=state[collectionName]; const i=arr.findIndex(x=>x.id===id); if(i>=0)arr.splice(i,1); saveLocalCache(); render();
+    try{await deleteDoc(collectionName,id);setCloud('saved');}catch(e){setCloud('error');toast('Cloud delete fail हुआ।');}
+  }
+
+  function monthNav(){
+    return `<div class="monthbar"><button aria-label="Previous month" onclick="changeMonth(-1)">‹</button><div class="month-label">${esc(monthLabel(state.month))}</div><button aria-label="Next month" onclick="changeMonth(1)">›</button></div>`;
+  }
+  window.changeMonth = delta => { state.month=new Date(state.month.getFullYear(),state.month.getMonth()+delta,1); state.selectedDate=null; render(); };
+
+  function render(){
+    const root=$('root');
+    if(!state.loggedIn){ root.innerHTML=loginHtml(); return; }
+    root.innerHTML=`<div class="app"><header class="topbar"><div class="topbar-row"><div class="brand">LKR <span>Hisab</span></div><div id="cloudStatus" class="cloud"></div></div></header><main id="main"></main><nav class="bottom-nav">${navButton('home','⌂','Home')}${navButton('people','👷','Labour/Mistri')}${navButton('sites','🏠','Owner/Site')}${navButton('more','☰','More')}</nav><div id="modalRoot"></div><div id="toastRoot"></div></div>`;
+    setCloud(state.cloud); renderMain();
+    if(state.modal) renderModal();
+  }
+  function navButton(view,icon,label){return `<button class="nav-btn ${state.view===view?'active':''}" onclick="go('${view}')"><span class="nav-icon">${icon}</span>${label}</button>`}
+  window.go=view=>{state.view=view;state.selectedPersonId=null;state.selectedSiteId=null;state.selectedDate=null;state.modal=null;render()};
+
+  function loginHtml(){return `<div class="login"><div class="login-card"><div class="login-logo">LK</div><h1>LKR Hisab</h1><p>Personal Labour • Mistri • Site हिसाब</p>${state.loginError?`<div class="login-error">${esc(state.loginError)}</div>`:''}<form onsubmit="event.preventDefault();login()"><div class="field"><label>Full Name</label><input id="loginName" class="input" autocomplete="name" value="Shivam Kumar" required></div><div class="field"><label>Password</label><input id="loginPassword" class="input" type="password" autocomplete="current-password" inputmode="numeric" required></div><button class="btn btn-primary btn-block" type="submit">Login</button></form><div class="info" style="margin-top:14px">यह personal app है। Login state इस browser में localStorage में रखी जाती है। मुख्य हिसाब Firestore में save होता है।</div></div></div>`}
+
+  window.login=async()=>{
+    const name=($('loginName')?.value||'').trim(); const pass=$('loginPassword')?.value||'';
+    if(name!==APP_USER.name||pass!==APP_USER.password){state.loginError='Full Name या Password गलत है।';render();return;}
+    state.loginError='';state.loggedIn=true;localStorage.setItem(LOGIN_KEY,'1');
+    loadLocalCache(); render();
+    const ok=await initFirebase();
+    if(ok){await ensureUserDoc();await loadFirestore();}
+  };
+  window.logout=()=>{ if(unsubscribe){unsubscribe();unsubscribe=null;} state.loggedIn=false;state.loaded=false;state.modal=null;localStorage.removeItem(LOGIN_KEY);render(); };
+
+  function renderMain(){
+    const main=$('main');
+    if(state.view==='home')main.innerHTML=homeView();
+    else if(state.view==='people')main.innerHTML=peopleView();
+    else if(state.view==='sites')main.innerHTML=sitesView();
+    else main.innerHTML=moreView();
+  }
+
+  function homeView(){
+    const m=state.month; const monthWorks=worksInMonth(m).filter(w=>w.status==='work');
+    const labour=state.people.filter(p=>p.type==='Labour'); const mistri=state.people.filter(p=>p.type==='Mistri');
+    const stats=typeStats('Labour',m); const ms=typeStats('Mistri',m); const comm=commissionStats(m);
+    return `<div class="view-title">Home</div><div class="subtitle">इस महीने का पूरा सारांश</div>${monthNav()}<div class="grid grid-2"><div class="card orange-card stat-card"><div class="stat-label">Labour count</div><div class="stat-value">${stats.count}</div><div class="stat-small">Work वाले workers</div></div><div class="card orange-card stat-card"><div class="stat-label">Mistri count</div><div class="stat-value">${ms.count}</div><div class="stat-small">Work वाले workers</div></div></div><div style="height:12px"></div>${homeTypeCard('Labour',stats)}<div style="height:12px"></div>${homeTypeCard('Mistri',ms)}<div style="height:12px"></div><div class="card"><div class="row-between"><div><div class="section-title" style="margin:0">Commission</div><div class="small muted">इस महीने</div></div><button class="btn btn-outline btn-sm" onclick="openCommission()">पूरा देखें</button></div><div class="grid grid-2" style="margin-top:10px"><div><div class="stat-label">Labour Commission</div><div class="stat-value">${money(comm.labour)}</div></div><div><div class="stat-label">Mistri Commission</div><div class="stat-value">${money(comm.mistri)}</div></div></div><div class="divider"></div><div class="row-between"><span class="muted">Total Commission</span><strong class="money">${money(comm.total)}</strong></div></div>`;
+  }
+  function homeTypeCard(type,s){
+    const balance=s.bana-s.payment; return `<div class="card"><div class="section-title">${type}</div><div class="grid grid-2"><div><div class="stat-label">Total Work</div><div class="stat-value">${units(s.units)}</div></div><div><div class="stat-label">Total Bana</div><div class="stat-value">${money(s.bana)}</div></div><div><div class="stat-label">Actual Payment</div><div class="stat-value">${money(s.payment)}</div></div><div><div class="stat-label">${balance>=0?'Baki':'Jyada diya'}</div><div class="stat-value ${balance>=0?'positive':'negative'}">${money(Math.abs(balance))}</div></div></div></div>`;
+  }
+  function typeStats(type,month){
+    const ps=state.people.filter(p=>p.type===type); let count=0,u=0,b=0,pay=0;
+    ps.forEach(p=>{const pu=personUnits(p.id,month);if(pu>0)count++;u+=pu;b+=personBana(p.id,month);pay+=personPayment(p.id,month)});return{count,units:u,bana:b,payment:pay};
+  }
+  function commissionStats(month){
+    let labour=0,mistri=0;
+    worksInMonth(month).filter(w=>w.status==='work').forEach(w=>{const p=getPerson(w.personId),s=getSite(w.siteId);if(!p||!s)return;const ownerRate=p.type==='Labour'?Number(s.labourRate||0):Number(s.mistriRate||0);const diff=ownerRate-Number(p.rate||0);if(p.type==='Labour')labour+=diff*Number(w.units||0);else mistri+=diff*Number(w.units||0)});return{labour,mistri,total:labour+mistri};
+  }
+
+  function peopleView(){
+    if(state.selectedPersonId)return personDetailView(state.selectedPersonId);
+    return `<div class="view-title">Labour / Mistri</div><div class="subtitle">Workers और उनका daily हिसाब</div><div class="grid grid-2"><button class="btn btn-primary" onclick="openPersonForm('Labour')">+ Labour</button><button class="btn btn-outline" onclick="openPersonForm('Mistri')">+ Mistri</button></div><div style="height:14px"></div><div class="segmented"><button class="seg ${peopleFilter==='Labour'?'active':''}" onclick="setPeopleFilter('Labour')">Labour (${state.people.filter(p=>p.type==='Labour').length})</button><button class="seg ${peopleFilter==='Mistri'?'active':''}" onclick="setPeopleFilter('Mistri')">Mistri (${state.people.filter(p=>p.type==='Mistri').length})</button></div><div style="height:12px"></div><div class="person-list">${renderPeopleList()}</div>`;
+  }
+  let peopleFilter='Labour'; window.setPeopleFilter=t=>{peopleFilter=t;render()};
+  function renderPeopleList(){const list=state.people.filter(p=>p.type===peopleFilter);if(!list.length)return `<div class="empty"><strong>अभी कोई ${peopleFilter} नहीं है</strong><span>ऊपर से + ${peopleFilter} दबाकर जोड़ें।</span></div>`;return list.map(p=>`<div class="list-item"><div class="row"><div class="avatar">${esc((p.name||'?').trim().charAt(0).toUpperCase())}</div><div style="min-width:0;flex:1"><div class="name">${esc(p.name)}</div><div class="meta">${esc(p.type)} • Worker Rate ${money(p.rate)}/day</div></div><button class="btn btn-outline btn-sm" onclick="openPerson(${JSON.stringify(p.id)})">Open</button></div><div class="actions"><button class="btn btn-light btn-sm" onclick="openPersonForm('${p.type}','${p.id}')">Edit</button><button class="btn btn-danger btn-sm" onclick="deletePerson('${p.id}')">Delete</button></div></div>`).join('')}
+  window.openPerson=id=>{state.selectedPersonId=id;state.selectedDate=null;render()};
+
+  function personDetailView(id){const p=getPerson(id);if(!p){state.selectedPersonId=null;return peopleView()}const entries=workForPersonMonth(id);const u=personUnits(id),b=personBana(id),pay=personPayment(id),bal=b-pay;return `<button class="btn btn-light btn-sm" onclick="go('people')" style="margin-bottom:10px">← Workers</button><div class="view-title">${esc(p.name)}</div><div class="subtitle">${esc(p.type)} • Worker Rate ${money(p.rate)}/day</div>${monthNav()}<div class="card orange-card"><div class="grid grid-2"><div><div class="stat-label">Total Work</div><div class="stat-value">${units(u)}</div></div><div><div class="stat-label">Total Bana</div><div class="stat-value">${money(b)}</div></div><div><div class="stat-label">Actual Payment</div><div class="stat-value">${money(pay)}</div></div><div><div class="stat-label">${bal>=0?'Baki':'Jyada diya'}</div><div class="stat-value ${bal>=0?'positive':'negative'}">${money(Math.abs(bal))}</div></div></div></div><div style="height:13px"></div><div class="section-title">Monthly Calendar</div>${calendarHtml(id)}<div style="height:13px"></div>${selectedDatePanel(id)}</div>`;}
+  function calendarHtml(personId){
+    const first=firstOfMonth(state.month),start=new Date(first);start.setDate(1-first.getDay());const days=[];for(let i=0;i<42;i++){const d=new Date(start);d.setDate(start.getDate()+i);const key=dateKey(d);const ws=state.works.filter(w=>w.personId===personId&&w.date===key);const work=ws.filter(w=>w.status==='work');const off=ws.some(w=>w.status==='off');const u=work.reduce((s,w)=>s+Number(w.units||0),0);const classes=[isSameMonth(d,state.month)?'':'muted-day',work.length?'has-work':'',off&&!work.length?'off':'',state.selectedDate===key?'selected':'',dateKey(new Date())===key?'today':''].join(' ');days.push(`<button class="day ${classes}" onclick="selectWorkDate('${key}')"><div class="day-num">${d.getDate()}</div>${u?`<span class="units-badge">${units(u)}</span>`:''}<div class="day-status">${work.length?`काम${work.length>1?' ×'+work.length:''}`:off?'छुट्टी':''}</div></button>`)}return `<div class="calendar"><div class="weekdays"><div class="weekday">रवि</div><div class="weekday">सोम</div><div class="weekday">मंगल</div><div class="weekday">बुध</div><div class="weekday">गुरु</div><div class="weekday">शुक्र</div><div class="weekday">शनि</div></div><div class="days">${days.join('')}</div></div>`;
+  }
+  window.selectWorkDate=key=>{state.selectedDate=key;render()};
+  function selectedDatePanel(personId){if(!state.selectedDate)return `<div class="card"><div class="section-title">Daily Entry</div><div class="muted small">Calendar में कोई date चुनें। उस date का काम/छुट्टी यहीं manage होगा।</div></div>`;const p=getPerson(personId),key=state.selectedDate,ws=state.works.filter(w=>w.personId===personId&&w.date===key);return `<div class="card"><div class="row-between"><div><div class="section-title" style="margin:0">${formatDateHindi(parseDate(key))}</div><div class="small muted">${ws.length?'Saved entries':'अभी entry नहीं है'}</div></div><button class="btn btn-primary btn-sm" onclick="openWorkForm('${personId}','${key}')">+ काम जोड़ें</button></div><div style="height:10px"></div>${ws.length?ws.map(w=>workEntryHtml(w,p)).join(''):`<div class="empty"><strong>Kaam kiya?</strong><span>Haan या Nahi चुनकर entry save करें।</span></div>`}</div>`}
+  function formatDateHindi(d){return d.toLocaleDateString('hi-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}
+  function workEntryHtml(w,p){if(w.status==='off')return `<div class="work-entry off-entry"><div class="row-between"><div><strong>Chhutti / No Work</strong><div class="small muted">इस date पर कोई काम नहीं</div></div><button class="btn btn-danger btn-sm" onclick="deleteWork('${w.id}')">Delete</button></div></div>`;const s=getSite(w.siteId);return `<div class="work-entry"><div class="row-between"><div><strong>${esc(s?s.name:'Deleted Site')}</strong><div class="small muted">${esc(p.type)} • ${units(w.units)} unit • ${w.paymentYes?'Payment '+money(w.paymentAmount):'Payment नहीं'}</div></div><button class="btn btn-danger btn-sm" onclick="deleteWork('${w.id}')">Delete</button></div><div class="row wrap" style="margin-top:8px"><span class="pill orange">${Number(w.units)===.5?'Half Day':Number(w.units)===1?'Full Day':'Double Day'}</span>${w.paymentYes?'<span class="pill green">Payment दिया</span>':'<span class="pill">Payment बाकी</span>'}</div></div>`}
+
+  function sitesView(){if(state.selectedSiteId)return siteDetailView(state.selectedSiteId);return `<div class="view-title">Owner / Site</div><div class="subtitle">Owner और Site एक ही record में</div><button class="btn btn-primary btn-block" onclick="openSiteForm()">+ New Owner / Site</button><div style="height:14px"></div><div class="site-list">${renderSiteList()}</div>`}
+  function renderSiteList(){if(!state.sites.length)return `<div class="empty"><strong>अभी कोई Site नहीं है</strong><span>पहली Site जोड़कर हिसाब शुरू करें।</span></div>`;return state.sites.map(s=>`<div class="list-item"><div class="row"><div class="avatar">🏠</div><div style="min-width:0;flex:1"><div class="name">${esc(s.name)}</div><div class="meta">Labour ${money(s.labourRate)}/day • Mistri ${money(s.mistriRate)}/day</div></div><button class="btn btn-outline btn-sm" onclick="openSite('${s.id}')">Open</button></div><div class="actions"><button class="btn btn-light btn-sm" onclick="openSiteForm('${s.id}')">Edit</button><button class="btn btn-danger btn-sm" onclick="deleteSite('${s.id}')">Delete</button></div></div>`).join('')}
+  window.openSite=id=>{state.selectedSiteId=id;render()};
+  function siteDetailView(id){const s=getSite(id);if(!s){state.selectedSiteId=null;return sitesView()}const entries=worksInMonth(state.month).filter(w=>w.siteId===id&&w.status==='work');const labour=siteTypeStats(id,'Labour'),mistri=siteTypeStats(id,'Mistri');return `<button class="btn btn-light btn-sm" onclick="go('sites')" style="margin-bottom:10px">← Sites</button><div class="view-title">${esc(s.name)}</div><div class="subtitle">Selected month का Owner accounting</div>${monthNav()}${siteAccountingCard('Labour',labour,s.labourRate)}<div style="height:12px"></div>${siteAccountingCard('Mistri',mistri,s.mistriRate)}<div style="height:12px"></div><div class="card orange-card"><div class="section-title">Total Owner Amount</div><div class="grid grid-2"><div><div class="stat-label">Total Work</div><div class="stat-value">${units(labour.units+mistri.units)}</div></div><div><div class="stat-label">Total Owner Amount</div><div class="stat-value">${money(labour.amount+mistri.amount)}</div></div></div><div class="small muted" style="margin-top:8px">Worker को दिया गया payment Owner/Site total से subtract नहीं होता।</div></div>`}
+  function siteTypeStats(siteId,type){const list=worksInMonth(state.month).filter(w=>w.siteId===siteId&&w.status==='work'&&getPerson(w.personId)?.type===type);const by={};let u=0;list.forEach(w=>{const p=getPerson(w.personId);u+=Number(w.units||0);if(!by[p.id])by[p.id]={person:p,units:0};by[p.id].units+=Number(w.units||0)});const s=getSite(siteId);const rate=type==='Labour'?Number(s?.labourRate||0):Number(s?.mistriRate||0);return{units:u,amount:u*rate,rate,by:Object.values(by)}}
+  function siteAccountingCard(type,s,rate){return `<div class="card"><div class="row-between"><div class="section-title" style="margin:0">${type}</div><span class="pill orange">Owner Rate ${money(rate)}/day</span></div><div class="grid grid-2" style="margin-top:11px"><div><div class="stat-label">${type} work units</div><div class="stat-value">${units(s.units)}</div></div><div><div class="stat-label">Total ${type} Amount</div><div class="stat-value">${money(s.amount)}</div></div></div><div class="divider"></div><div class="small" style="font-weight:850;margin-bottom:7px">Worker-wise breakdown</div><div class="breakdown">${s.by.length?s.by.map(x=>`<div class="breakdown-item"><span>${esc(x.person.name)}</span><strong>${units(x.units)} × ${money(rate)} = ${money(x.units*rate)}</strong></div>`).join(''):`<div class="muted small">इस महीने कोई ${type} work नहीं।</div>`}</div></div>`}
+
+  function moreView(){return `<div class="view-title">More</div><div class="subtitle">App settings और reports</div><div class="grid"><div class="card"><div class="row"><div class="avatar">SK</div><div><div class="name">Shivam Kumar</div><div class="meta">Personal account</div></div></div><div style="height:11px"></div><button class="btn btn-light btn-block" onclick="openProfile()">Profile</button></div><div class="card"><div class="section-title">Commission</div><div class="small muted" style="margin-bottom:10px">Rate difference × work units</div><button class="btn btn-primary btn-block" onclick="openCommission()">Commission खोलें</button></div><div class="card"><div class="section-title">Cloud Data</div><div class="small muted">मुख्य data Firestore में रहता है। LocalStorage केवल login/cache के लिए है।</div><div style="height:10px"></div><button class="btn btn-light btn-block" onclick="reloadCloud()">Firestore से Refresh</button></div><div class="card"><button class="btn btn-danger btn-block" onclick="logout()">Logout</button></div></div>`}
+  window.reloadCloud=async()=>{const ok=await initFirebase();if(ok)await loadFirestore()};
+  window.openProfile=()=>{state.modal={type:'profile'};renderModal()};
+  window.openCommission=()=>{state.modal={type:'commission'};renderModal()};
+
+  function commissionPage(){const c=commissionStats(state.month);const rows=worksInMonth(state.month).filter(w=>w.status==='work').map(w=>{const p=getPerson(w.personId),s=getSite(w.siteId);if(!p||!s)return null;const ownerRate=p.type==='Labour'?Number(s.labourRate||0):Number(s.mistriRate||0);const value=(ownerRate-Number(p.rate||0))*Number(w.units||0);return{p,s,w,ownerRate,value}}).filter(Boolean);return `<div class="view-title">Commission</div><div class="subtitle">Owner rate और worker rate के अंतर से</div>${monthNav()}<div class="grid grid-2"><div class="card orange-card"><div class="stat-label">Labour Commission</div><div class="stat-value">${money(c.labour)}</div></div><div class="card orange-card"><div class="stat-label">Mistri Commission</div><div class="stat-value">${money(c.mistri)}</div></div></div><div style="height:12px"></div><div class="card"><div class="row-between"><div class="section-title" style="margin:0">Total Commission</div><strong class="stat-value">${money(c.total)}</strong></div><div class="divider"></div><div class="breakdown">${rows.length?rows.map(r=>`<div class="breakdown-item"><div><strong>${esc(r.p.name)}</strong><div class="small muted">${esc(r.s.name)} • ${esc(r.p.type)} • ${units(r.w.units)} unit</div></div><div class="right"><strong>${money(r.value)}</strong><div class="small muted">${money(r.ownerRate)} - ${money(r.p.rate)}</div></div></div>`).join(''):`<div class="empty"><strong>इस महीने commission data नहीं है</strong><span>Work entries होने पर यहाँ calculation दिखेगी।</span></div>`}</div></div>`}
+
+  function renderModal(){const r=$('modalRoot');if(!r)return;r.innerHTML=modalHtml();}
+  function modalShell(title,body){return `<div class="modal-backdrop" onclick="modalBackdrop(event)"><div class="modal"><div class="modal-head"><div class="modal-title">${title}</div><button class="close" onclick="closeModal()">×</button></div>${body}</div></div>`}
+  window.modalBackdrop=e=>{if(e.target.classList.contains('modal-backdrop'))closeModal()};window.closeModal=()=>{state.modal=null;render()};
+  function modalHtml(){const m=state.modal;if(!m)return '';if(m.type==='profile')return modalShell('Profile',`<div class="card" style="box-shadow:none;background:#fafafa"><div class="row"><div class="avatar">SK</div><div><div class="name">Shivam Kumar</div><div class="meta">Personal account</div></div></div></div><div class="info" style="margin-top:12px">इस app में mobile number रखा या दिखाया नहीं जाता।</div>`);if(m.type==='commission')return modalShell('Commission',commissionPage());if(m.type==='person')return personFormHtml(m);if(m.type==='site')return siteFormHtml(m);if(m.type==='work')return workFormHtml(m);if(m.type==='confirm')return confirmHtml(m);return '';}
+
+  window.openPersonForm=(type='Labour',id=null)=>{state.modal={type:'person',mode:id?'edit':'add',personType:type,id};renderModal()};
+  function personFormHtml(m){const p=m.id?getPerson(m.id):{name:'',type:m.personType||'Labour',rate:''};return modalShell(m.mode==='edit'?'Edit Worker':'Add Worker',`<form onsubmit="event.preventDefault();savePerson('${m.mode}','${m.id||''}')"><div class="field"><label>Name</label><input id="personName" class="input" value="${esc(p.name)}" required></div><div class="field"><label>Type</label><div class="segmented"><button type="button" class="seg ${p.type==='Labour'?'active':''}" onclick="setModalPersonType('Labour')">Labour</button><button type="button" class="seg ${p.type==='Mistri'?'active':''}" onclick="setModalPersonType('Mistri')">Mistri</button></div><input type="hidden" id="personType" value="${esc(p.type)}"></div><div class="field"><label>Worker payment rate (₹/day)</label><input id="personRate" class="input" type="number" min="0" step="1" value="${esc(p.rate)}" required></div><div class="sticky-actions"><button class="btn btn-primary btn-block" type="submit">${m.mode==='edit'?'Save Changes':'Add Worker'}</button></div></form>`)}
+  window.setModalPersonType=t=>{$('personType').value=t;document.querySelectorAll('#modalRoot .segmented .seg').forEach(b=>b.classList.toggle('active',b.textContent.trim()===t))};
+  window.savePerson=async(mode,id)=>{const name=$('personName').value.trim(),type=$('personType').value,rate=Number($('personRate').value);if(!name||rate<0)return toast('Name और valid rate भरें।');const item={id:id||uid(),name,type,rate};state.modal=null;if(mode==='edit')await persistUpdate('people',item);else await persistAdd('people',item);render();};
+
+  window.openSiteForm=id=>{state.modal={type:'site',mode:id?'edit':'add',id:id||null};renderModal()};
+  function siteFormHtml(m){const s=m.id?getSite(m.id):{name:'',labourRate:'',mistriRate:''};return modalShell(m.mode==='edit'?'Edit Site':'New Owner / Site',`<form onsubmit="event.preventDefault();saveSite('${m.mode}','${m.id||''}')"><div class="field"><label>Site / Owner name</label><input id="siteName" class="input" placeholder="Rajesh ji ka do talla ka makan" value="${esc(s.name)}" required></div><div class="field"><label>Labour Owner Rate (₹/day)</label><input id="siteLabourRate" class="input" type="number" min="0" step="1" value="${esc(s.labourRate)}" required></div><div class="field"><label>Mistri Owner Rate (₹/day)</label><input id="siteMistriRate" class="input" type="number" min="0" step="1" value="${esc(s.mistriRate)}" required></div><div class="info">Site edit करने पर Site ID वही रहती है और पुराने work records delete नहीं होते।</div><div class="sticky-actions" style="margin-top:10px"><button class="btn btn-primary btn-block" type="submit">${m.mode==='edit'?'Save Changes':'Add Site'}</button></div></form>`)}
+  window.saveSite=async(mode,id)=>{const name=$('siteName').value.trim(),labourRate=Number($('siteLabourRate').value),mistriRate=Number($('siteMistriRate').value);if(!name||labourRate<0||mistriRate<0)return toast('Site name और valid rates भरें।');const item={id:id||uid(),name,labourRate,mistriRate};state.modal=null;if(mode==='edit')await persistUpdate('sites',item);else await persistAdd('sites',item);render()};
+
+  window.openWorkForm=(personId,date)=>{state.modal={type:'work',personId,date,mode:'add',units:1,paymentYes:false};renderModal()};
+  function workFormHtml(m){const p=getPerson(m.personId),existing=state.works.filter(w=>w.personId===m.personId&&w.date===m.date);return modalShell(`Work Entry • ${formatDateHindi(parseDate(m.date))}`,`<div class="small muted" style="margin-bottom:12px">Worker: <strong>${esc(p?.name||'')}</strong></div><div class="field"><label>Kaam kiya?</label><div class="segmented"><button type="button" id="workYesBtn" class="seg active" onclick="setWorkStatus(true)">Haan</button><button type="button" id="workNoBtn" class="seg" onclick="setWorkStatus(false)">Nahi</button></div><input type="hidden" id="workStatus" value="work"></div><div id="workFields"><div class="field"><label>Owner / Site</label><select id="workSite" class="select"><option value="">Site चुनें</option>${state.sites.map(s=>`<option value="${esc(s.id)}">${esc(s.name)}</option>`).join('')}</select></div><div class="field"><label>Work type</label><div class="segmented three"><button type="button" class="seg" onclick="setWorkUnits(.5,this)">Half Day</button><button type="button" class="seg active" onclick="setWorkUnits(1,this)">Full Day</button><button type="button" class="seg" onclick="setWorkUnits(2,this)">Double Day</button></div><input type="hidden" id="workUnits" value="1"></div><div class="field"><label>Payment diya?</label><div class="segmented"><button type="button" class="seg active" onclick="setPayment(true)">Haan</button><button type="button" class="seg" onclick="setPayment(false)">Nahi</button></div><input type="hidden" id="paymentYes" value="1"></div><div class="field" id="paymentAmountField"><label>Payment amount (₹)</label><input id="paymentAmount" class="input" type="number" min="0" step="1" value=""></div></div><div class="warning" style="margin-bottom:10px">एक date पर कई जगह काम जोड़ सकते हैं। हर entry अलग record बनेगी।</div><div class="sticky-actions"><button class="btn btn-primary btn-block" onclick="saveWork()">Save Work</button></div>`)}
+  window.setWorkStatus=work=>{ $('workStatus').value=work?'work':'off'; $('workYesBtn').classList.toggle('active',work);$('workNoBtn').classList.toggle('active',!work);$('workFields').classList.toggle('hidden',!work);};
+  window.setWorkUnits=(u,el)=>{$('workUnits').value=u;el.parentElement.querySelectorAll('.seg').forEach(x=>x.classList.remove('active'));el.classList.add('active')};
+  window.setPayment=yes=>{$('paymentYes').value=yes?'1':'0';const parent=$('paymentYes').parentElement;parent.querySelectorAll('.seg').forEach((x,i)=>x.classList.toggle('active',yes?i===0:i===1));$('paymentAmountField').classList.toggle('hidden',!yes)};
+  window.saveWork=async()=>{const m=state.modal;if(!m)return;const status=$('workStatus').value;if(status==='off'){const same=state.works.filter(w=>w.personId===m.personId&&w.date===m.date);if(same.length){return toast('इस date पर existing work entries हैं। पहले उन्हें delete करें, फिर Chhutti save करें।')}const item={id:uid(),personId:m.personId,type:getPerson(m.personId)?.type||'',date:m.date,status:'off',siteId:null,units:0,paymentYes:false,paymentAmount:0};state.modal=null;await persistAdd('works',item);render();return;}const siteId=$('workSite').value;if(!siteId)return toast('Owner/Site चुनें।');const paymentYes=$('paymentYes').value==='1';const paymentAmount=paymentYes?Number($('paymentAmount').value||0):0;const item={id:uid(),personId:m.personId,type:getPerson(m.personId)?.type||'',date:m.date,status:'work',siteId,units:Number($('workUnits').value),paymentYes,paymentAmount};state.modal=null;await persistAdd('works',item);render();};
+
+  window.deleteWork=id=>{const w=state.works.find(x=>x.id===id);if(!w)return;state.modal={type:'confirm',action:'deleteWork',id,title:'Work delete करें?',message:'यह work entry permanently delete होगी।'};renderModal()};
+  window.deletePerson=id=>{const p=getPerson(id);const related=state.works.filter(w=>w.personId===id).length;state.modal={type:'confirm',action:'deletePerson',id,title:'Worker delete करें?',message:`${p?.name||'यह worker'} delete होगा। ${related} related work/payment record${related===1?'':'s'} भी delete होंगे। यह action वापस नहीं होगा।`};renderModal()};
+  window.deleteSite=id=>{const s=getSite(id);const related=state.works.filter(w=>w.siteId===id).length;state.modal={type:'confirm',action:'deleteSite',id,title:'Site delete करें?',message:`${s?.name||'यह site'} delete होगी। ${related} related work record${related===1?'':'s'} भी delete होंगे। Site edit करने से records delete नहीं होते; यह केवल Delete पर होगा।`};renderModal()};
+  function confirmHtml(m){return modalShell(m.title,`<div class="confirm-text">${esc(m.message)}</div><div class="actions" style="margin-top:17px"><button class="btn btn-light" onclick="closeModal()">Cancel</button><button class="btn btn-danger" onclick="confirmAction()">Delete</button></div>`)}
+  window.confirmAction=async()=>{const m=state.modal;state.modal=null;if(m.action==='deleteWork'){await persistDelete('works',m.id)}else if(m.action==='deletePerson'){const related=state.works.filter(w=>w.personId===m.id).map(w=>w.id);for(const id of related)await persistDelete('works',id);await persistDelete('people',m.id);if(state.selectedPersonId===m.id)state.selectedPersonId=null}else if(m.action==='deleteSite'){const related=state.works.filter(w=>w.siteId===m.id).map(w=>w.id);for(const id of related)await persistDelete('works',id);await persistDelete('sites',m.id);if(state.selectedSiteId===m.id)state.selectedSiteId=null}render()};
+
+  // Restore login across refresh/browser reopen. Firestore is always reloaded when possible.
+  async function boot(){
+    const logged=localStorage.getItem(LOGIN_KEY)==='1';
+    if(!logged){render();return;}
+    state.loggedIn=true;loadLocalCache();render();
+    const ok=await initFirebase();if(ok){await ensureUserDoc();await loadFirestore();}
+  }
+  window.addEventListener('online',()=>{if(state.loggedIn){setCloud('connected');}});window.addEventListener('offline',()=>{setCloud('offline')});
+  boot();
+})();
 </script>
 </body>
 </html>
