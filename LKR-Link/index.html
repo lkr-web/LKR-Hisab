@@ -1,9 +1,1428 @@
 <!DOCTYPE html>
-<html>
+<html lang="hi">
 <head>
-    <title>LKR Link</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#ff7a00" />
+  <meta name="description" content="LKR Link - Save and manage your favourite website links." />
+  <title>LKR Link</title>
+
+  <style>
+    :root{
+      --primary:#ff7a00;
+      --primary-dark:#e96600;
+      --primary-soft:#fff2e6;
+      --bg:#f6f7f9;
+      --card:#ffffff;
+      --text:#17191d;
+      --muted:#737983;
+      --border:#e8eaee;
+      --danger:#e5484d;
+      --shadow:0 8px 28px rgba(20,24,32,.07);
+      --shadow-hover:0 12px 34px rgba(20,24,32,.11);
+      --radius:20px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      min-height:100vh;
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+      color:var(--text);
+      background:var(--bg);
+      -webkit-font-smoothing:antialiased;
+    }
+    button,input{font:inherit}
+    button{cursor:pointer}
+    a{text-decoration:none;color:inherit}
+
+    .app{
+      width:100%;
+      min-height:100vh;
+    }
+
+    /* ---------- Login ---------- */
+    .login-screen{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px 16px;
+      background:
+        radial-gradient(circle at 15% 10%, rgba(255,122,0,.14), transparent 32%),
+        radial-gradient(circle at 90% 85%, rgba(255,122,0,.10), transparent 30%),
+        var(--bg);
+    }
+
+    .login-card{
+      width:min(100%,430px);
+      background:rgba(255,255,255,.96);
+      border:1px solid rgba(255,255,255,.8);
+      border-radius:28px;
+      padding:30px 22px 24px;
+      box-shadow:0 20px 60px rgba(24,29,38,.10);
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:11px;
+      font-weight:800;
+      letter-spacing:-.5px;
+    }
+
+    .brand-mark{
+      width:44px;
+      height:44px;
+      border-radius:14px;
+      display:grid;
+      place-items:center;
+      color:#fff;
+      background:linear-gradient(135deg,var(--primary),#ff9a3d);
+      box-shadow:0 8px 18px rgba(255,122,0,.25);
+      font-size:20px;
+      font-weight:900;
+    }
+
+    .brand-name{font-size:22px}
+
+    .login-title{
+      margin:30px 0 8px;
+      font-size:28px;
+      line-height:1.15;
+      letter-spacing:-1px;
+    }
+
+    .login-subtitle{
+      margin:0 0 24px;
+      color:var(--muted);
+      line-height:1.55;
+      font-size:14px;
+    }
+
+    .field{
+      margin-bottom:15px;
+    }
+
+    .field label{
+      display:block;
+      margin:0 0 7px;
+      font-size:13px;
+      font-weight:700;
+      color:#4d535d;
+    }
+
+    .input{
+      width:100%;
+      height:52px;
+      border:1px solid var(--border);
+      border-radius:15px;
+      padding:0 15px;
+      outline:none;
+      color:var(--text);
+      background:#fff;
+      transition:.2s ease;
+    }
+
+    .input:focus{
+      border-color:rgba(255,122,0,.7);
+      box-shadow:0 0 0 4px rgba(255,122,0,.10);
+    }
+
+    .primary-btn{
+      border:0;
+      color:#fff;
+      background:linear-gradient(135deg,var(--primary),#ff8b22);
+      box-shadow:0 8px 18px rgba(255,122,0,.22);
+      transition:transform .15s ease, box-shadow .15s ease, opacity .15s ease;
+    }
+
+    .primary-btn:hover{box-shadow:0 11px 22px rgba(255,122,0,.28)}
+    .primary-btn:active{transform:translateY(1px)}
+    .primary-btn:disabled{opacity:.55;cursor:not-allowed}
+
+    .login-btn{
+      width:100%;
+      height:52px;
+      border-radius:15px;
+      font-weight:800;
+      margin-top:3px;
+    }
+
+    .login-note{
+      text-align:center;
+      margin:17px 0 0;
+      color:#9499a2;
+      font-size:12px;
+      line-height:1.5;
+    }
+
+    /* ---------- Main ---------- */
+    .main-screen{
+      min-height:100vh;
+      display:none;
+    }
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:20;
+      background:rgba(246,247,249,.90);
+      backdrop-filter:blur(14px);
+      -webkit-backdrop-filter:blur(14px);
+      border-bottom:1px solid rgba(232,234,238,.75);
+    }
+
+    .topbar-inner{
+      width:min(100%,1000px);
+      margin:auto;
+      padding:13px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+
+    .top-brand .brand-mark{
+      width:38px;
+      height:38px;
+      border-radius:12px;
+      font-size:17px;
+    }
+    .top-brand .brand-name{font-size:19px}
+
+    .user-actions{
+      display:flex;
+      align-items:center;
+      gap:9px;
+    }
+
+    .avatar{
+      width:38px;
+      height:38px;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      color:#fff;
+      background:linear-gradient(135deg,#343943,#727985);
+      font-size:13px;
+      font-weight:800;
+      flex:0 0 auto;
+    }
+
+    .logout-btn{
+      border:1px solid var(--border);
+      background:#fff;
+      color:#50555e;
+      height:38px;
+      padding:0 12px;
+      border-radius:12px;
+      font-size:12px;
+      font-weight:800;
+    }
+
+    .page{
+      width:min(100%,1000px);
+      margin:auto;
+      padding:24px 16px 50px;
+    }
+
+    .welcome{
+      margin-bottom:20px;
+    }
+
+    .welcome h1{
+      margin:0;
+      font-size:27px;
+      line-height:1.2;
+      letter-spacing:-.8px;
+    }
+
+    .welcome p{
+      margin:7px 0 0;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    /* Add URL */
+    .add-card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:14px;
+      box-shadow:var(--shadow);
+      margin-bottom:22px;
+    }
+
+    .add-row{
+      display:flex;
+      align-items:center;
+      gap:9px;
+    }
+
+    .url-input{
+      height:54px;
+      flex:1;
+      min-width:0;
+      border:1px solid var(--border);
+      border-radius:15px;
+      padding:0 15px;
+      outline:none;
+      background:#fafbfc;
+      color:var(--text);
+      transition:.2s ease;
+    }
+
+    .url-input:focus{
+      background:#fff;
+      border-color:rgba(255,122,0,.72);
+      box-shadow:0 0 0 4px rgba(255,122,0,.09);
+    }
+
+    .add-btn{
+      width:54px;
+      height:54px;
+      border:0;
+      border-radius:15px;
+      color:#fff;
+      background:var(--primary);
+      font-size:31px;
+      line-height:1;
+      font-weight:500;
+      display:grid;
+      place-items:center;
+      flex:0 0 auto;
+      box-shadow:0 8px 18px rgba(255,122,0,.22);
+      transition:.15s ease;
+    }
+
+    .add-btn:hover{background:var(--primary-dark)}
+    .add-btn:active{transform:scale(.97)}
+    .add-btn:disabled{opacity:.55;cursor:not-allowed}
+
+    .add-hint{
+      margin:9px 3px 0;
+      color:#999ea6;
+      font-size:11px;
+    }
+
+    /* Link list */
+    .list-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      margin:0 2px 11px;
+    }
+
+    .list-title{
+      margin:0;
+      font-size:15px;
+      font-weight:850;
+    }
+
+    .count-badge{
+      min-width:28px;
+      height:24px;
+      padding:0 8px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:999px;
+      background:var(--primary-soft);
+      color:var(--primary-dark);
+      font-size:11px;
+      font-weight:800;
+    }
+
+    .links-list{
+      display:grid;
+      gap:11px;
+    }
+
+    .link-card{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:18px;
+      padding:12px;
+      box-shadow:var(--shadow);
+      transition:transform .16s ease, box-shadow .16s ease;
+      min-width:0;
+    }
+
+    .link-card:hover{
+      transform:translateY(-1px);
+      box-shadow:var(--shadow-hover);
+    }
+
+    .site-icon{
+      width:48px;
+      height:48px;
+      border-radius:14px;
+      flex:0 0 48px;
+      overflow:hidden;
+      display:grid;
+      place-items:center;
+      background:#f0f1f4;
+      color:#4b5059;
+      font-size:18px;
+      font-weight:850;
+      border:1px solid #eceef1;
+    }
+
+    .site-icon img{
+      display:block;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      background:#fff;
+    }
+
+    .site-info{
+      min-width:0;
+      flex:1;
+    }
+
+    .site-title{
+      margin:0 0 4px;
+      font-size:14px;
+      font-weight:800;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .site-domain{
+      margin:0;
+      color:#858b94;
+      font-size:11px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .card-actions{
+      display:flex;
+      align-items:center;
+      gap:7px;
+      flex:0 0 auto;
+    }
+
+    .open-btn{
+      height:37px;
+      padding:0 13px;
+      border:0;
+      border-radius:11px;
+      background:var(--primary-soft);
+      color:var(--primary-dark);
+      font-size:12px;
+      font-weight:850;
+    }
+
+    .open-btn:hover{background:#ffe7d1}
+
+    .delete-btn{
+      width:37px;
+      height:37px;
+      border:1px solid #f0d8d9;
+      border-radius:11px;
+      background:#fff7f7;
+      color:var(--danger);
+      display:grid;
+      place-items:center;
+      font-size:17px;
+    }
+
+    .delete-btn:hover{background:#ffeded}
+
+    .empty{
+      padding:40px 18px;
+      text-align:center;
+      background:#fff;
+      border:1px dashed #dfe2e7;
+      border-radius:20px;
+    }
+
+    .empty-icon{
+      width:52px;
+      height:52px;
+      margin:0 auto 12px;
+      display:grid;
+      place-items:center;
+      border-radius:16px;
+      background:var(--primary-soft);
+      font-size:22px;
+    }
+
+    .empty h3{
+      margin:0 0 5px;
+      font-size:15px;
+    }
+
+    .empty p{
+      margin:0;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.5;
+    }
+
+    /* Toast */
+    .toast-wrap{
+      position:fixed;
+      left:50%;
+      bottom:22px;
+      z-index:100;
+      transform:translateX(-50%);
+      width:min(calc(100% - 30px),420px);
+      pointer-events:none;
+    }
+
+    .toast{
+      opacity:0;
+      transform:translateY(12px);
+      background:#1d2026;
+      color:#fff;
+      padding:12px 14px;
+      border-radius:13px;
+      box-shadow:0 12px 30px rgba(0,0,0,.20);
+      font-size:12px;
+      text-align:center;
+      transition:.22s ease;
+    }
+
+    .toast.show{
+      opacity:1;
+      transform:translateY(0);
+    }
+
+    /* Modal */
+    .modal-backdrop{
+      position:fixed;
+      inset:0;
+      z-index:90;
+      display:none;
+      align-items:flex-end;
+      justify-content:center;
+      padding:16px;
+      background:rgba(13,16,21,.46);
+      backdrop-filter:blur(5px);
+    }
+
+    .modal-backdrop.show{display:flex}
+
+    .modal{
+      width:min(100%,420px);
+      background:#fff;
+      border-radius:22px;
+      padding:20px;
+      box-shadow:0 22px 70px rgba(0,0,0,.22);
+      animation:modalIn .18s ease-out;
+    }
+
+    @keyframes modalIn{
+      from{opacity:0;transform:translateY(12px)}
+      to{opacity:1;transform:translateY(0)}
+    }
+
+    .modal h3{
+      margin:0 0 7px;
+      font-size:18px;
+    }
+
+    .modal p{
+      margin:0 0 18px;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.5;
+      word-break:break-word;
+    }
+
+    .modal-actions{
+      display:flex;
+      gap:9px;
+    }
+
+    .modal-actions button{
+      flex:1;
+      height:46px;
+      border-radius:13px;
+      font-weight:800;
+      border:0;
+    }
+
+    .cancel-btn{
+      background:#f2f3f5;
+      color:#4e535c;
+    }
+
+    .confirm-delete{
+      background:#fff0f0;
+      color:var(--danger);
+    }
+
+    /* Loading */
+    .loading-overlay{
+      position:fixed;
+      inset:0;
+      z-index:120;
+      display:none;
+      place-items:center;
+      background:rgba(246,247,249,.65);
+      backdrop-filter:blur(3px);
+    }
+
+    .loading-overlay.show{display:grid}
+
+    .spinner{
+      width:34px;
+      height:34px;
+      border:3px solid #ffd9bd;
+      border-top-color:var(--primary);
+      border-radius:50%;
+      animation:spin .7s linear infinite;
+    }
+
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    @media (min-width:700px){
+      .login-card{padding:36px 32px 28px}
+      .page{padding-top:34px}
+      .links-list{grid-template-columns:1fr 1fr}
+      .link-card{min-height:76px}
+      .modal-backdrop{align-items:center}
+    }
+
+    @media (max-width:430px){
+      .card-actions{gap:5px}
+      .open-btn{padding:0 10px}
+      .delete-btn{width:35px;height:35px}
+      .site-icon{width:45px;height:45px;flex-basis:45px}
+      .site-title{font-size:13px}
+    }
+  </style>
 </head>
+
 <body>
-    <h1>Welcome to LKR Link!</h1>
+  <div class="app">
+
+    <!-- LOGIN / REGISTRATION -->
+    <section id="loginScreen" class="login-screen">
+      <div class="login-card">
+        <div class="brand">
+          <div class="brand-mark">L</div>
+          <div class="brand-name">LKR Link</div>
+        </div>
+
+        <h1 class="login-title">अपने links एक जगह रखें</h1>
+        <p class="login-subtitle">
+          Name और mobile number से login करें। आपका saved link data इसी browser में सुरक्षित रहेगा।
+        </p>
+
+        <form id="loginForm" autocomplete="on">
+          <div class="field">
+            <label for="fullName">Full Name</label>
+            <input
+              id="fullName"
+              class="input"
+              type="text"
+              placeholder="जैसे Shivam Kumar"
+              autocomplete="name"
+              maxlength="80"
+              required
+            />
+          </div>
+
+          <div class="field">
+            <label for="mobileNumber">Mobile Number</label>
+            <input
+              id="mobileNumber"
+              class="input"
+              type="tel"
+              inputmode="numeric"
+              placeholder="10 digit mobile number"
+              autocomplete="tel"
+              maxlength="15"
+              required
+            />
+          </div>
+
+          <button id="loginBtn" class="primary-btn login-btn" type="submit">
+            Register / Login
+          </button>
+        </form>
+
+        <p class="login-note">
+          Demo version • Data browser के localStorage में रहेगा
+        </p>
+      </div>
+    </section>
+
+    <!-- MAIN -->
+    <section id="mainScreen" class="main-screen">
+      <header class="topbar">
+        <div class="topbar-inner">
+          <div class="brand top-brand">
+            <div class="brand-mark">L</div>
+            <div class="brand-name">LKR Link</div>
+          </div>
+
+          <div class="user-actions">
+            <div id="userAvatar" class="avatar">U</div>
+            <button id="logoutBtn" class="logout-btn" type="button">Logout</button>
+          </div>
+        </div>
+      </header>
+
+      <main class="page">
+        <div class="welcome">
+          <h1 id="welcomeText">नमस्ते 👋</h1>
+          <p>अपने favourite websites जल्दी access करें।</p>
+        </div>
+
+        <section class="add-card" aria-label="Add website">
+          <form id="addLinkForm">
+            <div class="add-row">
+              <input
+                id="urlInput"
+                class="url-input"
+                type="text"
+                inputmode="url"
+                autocomplete="url"
+                placeholder="https://flipkart.com"
+                maxlength="2048"
+                aria-label="Website URL"
+              />
+              <button id="addBtn" class="add-btn" type="submit" aria-label="Add URL" title="Add URL">+</button>
+            </div>
+            <div class="add-hint">URL लिखकर Enter दबाएँ या + पर tap करें</div>
+          </form>
+        </section>
+
+        <div class="list-head">
+          <h2 class="list-title">मेरे Links</h2>
+          <span id="linkCount" class="count-badge">0</span>
+        </div>
+
+        <section id="linksList" class="links-list"></section>
+      </main>
+    </section>
+
+    <!-- DELETE MODAL -->
+    <div id="modalBackdrop" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="deleteTitle">
+      <div class="modal">
+        <h3 id="deleteTitle">Link delete करें?</h3>
+        <p id="deleteMessage">यह link आपकी list से हट जाएगा।</p>
+        <div class="modal-actions">
+          <button id="cancelDelete" class="cancel-btn" type="button">Cancel</button>
+          <button id="confirmDelete" class="confirm-delete" type="button">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOAST -->
+    <div class="toast-wrap">
+      <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    </div>
+
+    <!-- LOADING -->
+    <div id="loadingOverlay" class="loading-overlay" aria-hidden="true">
+      <div class="spinner" aria-label="Loading"></div>
+    </div>
+  </div>
+
+  <script>
+    "use strict";
+
+    /*
+      LKR Link - Single File Demo
+      ----------------------------
+      Storage:
+        lkr_link_users
+          {
+            "mobile": {
+              name: "...",
+              mobile: "...",
+              links: [
+                {
+                  id: "...",
+                  url: "...",
+                  domain: "...",
+                  title: "...",
+                  favicon: "...",
+                  addedAt: 123456789
+                }
+              ]
+            }
+          }
+
+        lkr_link_session
+          {
+            mobile: "..."
+          }
+
+      IMPORTANT:
+      Browser-side JavaScript cannot reliably fetch/read arbitrary website HTML
+      because of CORS. Therefore this demo uses:
+        1) saved favicon URL, if available
+        2) direct common favicon paths
+        3) multiple public favicon services
+        4) letter fallback
+
+      For the future Firebase/backend version, server-side HTML fetching can
+      inspect <link rel="icon"> and return the actual favicon URL.
+    */
+
+    const STORAGE_USERS = "lkr_link_users";
+    const STORAGE_SESSION = "lkr_link_session";
+
+    const loginScreen = document.getElementById("loginScreen");
+    const mainScreen = document.getElementById("mainScreen");
+    const loginForm = document.getElementById("loginForm");
+    const fullNameInput = document.getElementById("fullName");
+    const mobileInput = document.getElementById("mobileNumber");
+    const loginBtn = document.getElementById("loginBtn");
+
+    const welcomeText = document.getElementById("welcomeText");
+    const userAvatar = document.getElementById("userAvatar");
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    const addLinkForm = document.getElementById("addLinkForm");
+    const urlInput = document.getElementById("urlInput");
+    const addBtn = document.getElementById("addBtn");
+
+    const linksList = document.getElementById("linksList");
+    const linkCount = document.getElementById("linkCount");
+
+    const modalBackdrop = document.getElementById("modalBackdrop");
+    const deleteMessage = document.getElementById("deleteMessage");
+    const cancelDelete = document.getElementById("cancelDelete");
+    const confirmDelete = document.getElementById("confirmDelete");
+
+    const toast = document.getElementById("toast");
+    const loadingOverlay = document.getElementById("loadingOverlay");
+
+    let currentUser = null;
+    let pendingDeleteId = null;
+    let toastTimer = null;
+
+    /* ---------- Storage helpers ---------- */
+
+    function loadUsers() {
+      try {
+        const raw = localStorage.getItem(STORAGE_USERS);
+        if (!raw) return {};
+        const data = JSON.parse(raw);
+        return data && typeof data === "object" ? data : {};
+      } catch (error) {
+        console.error("Could not read users:", error);
+        return {};
+      }
+    }
+
+    function saveUsers(users) {
+      localStorage.setItem(STORAGE_USERS, JSON.stringify(users));
+    }
+
+    function loadSession() {
+      try {
+        const raw = localStorage.getItem(STORAGE_SESSION);
+        if (!raw) return null;
+        const session = JSON.parse(raw);
+        return session && session.mobile ? session : null;
+      } catch (error) {
+        return null;
+      }
+    }
+
+    function saveSession(mobile) {
+      localStorage.setItem(STORAGE_SESSION, JSON.stringify({ mobile }));
+    }
+
+    function clearSession() {
+      localStorage.removeItem(STORAGE_SESSION);
+    }
+
+    function normalizeMobile(value) {
+      return String(value || "").replace(/\D/g, "").slice(-15);
+    }
+
+    function normalizeUrl(raw) {
+      let value = String(raw || "").trim();
+
+      if (!value) {
+        throw new Error("URL खाली है");
+      }
+
+      if (!/^https?:\/\//i.test(value)) {
+        value = "https://" + value;
+      }
+
+      const parsed = new URL(value);
+
+      if (!["http:", "https:"].includes(parsed.protocol)) {
+        throw new Error("केवल HTTP/HTTPS URL allowed है");
+      }
+
+      return parsed.href;
+    }
+
+    function getDomain(url) {
+      try {
+        return new URL(url).hostname.replace(/^www\./i, "");
+      } catch {
+        return "";
+      }
+    }
+
+    function getDomainDisplay(url) {
+      try {
+        const parsed = new URL(url);
+        return parsed.hostname.replace(/^www\./i, "");
+      } catch {
+        return url;
+      }
+    }
+
+    function getInitial(text) {
+      const clean = String(text || "").trim();
+      return (clean.charAt(0) || "W").toUpperCase();
+    }
+
+    function titleFromDomain(domain) {
+      if (!domain) return "Website";
+      const firstPart = domain.split(".")[0] || domain;
+      return firstPart
+        .replace(/[-_]+/g, " ")
+        .replace(/\s+/g, " ")
+        .trim()
+        .replace(/\b\w/g, ch => ch.toUpperCase());
+    }
+
+    function makeId() {
+      return "l_" + Date.now().toString(36) + "_" +
+        Math.random().toString(36).slice(2, 10);
+    }
+
+    /* ---------- UI helpers ---------- */
+
+    function showToast(message) {
+      clearTimeout(toastTimer);
+      toast.textContent = message;
+      toast.classList.add("show");
+      toastTimer = setTimeout(() => toast.classList.remove("show"), 2600);
+    }
+
+    function setLoading(show) {
+      loadingOverlay.classList.toggle("show", !!show);
+    }
+
+    function showLogin() {
+      loginScreen.style.display = "flex";
+      mainScreen.style.display = "none";
+    }
+
+    function showMain() {
+      loginScreen.style.display = "none";
+      mainScreen.style.display = "block";
+    }
+
+    function updateUserUI() {
+      if (!currentUser) return;
+
+      const name = currentUser.name || "User";
+      welcomeText.textContent = `नमस्ते, ${name} 👋`;
+      userAvatar.textContent = getInitial(name);
+    }
+
+    /* ---------- Favicon engine ---------- */
+
+    /*
+      This is intentionally extension-agnostic.
+      .com, .online, .in, .org, .xyz, .shop, etc. all go through
+      exactly the same logic.
+
+      Important browser limitation:
+      We cannot reliably read arbitrary site's <head> because of CORS.
+      So we try many common direct paths and public icon resolvers.
+    */
+
+    function getFaviconCandidates(url) {
+      let parsed;
+
+      try {
+        parsed = new URL(url);
+      } catch {
+        return [];
+      }
+
+      const origin = parsed.origin;
+      const host = parsed.hostname;
+
+      const candidates = [
+        // Direct/common locations
+        origin + "/favicon.ico",
+        origin + "/favicon.png",
+        origin + "/favicon.svg",
+        origin + "/apple-touch-icon.png",
+        origin + "/apple-touch-icon-precomposed.png",
+
+        // Google favicon resolver
+        "https://www.google.com/s2/favicons?domain=" +
+          encodeURIComponent(host) + "&sz=128",
+
+        // DuckDuckGo favicon service
+        "https://icons.duckduckgo.com/ip3/" +
+          encodeURIComponent(host) + ".ico",
+
+        // Favicon.im
+        "https://favicon.im/" +
+          encodeURIComponent(host),
+
+        // Google favicon resolver with direct URL fallback
+        "https://www.google.com/s2/favicons?domain_url=" +
+          encodeURIComponent(url) + "&sz=128"
+      ];
+
+      return [...new Set(candidates)];
+    }
+
+    function testImage(url) {
+      return new Promise(resolve => {
+        const img = new Image();
+        let finished = false;
+
+        const done = result => {
+          if (finished) return;
+          finished = true;
+          clearTimeout(timer);
+          resolve(result);
+        };
+
+        const timer = setTimeout(() => done(false), 5500);
+
+        img.onload = () => {
+          // A loaded image with width/height > 0 is considered usable.
+          done(!!(img.naturalWidth > 0 && img.naturalHeight > 0));
+        };
+
+        img.onerror = () => done(false);
+
+        // Anonymous allows CDN images where CORS headers are available,
+        // while normal <img> loading also works for most public favicon URLs.
+        img.crossOrigin = "anonymous";
+        img.src = url;
+      });
+    }
+
+    async function findWorkingFavicon(url) {
+      const candidates = getFaviconCandidates(url);
+
+      for (const candidate of candidates) {
+        try {
+          const ok = await testImage(candidate);
+          if (ok) return candidate;
+        } catch (error) {
+          // Try next candidate.
+        }
+      }
+
+      return "";
+    }
+
+    function setIconFallback(iconEl, title) {
+      iconEl.innerHTML = "";
+      const letter = document.createElement("span");
+      letter.textContent = getInitial(title);
+      iconEl.appendChild(letter);
+    }
+
+    function renderIcon(iconEl, title, faviconUrl, linkId, url) {
+      setIconFallback(iconEl, title);
+
+      const img = document.createElement("img");
+      img.alt = "";
+      img.loading = "lazy";
+      img.decoding = "async";
+
+      let loaded = false;
+
+      img.onload = () => {
+        if (img.naturalWidth > 0) {
+          loaded = true;
+          iconEl.innerHTML = "";
+          iconEl.appendChild(img);
+        }
+      };
+
+      img.onerror = async () => {
+        // Remove failed URL from saved data if it was a stale favicon.
+        if (loaded) return;
+
+        const fallback = await findWorkingFavicon(url);
+
+        if (fallback) {
+          img.src = fallback;
+          // Save discovered favicon for future renders.
+          updateSavedFavicon(linkId, fallback);
+        }
+      };
+
+      if (faviconUrl) {
+        img.src = faviconUrl;
+      } else {
+        findWorkingFavicon(url).then(favicon => {
+          if (favicon) {
+            img.src = favicon;
+            updateSavedFavicon(linkId, favicon);
+          }
+        });
+      }
+    }
+
+    function updateSavedFavicon(linkId, favicon) {
+      if (!currentUser || !favicon) return;
+
+      const users = loadUsers();
+      const user = users[currentUser.mobile];
+      if (!user || !Array.isArray(user.links)) return;
+
+      const link = user.links.find(item => item.id === linkId);
+      if (!link) return;
+
+      if (link.favicon === favicon) return;
+
+      link.favicon = favicon;
+      users[currentUser.mobile] = user;
+      saveUsers(users);
+
+      // Keep current user object in sync.
+      currentUser = user;
+    }
+
+    /* ---------- Link rendering ---------- */
+
+    function renderLinks() {
+      linksList.innerHTML = "";
+
+      const links = Array.isArray(currentUser?.links) ? currentUser.links : [];
+      linkCount.textContent = String(links.length);
+
+      if (!links.length) {
+        const empty = document.createElement("div");
+        empty.className = "empty";
+        empty.innerHTML = `
+          <div class="empty-icon">🔗</div>
+          <h3>अभी कोई link नहीं है</h3>
+          <p>ऊपर URL डालकर + दबाएँ और अपनी पहली website save करें।</p>
+        `;
+        linksList.appendChild(empty);
+        return;
+      }
+
+      links.forEach(link => {
+        const card = document.createElement("article");
+        card.className = "link-card";
+        card.dataset.id = link.id;
+
+        const icon = document.createElement("div");
+        icon.className = "site-icon";
+        icon.setAttribute("aria-hidden", "true");
+
+        const info = document.createElement("div");
+        info.className = "site-info";
+
+        const title = document.createElement("h3");
+        title.className = "site-title";
+        title.textContent = link.title || titleFromDomain(link.domain);
+
+        const domain = document.createElement("p");
+        domain.className = "site-domain";
+        domain.textContent = link.domain || getDomainDisplay(link.url);
+
+        info.appendChild(title);
+        info.appendChild(domain);
+
+        const actions = document.createElement("div");
+        actions.className = "card-actions";
+
+        const open = document.createElement("button");
+        open.type = "button";
+        open.className = "open-btn";
+        open.textContent = "Open";
+        open.addEventListener("click", () => {
+          window.open(link.url, "_blank", "noopener,noreferrer");
+        });
+
+        const del = document.createElement("button");
+        del.type = "button";
+        del.className = "delete-btn";
+        del.title = "Delete";
+        del.setAttribute("aria-label", "Delete link");
+        del.textContent = "🗑";
+        del.addEventListener("click", () => openDeleteModal(link));
+
+        actions.appendChild(open);
+        actions.appendChild(del);
+
+        card.appendChild(icon);
+        card.appendChild(info);
+        card.appendChild(actions);
+        linksList.appendChild(card);
+
+        renderIcon(
+          icon,
+          link.title || link.domain,
+          link.favicon || "",
+          link.id,
+          link.url
+        );
+      });
+    }
+
+    /* ---------- Login ---------- */
+
+    loginForm.addEventListener("submit", event => {
+      event.preventDefault();
+
+      const name = fullNameInput.value.trim().replace(/\s+/g, " ");
+      const mobile = normalizeMobile(mobileInput.value);
+
+      if (name.length < 2) {
+        showToast("कृपया सही Full Name डालें");
+        fullNameInput.focus();
+        return;
+      }
+
+      if (mobile.length < 10) {
+        showToast("कृपया सही mobile number डालें");
+        mobileInput.focus();
+        return;
+      }
+
+      loginBtn.disabled = true;
+
+      try {
+        const users = loadUsers();
+
+        if (!users[mobile]) {
+          users[mobile] = {
+            name,
+            mobile,
+            links: []
+          };
+        } else {
+          // Same mobile number = same account/data.
+          // Update display name to the latest entered name.
+          users[mobile].name = name;
+          if (!Array.isArray(users[mobile].links)) {
+            users[mobile].links = [];
+          }
+        }
+
+        saveUsers(users);
+        saveSession(mobile);
+
+        currentUser = users[mobile];
+        updateUserUI();
+        renderLinks();
+        showMain();
+
+        showToast("Login successful");
+        urlInput.focus();
+      } finally {
+        loginBtn.disabled = false;
+      }
+    });
+
+    /* ---------- Add Link ---------- */
+
+    addLinkForm.addEventListener("submit", async event => {
+      event.preventDefault();
+
+      let url;
+
+      try {
+        url = normalizeUrl(urlInput.value);
+      } catch (error) {
+        showToast(error.message || "कृपया सही URL डालें");
+        urlInput.focus();
+        return;
+      }
+
+      if (!currentUser) {
+        showLogin();
+        return;
+      }
+
+      const domain = getDomain(url);
+
+      if (!domain) {
+        showToast("URL का domain नहीं मिला");
+        return;
+      }
+
+      const users = loadUsers();
+      const user = users[currentUser.mobile];
+
+      if (!user) {
+        showToast("Session expired. कृपया फिर login करें");
+        clearSession();
+        currentUser = null;
+        showLogin();
+        return;
+      }
+
+      if (!Array.isArray(user.links)) user.links = [];
+
+      // Prevent exact duplicate URL.
+      const duplicate = user.links.some(item => {
+        try {
+          return new URL(item.url).href === new URL(url).href;
+        } catch {
+          return item.url === url;
+        }
+      });
+
+      if (duplicate) {
+        showToast("यह link पहले से saved है");
+        urlInput.select();
+        return;
+      }
+
+      addBtn.disabled = true;
+
+      const title = titleFromDomain(domain);
+
+      const newLink = {
+        id: makeId(),
+        url,
+        domain,
+        title,
+        favicon: "",
+        addedAt: Date.now()
+      };
+
+      user.links.unshift(newLink);
+      users[currentUser.mobile] = user;
+      saveUsers(users);
+      currentUser = user;
+
+      urlInput.value = "";
+      renderLinks();
+
+      showToast("Link save हो गया");
+      addBtn.disabled = false;
+
+      /*
+        Start favicon discovery after card is visible.
+        The card itself immediately shows the first letter, so UI never
+        stays blank while icon resolution is happening.
+      */
+      setTimeout(() => {
+        const card = linksList.querySelector(`[data-id="${CSS.escape(newLink.id)}"]`);
+        const icon = card?.querySelector(".site-icon");
+        if (icon) {
+          renderIcon(icon, newLink.title, "", newLink.id, newLink.url);
+        }
+      }, 0);
+    });
+
+    /* ---------- Delete ---------- */
+
+    function openDeleteModal(link) {
+      pendingDeleteId = link.id;
+      deleteMessage.textContent =
+        `“${link.title || link.domain || link.url}” आपकी list से हट जाएगा।`;
+      modalBackdrop.classList.add("show");
+    }
+
+    function closeDeleteModal() {
+      pendingDeleteId = null;
+      modalBackdrop.classList.remove("show");
+    }
+
+    cancelDelete.addEventListener("click", closeDeleteModal);
+
+    modalBackdrop.addEventListener("click", event => {
+      if (event.target === modalBackdrop) {
+        closeDeleteModal();
+      }
+    });
+
+    confirmDelete.addEventListener("click", () => {
+      if (!currentUser || !pendingDeleteId) {
+        closeDeleteModal();
+        return;
+      }
+
+      const users = loadUsers();
+      const user = users[currentUser.mobile];
+
+      if (user && Array.isArray(user.links)) {
+        user.links = user.links.filter(link => link.id !== pendingDeleteId);
+        users[currentUser.mobile] = user;
+        saveUsers(users);
+        currentUser = user;
+        renderLinks();
+        showToast("Link delete हो गया");
+      }
+
+      closeDeleteModal();
+    });
+
+    /* ---------- Logout ---------- */
+
+    logoutBtn.addEventListener("click", () => {
+      clearSession();
+      currentUser = null;
+      closeDeleteModal();
+
+      fullNameInput.value = "";
+      mobileInput.value = "";
+      urlInput.value = "";
+
+      showLogin();
+      showToast("Logout हो गया — links सुरक्षित हैं");
+      setTimeout(() => fullNameInput.focus(), 80);
+    });
+
+    /* ---------- Keyboard ---------- */
+
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape") {
+        closeDeleteModal();
+      }
+    });
+
+    /* ---------- Boot ---------- */
+
+    function boot() {
+      const session = loadSession();
+
+      if (session?.mobile) {
+        const users = loadUsers();
+        const user = users[session.mobile];
+
+        if (user) {
+          currentUser = user;
+          if (!Array.isArray(currentUser.links)) currentUser.links = [];
+          updateUserUI();
+          renderLinks();
+          showMain();
+          return;
+        }
+
+        clearSession();
+      }
+
+      showLogin();
+      setTimeout(() => fullNameInput.focus(), 100);
+    }
+
+    boot();
+  </script>
 </body>
 </html>
