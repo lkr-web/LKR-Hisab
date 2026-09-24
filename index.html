@@ -1,1428 +1,3169 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="theme-color" content="#ff7a00" />
-  <meta name="description" content="LKR Link - Save and manage your favourite website links." />
-  <title>LKR Link</title>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f97316">
+  <meta name="description" content="LKR Hisab - Personal Labour, Mistri aur Site hisab app">
+  <title>LKR Hisab</title>
+  <link rel="icon" type="image/jpeg" href="https://plain-apac-prod-public.komododecks.com/202609/23/Y9nvvKSvlhIJab1sGNJa/image.png">
   <style>
     :root{
-      --primary:#ff7a00;
-      --primary-dark:#e96600;
-      --primary-soft:#fff2e6;
-      --bg:#f6f7f9;
-      --card:#ffffff;
-      --text:#17191d;
-      --muted:#737983;
-      --border:#e8eaee;
-      --danger:#e5484d;
-      --shadow:0 8px 28px rgba(20,24,32,.07);
-      --shadow-hover:0 12px 34px rgba(20,24,32,.11);
-      --radius:20px;
+      --orange:#f97316;--orange-dark:#ea580c;--orange-soft:#fff7ed;--orange-pale:#ffedd5;
+      --bg:#f7f8fa;--card:#fff;--text:#1f2937;--muted:#6b7280;--border:#e5e7eb;
+      --green:#16a34a;--green-soft:#f0fdf4;--red:#dc2626;--red-soft:#fef2f2;--blue:#2563eb;--blue-soft:#eff6ff;
+      --shadow:0 8px 24px rgba(15,23,42,.07);--radius:18px;
     }
-
     *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{
-      margin:0;
-      min-height:100vh;
-      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
-      color:var(--text);
-      background:var(--bg);
-      -webkit-font-smoothing:antialiased;
+    html,body{
+      margin:0;padding:0;background:var(--bg);color:var(--text);
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans Devanagari",sans-serif
     }
-    button,input{font:inherit}
+    body{min-height:100vh}
+    button,input,select{font:inherit}
     button{cursor:pointer}
-    a{text-decoration:none;color:inherit}
+    .hidden{display:none!important}
 
-    .app{
-      width:100%;
-      min-height:100vh;
-    }
-
-    /* ---------- Login ---------- */
-    .login-screen{
-      min-height:100vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:24px 16px;
-      background:
-        radial-gradient(circle at 15% 10%, rgba(255,122,0,.14), transparent 32%),
-        radial-gradient(circle at 90% 85%, rgba(255,122,0,.10), transparent 30%),
-        var(--bg);
-    }
-
-    .login-card{
-      width:min(100%,430px);
-      background:rgba(255,255,255,.96);
-      border:1px solid rgba(255,255,255,.8);
-      border-radius:28px;
-      padding:30px 22px 24px;
-      box-shadow:0 20px 60px rgba(24,29,38,.10);
-    }
-
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:11px;
-      font-weight:800;
-      letter-spacing:-.5px;
-    }
-
-    .brand-mark{
-      width:44px;
-      height:44px;
-      border-radius:14px;
-      display:grid;
-      place-items:center;
-      color:#fff;
-      background:linear-gradient(135deg,var(--primary),#ff9a3d);
-      box-shadow:0 8px 18px rgba(255,122,0,.25);
-      font-size:20px;
-      font-weight:900;
-    }
-
-    .brand-name{font-size:22px}
-
-    .login-title{
-      margin:30px 0 8px;
-      font-size:28px;
-      line-height:1.15;
-      letter-spacing:-1px;
-    }
-
-    .login-subtitle{
-      margin:0 0 24px;
-      color:var(--muted);
-      line-height:1.55;
-      font-size:14px;
-    }
-
-    .field{
-      margin-bottom:15px;
-    }
-
-    .field label{
-      display:block;
-      margin:0 0 7px;
-      font-size:13px;
-      font-weight:700;
-      color:#4d535d;
-    }
-
-    .input{
-      width:100%;
-      height:52px;
-      border:1px solid var(--border);
-      border-radius:15px;
-      padding:0 15px;
-      outline:none;
-      color:var(--text);
-      background:#fff;
-      transition:.2s ease;
-    }
-
-    .input:focus{
-      border-color:rgba(255,122,0,.7);
-      box-shadow:0 0 0 4px rgba(255,122,0,.10);
-    }
-
-    .primary-btn{
-      border:0;
-      color:#fff;
-      background:linear-gradient(135deg,var(--primary),#ff8b22);
-      box-shadow:0 8px 18px rgba(255,122,0,.22);
-      transition:transform .15s ease, box-shadow .15s ease, opacity .15s ease;
-    }
-
-    .primary-btn:hover{box-shadow:0 11px 22px rgba(255,122,0,.28)}
-    .primary-btn:active{transform:translateY(1px)}
-    .primary-btn:disabled{opacity:.55;cursor:not-allowed}
-
-    .login-btn{
-      width:100%;
-      height:52px;
-      border-radius:15px;
-      font-weight:800;
-      margin-top:3px;
-    }
-
-    .login-note{
-      text-align:center;
-      margin:17px 0 0;
-      color:#9499a2;
-      font-size:12px;
-      line-height:1.5;
-    }
-
-    /* ---------- Main ---------- */
-    .main-screen{
-      min-height:100vh;
-      display:none;
-    }
-
+    .app{min-height:100vh}
     .topbar{
-      position:sticky;
-      top:0;
-      z-index:20;
-      background:rgba(246,247,249,.90);
-      backdrop-filter:blur(14px);
-      -webkit-backdrop-filter:blur(14px);
-      border-bottom:1px solid rgba(232,234,238,.75);
+      position:sticky;top:0;z-index:20;background:rgba(255,255,255,.94);
+      backdrop-filter:blur(12px);border-bottom:1px solid var(--border);
+      padding:12px 14px 10px
     }
-
-    .topbar-inner{
-      width:min(100%,1000px);
-      margin:auto;
-      padding:13px 16px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
+    .topbar-row{
+      max-width:760px;margin:auto;display:flex;align-items:center;
+      justify-content:space-between;gap:10px
     }
-
-    .top-brand .brand-mark{
-      width:38px;
-      height:38px;
-      border-radius:12px;
-      font-size:17px;
+    .brand{font-weight:850;font-size:21px;letter-spacing:-.4px}
+    .brand span{color:var(--orange)}
+    .cloud{
+      font-size:12px;font-weight:750;padding:7px 10px;border-radius:999px;
+      background:#f3f4f6;color:var(--muted);white-space:nowrap
     }
-    .top-brand .brand-name{font-size:19px}
+    .cloud.connected,.cloud.saved{background:var(--green-soft);color:var(--green)}
+    .cloud.offline{background:#fff7ed;color:#c2410c}
+    .cloud.error{background:var(--red-soft);color:var(--red)}
 
-    .user-actions{
-      display:flex;
-      align-items:center;
-      gap:9px;
+    main{max-width:760px;margin:0 auto;padding:16px 14px 100px}
+    .view-title{font-size:25px;font-weight:850;margin:4px 0 3px}
+    .subtitle{font-size:13px;color:var(--muted);margin-bottom:16px}
+
+    .monthbar{
+      display:flex;align-items:center;justify-content:space-between;
+      background:var(--card);border:1px solid var(--border);border-radius:15px;
+      padding:7px;margin:0 0 15px;box-shadow:0 3px 12px rgba(15,23,42,.04)
     }
+    .monthbar button{
+      width:42px;height:42px;border:0;border-radius:12px;
+      background:var(--orange-soft);color:var(--orange-dark);font-size:25px
+    }
+    .month-label{text-align:center;font-weight:800;font-size:16px;flex:1}
 
+    .grid{display:grid;gap:12px}
+    .grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .card{
+      background:var(--card);border:1px solid var(--border);
+      border-radius:var(--radius);box-shadow:var(--shadow);padding:15px
+    }
+    .section-title{font-weight:850;font-size:16px;margin:0 0 11px}
+    .stat-card{padding:14px}
+    .stat-label{font-size:12px;color:var(--muted)}
+    .stat-value{font-size:22px;font-weight:850;margin-top:3px}
+    .stat-small{font-size:12px;color:var(--muted);margin-top:2px}
+    .orange-card{background:linear-gradient(135deg,#fff7ed,#fff)}
+
+    .btn{
+      border:0;border-radius:13px;min-height:44px;padding:10px 14px;
+      font-weight:800;transition:.15s transform,.15s opacity
+    }
+    .btn:active{transform:scale(.98)}
+    .btn-primary{background:var(--orange);color:#fff}
+    .btn-primary:hover{background:var(--orange-dark)}
+    .btn-light{background:#f3f4f6;color:var(--text)}
+    .btn-danger{background:var(--red-soft);color:var(--red)}
+    .btn-success{background:var(--green);color:#fff}
+    .btn-outline{background:#fff;color:var(--orange-dark);border:1px solid #fed7aa}
+    .btn-block{width:100%}
+    .btn-sm{min-height:36px;padding:7px 10px;border-radius:10px;font-size:12px}
+
+    .row{display:flex;align-items:center;gap:10px}
+    .row-between{display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .wrap{flex-wrap:wrap}
+    .muted{color:var(--muted)}
+    .right{text-align:right}
+    .money{font-variant-numeric:tabular-nums}
+    .positive{color:var(--green)}
+    .negative{color:var(--red)}
+
+    .person-list,.site-list{display:grid;gap:10px}
+    .list-item{
+      background:#fff;border:1px solid var(--border);
+      border-radius:16px;padding:13px
+    }
     .avatar{
-      width:38px;
-      height:38px;
-      border-radius:50%;
-      display:grid;
-      place-items:center;
-      color:#fff;
-      background:linear-gradient(135deg,#343943,#727985);
-      font-size:13px;
-      font-weight:800;
-      flex:0 0 auto;
+      width:42px;height:42px;border-radius:13px;background:var(--orange-pale);
+      color:var(--orange-dark);display:grid;place-items:center;
+      font-weight:900;flex:0 0 auto
     }
-
-    .logout-btn{
-      border:1px solid var(--border);
-      background:#fff;
-      color:#50555e;
-      height:38px;
-      padding:0 12px;
-      border-radius:12px;
-      font-size:12px;
-      font-weight:800;
-    }
-
-    .page{
-      width:min(100%,1000px);
-      margin:auto;
-      padding:24px 16px 50px;
-    }
-
-    .welcome{
-      margin-bottom:20px;
-    }
-
-    .welcome h1{
-      margin:0;
-      font-size:27px;
-      line-height:1.2;
-      letter-spacing:-.8px;
-    }
-
-    .welcome p{
-      margin:7px 0 0;
-      color:var(--muted);
-      font-size:13px;
-    }
-
-    /* Add URL */
-    .add-card{
-      background:var(--card);
-      border:1px solid var(--border);
-      border-radius:var(--radius);
-      padding:14px;
-      box-shadow:var(--shadow);
-      margin-bottom:22px;
-    }
-
-    .add-row{
-      display:flex;
-      align-items:center;
-      gap:9px;
-    }
-
-    .url-input{
-      height:54px;
-      flex:1;
-      min-width:0;
-      border:1px solid var(--border);
-      border-radius:15px;
-      padding:0 15px;
-      outline:none;
-      background:#fafbfc;
-      color:var(--text);
-      transition:.2s ease;
-    }
-
-    .url-input:focus{
-      background:#fff;
-      border-color:rgba(255,122,0,.72);
-      box-shadow:0 0 0 4px rgba(255,122,0,.09);
-    }
-
-    .add-btn{
-      width:54px;
-      height:54px;
-      border:0;
-      border-radius:15px;
-      color:#fff;
-      background:var(--primary);
-      font-size:31px;
-      line-height:1;
-      font-weight:500;
-      display:grid;
-      place-items:center;
-      flex:0 0 auto;
-      box-shadow:0 8px 18px rgba(255,122,0,.22);
-      transition:.15s ease;
-    }
-
-    .add-btn:hover{background:var(--primary-dark)}
-    .add-btn:active{transform:scale(.97)}
-    .add-btn:disabled{opacity:.55;cursor:not-allowed}
-
-    .add-hint{
-      margin:9px 3px 0;
-      color:#999ea6;
-      font-size:11px;
-    }
-
-    /* Link list */
-    .list-head{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      margin:0 2px 11px;
-    }
-
-    .list-title{
-      margin:0;
-      font-size:15px;
-      font-weight:850;
-    }
-
-    .count-badge{
-      min-width:28px;
-      height:24px;
-      padding:0 8px;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      border-radius:999px;
-      background:var(--primary-soft);
-      color:var(--primary-dark);
-      font-size:11px;
-      font-weight:800;
-    }
-
-    .links-list{
-      display:grid;
-      gap:11px;
-    }
-
-    .link-card{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      background:#fff;
-      border:1px solid var(--border);
-      border-radius:18px;
-      padding:12px;
-      box-shadow:var(--shadow);
-      transition:transform .16s ease, box-shadow .16s ease;
-      min-width:0;
-    }
-
-    .link-card:hover{
-      transform:translateY(-1px);
-      box-shadow:var(--shadow-hover);
-    }
-
-    .site-icon{
-      width:48px;
-      height:48px;
-      border-radius:14px;
-      flex:0 0 48px;
-      overflow:hidden;
-      display:grid;
-      place-items:center;
-      background:#f0f1f4;
-      color:#4b5059;
-      font-size:18px;
-      font-weight:850;
-      border:1px solid #eceef1;
-    }
-
-    .site-icon img{
-      display:block;
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      background:#fff;
-    }
-
-    .site-info{
-      min-width:0;
-      flex:1;
-    }
-
-    .site-title{
-      margin:0 0 4px;
-      font-size:14px;
-      font-weight:800;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-
-    .site-domain{
-      margin:0;
-      color:#858b94;
-      font-size:11px;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-
-    .card-actions{
-      display:flex;
-      align-items:center;
-      gap:7px;
-      flex:0 0 auto;
-    }
-
-    .open-btn{
-      height:37px;
-      padding:0 13px;
-      border:0;
-      border-radius:11px;
-      background:var(--primary-soft);
-      color:var(--primary-dark);
-      font-size:12px;
-      font-weight:850;
-    }
-
-    .open-btn:hover{background:#ffe7d1}
-
-    .delete-btn{
-      width:37px;
-      height:37px;
-      border:1px solid #f0d8d9;
-      border-radius:11px;
-      background:#fff7f7;
-      color:var(--danger);
-      display:grid;
-      place-items:center;
-      font-size:17px;
-    }
-
-    .delete-btn:hover{background:#ffeded}
+    .name{font-weight:850}
+    .meta{font-size:12px;color:var(--muted);margin-top:3px}
+    .actions{display:flex;gap:7px;margin-top:10px}
+    .actions .btn{flex:1}
 
     .empty{
-      padding:40px 18px;
-      text-align:center;
-      background:#fff;
-      border:1px dashed #dfe2e7;
-      border-radius:20px;
+      padding:28px 14px;text-align:center;color:var(--muted);
+      background:#fff;border:1px dashed var(--border);border-radius:16px
+    }
+    .empty strong{display:block;color:var(--text);margin-bottom:4px}
+
+    label{display:block;font-size:13px;font-weight:750;margin:0 0 6px}
+    .field{margin-bottom:13px}
+    .input,.select{
+      width:100%;min-height:46px;padding:11px 12px;
+      border:1px solid #d1d5db;border-radius:12px;
+      background:#fff;color:var(--text);outline:none
+    }
+    .input:focus,.select:focus{
+      border-color:var(--orange);
+      box-shadow:0 0 0 3px rgba(249,115,22,.12)
     }
 
-    .empty-icon{
-      width:52px;
-      height:52px;
-      margin:0 auto 12px;
-      display:grid;
-      place-items:center;
-      border-radius:16px;
-      background:var(--primary-soft);
-      font-size:22px;
+    .segmented{
+      display:grid;grid-template-columns:repeat(2,1fr);gap:7px;
+      background:#f3f4f6;padding:5px;border-radius:13px
+    }
+    .segmented.three{grid-template-columns:repeat(3,1fr)}
+    .seg{
+      min-height:42px;border:0;border-radius:9px;background:transparent;
+      font-weight:800;color:var(--muted)
+    }
+    .seg.active{
+      background:#fff;color:var(--orange-dark);
+      box-shadow:0 2px 7px rgba(15,23,42,.08)
     }
 
-    .empty h3{
-      margin:0 0 5px;
-      font-size:15px;
+    .bottom-nav{
+      position:fixed;z-index:30;left:0;right:0;bottom:0;
+      background:rgba(255,255,255,.97);backdrop-filter:blur(14px);
+      border-top:1px solid var(--border);
+      padding:7px max(8px,env(safe-area-inset-left))
+      calc(7px + env(safe-area-inset-bottom));
+      display:grid;grid-template-columns:repeat(4,1fr)
+    }
+    .nav-btn{
+      border:0;background:none;color:#6b7280;min-height:52px;
+      border-radius:12px;font-size:11px;font-weight:800;
+      display:flex;flex-direction:column;align-items:center;
+      justify-content:center;gap:3px
+    }
+    .nav-icon{font-size:21px;line-height:1}
+    .nav-btn.active{color:var(--orange-dark);background:var(--orange-soft)}
+
+    .calendar{
+      background:#fff;border:1px solid var(--border);
+      border-radius:18px;overflow:hidden
+    }
+    .weekdays,.days{display:grid;grid-template-columns:repeat(7,1fr)}
+    .weekday{
+      padding:9px 2px;text-align:center;color:var(--muted);
+      font-size:11px;font-weight:800;border-bottom:1px solid var(--border)
+    }
+    .day{
+      min-height:65px;border:0;border-right:1px solid var(--border);
+      border-bottom:1px solid var(--border);background:#fff;
+      padding:5px 3px;text-align:left;position:relative
+    }
+    .day:nth-child(7n){border-right:0}
+    .day.muted-day{background:#fafafa;color:#c4c7cc}
+    .day-num{font-size:12px;font-weight:850}
+    .day-status{
+      font-size:9px;margin-top:4px;font-weight:800;line-height:1.15
+    }
+    .day.work .day-status{color:var(--green)}
+    .day.off .day-status{color:var(--red)}
+    .day.has-work{background:#f7fff9}
+    .day.selected{
+      outline:2px solid var(--orange);
+      outline-offset:-2px;z-index:1
+    }
+    .day.today .day-num{
+      display:inline-grid;width:24px;height:24px;place-items:center;
+      border-radius:50%;background:var(--orange);color:#fff
+    }
+    .units-badge{
+      position:absolute;right:3px;top:4px;background:var(--orange-pale);
+      color:var(--orange-dark);border-radius:8px;padding:2px 4px;
+      font-size:9px;font-weight:900
     }
 
-    .empty p{
-      margin:0;
-      color:var(--muted);
-      font-size:12px;
-      line-height:1.5;
+    .work-entry{
+      border:1px solid var(--border);border-radius:14px;
+      padding:11px;margin-bottom:9px;background:#fff
     }
+    .work-entry.off-entry{background:#fafafa}
+    .pill{
+      display:inline-flex;align-items:center;border-radius:999px;
+      padding:4px 8px;font-size:11px;font-weight:800;
+      background:#f3f4f6;color:var(--muted)
+    }
+    .pill.orange{background:var(--orange-soft);color:var(--orange-dark)}
+    .pill.green{background:var(--green-soft);color:var(--green)}
+    .pill.red{background:var(--red-soft);color:var(--red)}
 
-    /* Toast */
-    .toast-wrap{
-      position:fixed;
-      left:50%;
-      bottom:22px;
-      z-index:100;
-      transform:translateX(-50%);
-      width:min(calc(100% - 30px),420px);
-      pointer-events:none;
+    .modal-backdrop{
+      position:fixed;inset:0;background:rgba(15,23,42,.45);z-index:50;
+      display:flex;align-items:flex-end;justify-content:center
+    }
+    .modal{
+      width:100%;max-width:760px;background:#fff;
+      border-radius:24px 24px 0 0;max-height:92vh;overflow:auto;
+      padding:16px 14px calc(18px + env(safe-area-inset-bottom));
+      box-shadow:0 -12px 35px rgba(15,23,42,.18)
+    }
+    .modal-head{
+      display:flex;justify-content:space-between;
+      align-items:center;margin-bottom:15px
+    }
+    .modal-title{font-size:19px;font-weight:900}
+    .close{
+      width:38px;height:38px;border:0;border-radius:11px;
+      background:#f3f4f6;font-size:21px
+    }
+    .confirm-text{line-height:1.55;color:#4b5563;font-size:14px}
+
+    .login{
+      min-height:100vh;display:grid;place-items:center;padding:22px;
+      background:linear-gradient(160deg,#fff7ed 0%,#fff 55%,#f8fafc 100%)
+    }
+    .login-card{
+      width:100%;max-width:420px;background:#fff;
+      border:1px solid #fed7aa;border-radius:25px;padding:23px;
+      box-shadow:0 20px 60px rgba(15,23,42,.1)
+    }
+    .login-logo{
+      width:62px;height:62px;border-radius:18px;background:var(--orange);
+      color:#fff;display:grid;place-items:center;font-weight:950;
+      font-size:25px;margin-bottom:14px
+    }
+    .login h1{font-size:29px;margin:0 0 4px}
+    .login p{margin:0 0 22px;color:var(--muted);font-size:14px}
+    .login-error{
+      background:var(--red-soft);color:var(--red);
+      padding:10px;border-radius:11px;font-size:13px;margin-bottom:12px
     }
 
     .toast{
-      opacity:0;
-      transform:translateY(12px);
-      background:#1d2026;
-      color:#fff;
-      padding:12px 14px;
-      border-radius:13px;
-      box-shadow:0 12px 30px rgba(0,0,0,.20);
-      font-size:12px;
-      text-align:center;
-      transition:.22s ease;
+      position:fixed;z-index:100;left:50%;bottom:84px;
+      transform:translateX(-50%);background:#111827;color:#fff;
+      padding:10px 14px;border-radius:12px;font-size:13px;font-weight:750;
+      box-shadow:0 8px 30px rgba(0,0,0,.2);max-width:90%;
+      text-align:center
     }
 
-    .toast.show{
-      opacity:1;
-      transform:translateY(0);
+    .divider{height:1px;background:var(--border);margin:14px 0}
+    .info{
+      padding:11px 12px;background:var(--blue-soft);color:#1e40af;
+      border-radius:12px;font-size:12px;line-height:1.5
+    }
+    .warning{
+      padding:11px 12px;background:#fff7ed;color:#9a3412;
+      border-radius:12px;font-size:12px;line-height:1.5
+    }
+    .summary-row{
+      display:flex;justify-content:space-between;gap:12px;
+      padding:9px 0;border-bottom:1px solid #f0f0f0
+    }
+    .summary-row:last-child{border-bottom:0}
+    .summary-row span:first-child{color:var(--muted);font-size:13px}
+    .summary-row strong{font-size:14px}
+    .breakdown{display:grid;gap:8px}
+    .breakdown-item{
+      display:flex;justify-content:space-between;gap:10px;
+      padding:10px;border-radius:12px;background:#fafafa
+    }
+    .small{font-size:12px}
+    .sticky-actions{
+      position:sticky;bottom:0;background:#fff;padding-top:10px
     }
 
-    /* Modal */
-    .modal-backdrop{
-      position:fixed;
-      inset:0;
-      z-index:90;
-      display:none;
-      align-items:flex-end;
-      justify-content:center;
-      padding:16px;
-      background:rgba(13,16,21,.46);
-      backdrop-filter:blur(5px);
-    }
-
-    .modal-backdrop.show{display:flex}
-
-    .modal{
-      width:min(100%,420px);
-      background:#fff;
-      border-radius:22px;
-      padding:20px;
-      box-shadow:0 22px 70px rgba(0,0,0,.22);
-      animation:modalIn .18s ease-out;
-    }
-
-    @keyframes modalIn{
-      from{opacity:0;transform:translateY(12px)}
-      to{opacity:1;transform:translateY(0)}
-    }
-
-    .modal h3{
-      margin:0 0 7px;
-      font-size:18px;
-    }
-
-    .modal p{
-      margin:0 0 18px;
-      color:var(--muted);
-      font-size:13px;
-      line-height:1.5;
-      word-break:break-word;
-    }
-
-    .modal-actions{
-      display:flex;
-      gap:9px;
-    }
-
-    .modal-actions button{
-      flex:1;
-      height:46px;
-      border-radius:13px;
-      font-weight:800;
-      border:0;
-    }
-
-    .cancel-btn{
-      background:#f2f3f5;
-      color:#4e535c;
-    }
-
-    .confirm-delete{
-      background:#fff0f0;
-      color:var(--danger);
-    }
-
-    /* Loading */
-    .loading-overlay{
-      position:fixed;
-      inset:0;
-      z-index:120;
-      display:none;
-      place-items:center;
-      background:rgba(246,247,249,.65);
-      backdrop-filter:blur(3px);
-    }
-
-    .loading-overlay.show{display:grid}
-
-    .spinner{
-      width:34px;
-      height:34px;
-      border:3px solid #ffd9bd;
-      border-top-color:var(--primary);
-      border-radius:50%;
-      animation:spin .7s linear infinite;
-    }
-
-    @keyframes spin{to{transform:rotate(360deg)}}
-
-    @media (min-width:700px){
-      .login-card{padding:36px 32px 28px}
-      .page{padding-top:34px}
-      .links-list{grid-template-columns:1fr 1fr}
-      .link-card{min-height:76px}
-      .modal-backdrop{align-items:center}
-    }
-
-    @media (max-width:430px){
-      .card-actions{gap:5px}
-      .open-btn{padding:0 10px}
-      .delete-btn{width:35px;height:35px}
-      .site-icon{width:45px;height:45px;flex-basis:45px}
-      .site-title{font-size:13px}
+    @media(min-width:700px){
+      .bottom-nav{
+        left:50%;right:auto;transform:translateX(-50%);
+        width:min(760px,100%);border-left:1px solid var(--border);
+        border-right:1px solid var(--border);
+        border-radius:18px 18px 0 0
+      }
+      .modal-backdrop{align-items:center;padding:20px}
+      .modal{border-radius:22px;max-height:88vh}
+      .toast{bottom:95px}
     }
   </style>
 </head>
 
 <body>
-  <div class="app">
+<div id="root"></div>
 
-    <!-- LOGIN / REGISTRATION -->
-    <section id="loginScreen" class="login-screen">
-      <div class="login-card">
-        <div class="brand">
-          <div class="brand-mark">L</div>
-          <div class="brand-name">LKR Link</div>
-        </div>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
 
-        <h1 class="login-title">अपने links एक जगह रखें</h1>
-        <p class="login-subtitle">
-          Name और mobile number से login करें। आपका saved link data इसी browser में सुरक्षित रहेगा।
-        </p>
+<script>
+(() => {
+  'use strict';
 
-        <form id="loginForm" autocomplete="on">
-          <div class="field">
-            <label for="fullName">Full Name</label>
-            <input
-              id="fullName"
-              class="input"
-              type="text"
-              placeholder="जैसे Shivam Kumar"
-              autocomplete="name"
-              maxlength="80"
-              required
-            />
-          </div>
+  const firebaseConfig = {
+    apiKey: "AIzaSyAz4vnf3BJ_Hs54lksg3Og8n5a7fr7DhyU",
+    authDomain: "lkr-hisab.firebaseapp.com",
+    projectId: "lkr-hisab",
+    storageBucket: "lkr-hisab.firebasestorage.app",
+    messagingSenderId: "1054769717706",
+    appId: "1:1054769717706:web:b6011c1a2023c6dc7b2f33"
+  };
 
-          <div class="field">
-            <label for="mobileNumber">Mobile Number</label>
-            <input
-              id="mobileNumber"
-              class="input"
-              type="tel"
-              inputmode="numeric"
-              placeholder="10 digit mobile number"
-              autocomplete="tel"
-              maxlength="15"
-              required
-            />
-          </div>
+  const APP_USER = {
+    name: 'Shivam Kumar',
+    password: '14141414',
+    id: 'shivam-kumar'
+  };
 
-          <button id="loginBtn" class="primary-btn login-btn" type="submit">
-            Register / Login
-          </button>
-        </form>
+  const LOGIN_KEY = 'lkr_hisab_logged_in';
+  const CACHE_KEY = 'lkr_hisab_cache_v1';
 
-        <p class="login-note">
-          Demo version • Data browser के localStorage में रहेगा
-        </p>
-      </div>
-    </section>
+  const state = {
+    loggedIn: false,
+    view: 'home',
+    month: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+    people: [],
+    sites: [],
+    works: [],
+    selectedPersonId: null,
+    selectedSiteId: null,
+    selectedDate: null,
+    cloud: 'offline',
+    loaded: false,
+    modal: null,
+    editing: null,
+    loginError: '',
+    busy: false
+  };
 
-    <!-- MAIN -->
-    <section id="mainScreen" class="main-screen">
-      <header class="topbar">
-        <div class="topbar-inner">
-          <div class="brand top-brand">
-            <div class="brand-mark">L</div>
-            <div class="brand-name">LKR Link</div>
-          </div>
+  let db = null;
+  let unsubscribe = null;
 
-          <div class="user-actions">
-            <div id="userAvatar" class="avatar">U</div>
-            <button id="logoutBtn" class="logout-btn" type="button">Logout</button>
-          </div>
-        </div>
-      </header>
+  const $ = id => document.getElementById(id);
 
-      <main class="page">
-        <div class="welcome">
-          <h1 id="welcomeText">नमस्ते 👋</h1>
-          <p>अपने favourite websites जल्दी access करें।</p>
-        </div>
+  const esc = value =>
+    String(value ?? '').replace(/[&<>'"]/g, c => ({
+      '&':'&amp;',
+      '<':'&lt;',
+      '>':'&gt;',
+      "'":'&#39;',
+      '"':'&quot;'
+    }[c]));
 
-        <section class="add-card" aria-label="Add website">
-          <form id="addLinkForm">
-            <div class="add-row">
-              <input
-                id="urlInput"
-                class="url-input"
-                type="text"
-                inputmode="url"
-                autocomplete="url"
-                placeholder="https://flipkart.com"
-                maxlength="2048"
-                aria-label="Website URL"
-              />
-              <button id="addBtn" class="add-btn" type="submit" aria-label="Add URL" title="Add URL">+</button>
-            </div>
-            <div class="add-hint">URL लिखकर Enter दबाएँ या + पर tap करें</div>
-          </form>
-        </section>
+  const money = n =>
+    '₹' + Math.round(Number(n) || 0).toLocaleString('en-IN');
 
-        <div class="list-head">
-          <h2 class="list-title">मेरे Links</h2>
-          <span id="linkCount" class="count-badge">0</span>
-        </div>
+  const units = n =>
+    Number(n || 0).toLocaleString('en-IN', {
+      maximumFractionDigits:2
+    });
 
-        <section id="linksList" class="links-list"></section>
-      </main>
-    </section>
+  const uid = () =>
+    (crypto && crypto.randomUUID)
+      ? crypto.randomUUID()
+      : Date.now().toString(36) + Math.random().toString(36).slice(2);
 
-    <!-- DELETE MODAL -->
-    <div id="modalBackdrop" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="deleteTitle">
-      <div class="modal">
-        <h3 id="deleteTitle">Link delete करें?</h3>
-        <p id="deleteMessage">यह link आपकी list से हट जाएगा।</p>
-        <div class="modal-actions">
-          <button id="cancelDelete" class="cancel-btn" type="button">Cancel</button>
-          <button id="confirmDelete" class="confirm-delete" type="button">Delete</button>
-        </div>
-      </div>
-    </div>
+  const pad = n => String(n).padStart(2,'0');
 
-    <!-- TOAST -->
-    <div class="toast-wrap">
-      <div id="toast" class="toast" role="status" aria-live="polite"></div>
-    </div>
+  const dateKey = d =>
+    `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
 
-    <!-- LOADING -->
-    <div id="loadingOverlay" class="loading-overlay" aria-hidden="true">
-      <div class="spinner" aria-label="Loading"></div>
-    </div>
-  </div>
+  const parseDate = s => {
+    const [y,m,d] = String(s).split('-').map(Number);
+    return new Date(y,m-1,d);
+  };
 
-  <script>
-    "use strict";
+  const monthKey = d =>
+    `${d.getFullYear()}-${pad(d.getMonth()+1)}`;
 
-    /*
-      LKR Link - Single File Demo
-      ----------------------------
-      Storage:
-        lkr_link_users
-          {
-            "mobile": {
-              name: "...",
-              mobile: "...",
-              links: [
-                {
-                  id: "...",
-                  url: "...",
-                  domain: "...",
-                  title: "...",
-                  favicon: "...",
-                  addedAt: 123456789
-                }
-              ]
-            }
-          }
+  const monthLabel = d =>
+    d.toLocaleDateString('en-IN',{
+      month:'long',
+      year:'numeric'
+    });
 
-        lkr_link_session
-          {
-            mobile: "..."
-          }
+  const isSameMonth = (date, month) =>
+    date.getFullYear()===month.getFullYear() &&
+    date.getMonth()===month.getMonth();
 
-      IMPORTANT:
-      Browser-side JavaScript cannot reliably fetch/read arbitrary website HTML
-      because of CORS. Therefore this demo uses:
-        1) saved favicon URL, if available
-        2) direct common favicon paths
-        3) multiple public favicon services
-        4) letter fallback
+  const firstOfMonth = d =>
+    new Date(d.getFullYear(),d.getMonth(),1);
 
-      For the future Firebase/backend version, server-side HTML fetching can
-      inspect <link rel="icon"> and return the actual favicon URL.
-    */
+  const getPerson = id =>
+    state.people.find(p => p.id === id);
 
-    const STORAGE_USERS = "lkr_link_users";
-    const STORAGE_SESSION = "lkr_link_session";
+  const getSite = id =>
+    state.sites.find(s => s.id === id);
 
-    const loginScreen = document.getElementById("loginScreen");
-    const mainScreen = document.getElementById("mainScreen");
-    const loginForm = document.getElementById("loginForm");
-    const fullNameInput = document.getElementById("fullName");
-    const mobileInput = document.getElementById("mobileNumber");
-    const loginBtn = document.getElementById("loginBtn");
+  const worksInMonth = (month=state.month) =>
+    state.works.filter(w =>
+      String(w.date).startsWith(monthKey(month))
+    );
 
-    const welcomeText = document.getElementById("welcomeText");
-    const userAvatar = document.getElementById("userAvatar");
-    const logoutBtn = document.getElementById("logoutBtn");
+  const workForPersonMonth = (personId, month=state.month) =>
+    worksInMonth(month).filter(w => w.personId===personId);
 
-    const addLinkForm = document.getElementById("addLinkForm");
-    const urlInput = document.getElementById("urlInput");
-    const addBtn = document.getElementById("addBtn");
+  const activeWorkEntries = (personId, month=state.month) =>
+    workForPersonMonth(personId,month)
+      .filter(w => w.status==='work');
 
-    const linksList = document.getElementById("linksList");
-    const linkCount = document.getElementById("linkCount");
+  const personUnits = (personId, month=state.month) =>
+    activeWorkEntries(personId,month)
+      .reduce((s,w)=>s+Number(w.units||0),0);
 
-    const modalBackdrop = document.getElementById("modalBackdrop");
-    const deleteMessage = document.getElementById("deleteMessage");
-    const cancelDelete = document.getElementById("cancelDelete");
-    const confirmDelete = document.getElementById("confirmDelete");
+  const personPayment = (personId, month=state.month) =>
+    activeWorkEntries(personId,month)
+      .reduce((s,w)=>s+(w.paymentYes ? Number(w.paymentAmount||0) : 0),0);
 
-    const toast = document.getElementById("toast");
-    const loadingOverlay = document.getElementById("loadingOverlay");
+  const personBana = (personId, month=state.month) => {
+    const p=getPerson(personId);
+    return (p ? Number(p.rate||0) : 0) *
+      personUnits(personId,month);
+  };
 
-    let currentUser = null;
-    let pendingDeleteId = null;
-    let toastTimer = null;
+  const personBalance = (personId, month=state.month) =>
+    personBana(personId,month)-personPayment(personId,month);
 
-    /* ---------- Storage helpers ---------- */
+  function setCloud(status){
+    state.cloud=status;
+    const el=$('cloudStatus');
+    if(!el)return;
 
-    function loadUsers() {
-      try {
-        const raw = localStorage.getItem(STORAGE_USERS);
-        if (!raw) return {};
-        const data = JSON.parse(raw);
-        return data && typeof data === "object" ? data : {};
-      } catch (error) {
-        console.error("Could not read users:", error);
-        return {};
-      }
-    }
+    const map={
+      connected:['☁ Cloud • Connected','connected'],
+      saved:['☁ Cloud • Saved','saved'],
+      offline:['☁ Cloud • Offline','offline'],
+      error:['☁ Sync error','error']
+    };
 
-    function saveUsers(users) {
-      localStorage.setItem(STORAGE_USERS, JSON.stringify(users));
-    }
+    el.textContent=map[status]?.[0] || '☁ Cloud • Offline';
+    el.className='cloud '+(map[status]?.[1] || '');
+  }
 
-    function loadSession() {
-      try {
-        const raw = localStorage.getItem(STORAGE_SESSION);
-        if (!raw) return null;
-        const session = JSON.parse(raw);
-        return session && session.mobile ? session : null;
-      } catch (error) {
-        return null;
-      }
-    }
+  function saveLocalCache(){
+    try{
+      localStorage.setItem(
+        CACHE_KEY,
+        JSON.stringify({
+          people:state.people,
+          sites:state.sites,
+          works:state.works
+        })
+      );
+    }catch(e){}
+  }
 
-    function saveSession(mobile) {
-      localStorage.setItem(STORAGE_SESSION, JSON.stringify({ mobile }));
-    }
+  function loadLocalCache(){
+    try{
+      const raw=localStorage.getItem(CACHE_KEY);
+      if(!raw)return;
 
-    function clearSession() {
-      localStorage.removeItem(STORAGE_SESSION);
-    }
+      const d=JSON.parse(raw);
 
-    function normalizeMobile(value) {
-      return String(value || "").replace(/\D/g, "").slice(-15);
-    }
+      state.people=Array.isArray(d.people) ? d.people : [];
+      state.sites=Array.isArray(d.sites) ? d.sites : [];
+      state.works=Array.isArray(d.works) ? d.works : [];
+    }catch(e){}
+  }
 
-    function normalizeUrl(raw) {
-      let value = String(raw || "").trim();
-
-      if (!value) {
-        throw new Error("URL खाली है");
+  async function initFirebase(){
+    try{
+      if(!firebase.apps.length){
+        firebase.initializeApp(firebaseConfig);
       }
 
-      if (!/^https?:\/\//i.test(value)) {
-        value = "https://" + value;
-      }
-
-      const parsed = new URL(value);
-
-      if (!["http:", "https:"].includes(parsed.protocol)) {
-        throw new Error("केवल HTTP/HTTPS URL allowed है");
-      }
-
-      return parsed.href;
+      db=firebase.firestore();
+      setCloud('connected');
+      return true;
+    }catch(e){
+      console.error(e);
+      setCloud('error');
+      return false;
     }
+  }
 
-    function getDomain(url) {
-      try {
-        return new URL(url).hostname.replace(/^www\./i, "");
-      } catch {
-        return "";
-      }
-    }
+  const userRef = () =>
+    db.collection('users').doc(APP_USER.id);
 
-    function getDomainDisplay(url) {
-      try {
-        const parsed = new URL(url);
-        return parsed.hostname.replace(/^www\./i, "");
-      } catch {
-        return url;
-      }
-    }
+  const col = name =>
+    userRef().collection(name);
 
-    function getInitial(text) {
-      const clean = String(text || "").trim();
-      return (clean.charAt(0) || "W").toUpperCase();
-    }
-
-    function titleFromDomain(domain) {
-      if (!domain) return "Website";
-      const firstPart = domain.split(".")[0] || domain;
-      return firstPart
-        .replace(/[-_]+/g, " ")
-        .replace(/\s+/g, " ")
-        .trim()
-        .replace(/\b\w/g, ch => ch.toUpperCase());
-    }
-
-    function makeId() {
-      return "l_" + Date.now().toString(36) + "_" +
-        Math.random().toString(36).slice(2, 10);
-    }
-
-    /* ---------- UI helpers ---------- */
-
-    function showToast(message) {
-      clearTimeout(toastTimer);
-      toast.textContent = message;
-      toast.classList.add("show");
-      toastTimer = setTimeout(() => toast.classList.remove("show"), 2600);
-    }
-
-    function setLoading(show) {
-      loadingOverlay.classList.toggle("show", !!show);
-    }
-
-    function showLogin() {
-      loginScreen.style.display = "flex";
-      mainScreen.style.display = "none";
-    }
-
-    function showMain() {
-      loginScreen.style.display = "none";
-      mainScreen.style.display = "block";
-    }
-
-    function updateUserUI() {
-      if (!currentUser) return;
-
-      const name = currentUser.name || "User";
-      welcomeText.textContent = `नमस्ते, ${name} 👋`;
-      userAvatar.textContent = getInitial(name);
-    }
-
-    /* ---------- Favicon engine ---------- */
-
-    /*
-      This is intentionally extension-agnostic.
-      .com, .online, .in, .org, .xyz, .shop, etc. all go through
-      exactly the same logic.
-
-      Important browser limitation:
-      We cannot reliably read arbitrary site's <head> because of CORS.
-      So we try many common direct paths and public icon resolvers.
-    */
-
-    function getFaviconCandidates(url) {
-      let parsed;
-
-      try {
-        parsed = new URL(url);
-      } catch {
-        return [];
-      }
-
-      const origin = parsed.origin;
-      const host = parsed.hostname;
-
-      const candidates = [
-        // Direct/common locations
-        origin + "/favicon.ico",
-        origin + "/favicon.png",
-        origin + "/favicon.svg",
-        origin + "/apple-touch-icon.png",
-        origin + "/apple-touch-icon-precomposed.png",
-
-        // Google favicon resolver
-        "https://www.google.com/s2/favicons?domain=" +
-          encodeURIComponent(host) + "&sz=128",
-
-        // DuckDuckGo favicon service
-        "https://icons.duckduckgo.com/ip3/" +
-          encodeURIComponent(host) + ".ico",
-
-        // Favicon.im
-        "https://favicon.im/" +
-          encodeURIComponent(host),
-
-        // Google favicon resolver with direct URL fallback
-        "https://www.google.com/s2/favicons?domain_url=" +
-          encodeURIComponent(url) + "&sz=128"
-      ];
-
-      return [...new Set(candidates)];
-    }
-
-    function testImage(url) {
-      return new Promise(resolve => {
-        const img = new Image();
-        let finished = false;
-
-        const done = result => {
-          if (finished) return;
-          finished = true;
-          clearTimeout(timer);
-          resolve(result);
-        };
-
-        const timer = setTimeout(() => done(false), 5500);
-
-        img.onload = () => {
-          // A loaded image with width/height > 0 is considered usable.
-          done(!!(img.naturalWidth > 0 && img.naturalHeight > 0));
-        };
-
-        img.onerror = () => done(false);
-
-        // Anonymous allows CDN images where CORS headers are available,
-        // while normal <img> loading also works for most public favicon URLs.
-        img.crossOrigin = "anonymous";
-        img.src = url;
+  async function ensureUserDoc(){
+    try{
+      await userRef().set({
+        name:APP_USER.name,
+        updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+      },{
+        merge:true
       });
+    }catch(e){
+      console.warn('user doc',e);
+    }
+  }
+
+  async function loadFirestore(){
+    if(!db)return false;
+
+    state.busy=true;
+    render();
+
+    try{
+      const [
+        sitesSnap,
+        peopleSnap,
+        worksSnap
+      ]=await Promise.all([
+        col('sites').get(),
+        col('people').get(),
+        col('works').get()
+      ]);
+
+      state.sites=sitesSnap.docs.map(d=>({
+        id:d.id,
+        ...d.data()
+      }));
+
+      state.people=peopleSnap.docs.map(d=>({
+        id:d.id,
+        ...d.data()
+      }));
+
+      state.works=worksSnap.docs.map(d=>({
+        id:d.id,
+        ...d.data()
+      }));
+
+      saveLocalCache();
+      state.loaded=true;
+      setCloud('saved');
+
+      state.busy=false;
+      render();
+
+      return true;
+    }catch(e){
+      console.error(e);
+      setCloud('error');
+      state.loaded=true;
+      state.busy=false;
+      render();
+
+      toast('Firestore load नहीं हो पाया। Cache से app चला रहा हूँ।');
+      return false;
+    }
+  }
+
+  async function saveDoc(collectionName,item){
+    if(!db){
+      setCloud('error');
+      throw new Error('Firebase unavailable');
     }
 
-    async function findWorkingFavicon(url) {
-      const candidates = getFaviconCandidates(url);
+    await col(collectionName)
+      .doc(item.id)
+      .set({
+        ...item,
+        updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+      },{
+        merge:true
+      });
+  }
 
-      for (const candidate of candidates) {
-        try {
-          const ok = await testImage(candidate);
-          if (ok) return candidate;
-        } catch (error) {
-          // Try next candidate.
-        }
-      }
-
-      return "";
+  async function deleteDoc(collectionName,id){
+    if(!db){
+      throw new Error('Firebase unavailable');
     }
 
-    function setIconFallback(iconEl, title) {
-      iconEl.innerHTML = "";
-      const letter = document.createElement("span");
-      letter.textContent = getInitial(title);
-      iconEl.appendChild(letter);
+    await col(collectionName).doc(id).delete();
+  }
+
+  async function persistAdd(collectionName,item){
+    state[collectionName].push(item);
+    saveLocalCache();
+    render();
+
+    try{
+      await saveDoc(collectionName,item);
+      setCloud('saved');
+    }catch(e){
+      setCloud('error');
+      toast('Cloud save fail हुआ। Internet/Firestore rules check करें।');
+    }
+  }
+
+  async function persistUpdate(collectionName,item){
+    const arr=state[collectionName];
+    const i=arr.findIndex(x=>x.id===item.id);
+
+    if(i>=0)arr[i]=item;
+
+    saveLocalCache();
+    render();
+
+    try{
+      await saveDoc(collectionName,item);
+      setCloud('saved');
+    }catch(e){
+      setCloud('error');
+      toast('Cloud update fail हुआ।');
+    }
+  }
+
+  async function persistDelete(collectionName,id){
+    const arr=state[collectionName];
+    const i=arr.findIndex(x=>x.id===id);
+
+    if(i>=0)arr.splice(i,1);
+
+    saveLocalCache();
+    render();
+
+    try{
+      await deleteDoc(collectionName,id);
+      setCloud('saved');
+    }catch(e){
+      setCloud('error');
+      toast('Cloud delete fail हुआ।');
+    }
+  }
+
+  function monthNav(){
+    return `
+      <div class="monthbar">
+        <button aria-label="Previous month" onclick="changeMonth(-1)">‹</button>
+        <div class="month-label">${esc(monthLabel(state.month))}</div>
+        <button aria-label="Next month" onclick="changeMonth(1)">›</button>
+      </div>
+    `;
+  }
+
+  window.changeMonth = delta => {
+    state.month=new Date(
+      state.month.getFullYear(),
+      state.month.getMonth()+delta,
+      1
+    );
+
+    state.selectedDate=null;
+    render();
+  };
+
+  function render(){
+    const root=$('root');
+
+    if(!state.loggedIn){
+      root.innerHTML=loginHtml();
+      return;
     }
 
-    function renderIcon(iconEl, title, faviconUrl, linkId, url) {
-      setIconFallback(iconEl, title);
+    root.innerHTML=`
+      <div class="app">
+        <header class="topbar">
+          <div class="topbar-row">
+            <div class="brand">LKR <span>Hisab</span></div>
+            <div id="cloudStatus" class="cloud"></div>
+          </div>
+        </header>
 
-      const img = document.createElement("img");
-      img.alt = "";
-      img.loading = "lazy";
-      img.decoding = "async";
+        <main id="main"></main>
 
-      let loaded = false;
+        <nav class="bottom-nav">
+          ${navButton('home','⌂','Home')}
+          ${navButton('people','👷','Labour/Mistri')}
+          ${navButton('sites','🏠','Owner/Site')}
+          ${navButton('more','☰','More')}
+        </nav>
 
-      img.onload = () => {
-        if (img.naturalWidth > 0) {
-          loaded = true;
-          iconEl.innerHTML = "";
-          iconEl.appendChild(img);
-        }
-      };
+        <div id="modalRoot"></div>
+        <div id="toastRoot"></div>
+      </div>
+    `;
 
-      img.onerror = async () => {
-        // Remove failed URL from saved data if it was a stale favicon.
-        if (loaded) return;
+    setCloud(state.cloud);
+    renderMain();
 
-        const fallback = await findWorkingFavicon(url);
+    if(state.modal){
+      renderModal();
+    }
+  }
 
-        if (fallback) {
-          img.src = fallback;
-          // Save discovered favicon for future renders.
-          updateSavedFavicon(linkId, fallback);
-        }
-      };
+  function navButton(view,icon,label){
+    return `
+      <button
+        class="nav-btn ${state.view===view?'active':''}"
+        onclick="go('${view}')"
+      >
+        <span class="nav-icon">${icon}</span>
+        ${label}
+      </button>
+    `;
+  }
 
-      if (faviconUrl) {
-        img.src = faviconUrl;
-      } else {
-        findWorkingFavicon(url).then(favicon => {
-          if (favicon) {
-            img.src = favicon;
-            updateSavedFavicon(linkId, favicon);
+  window.go=view=>{
+    state.view=view;
+    state.selectedPersonId=null;
+    state.selectedSiteId=null;
+    state.selectedDate=null;
+    state.modal=null;
+    render();
+  };
+
+  function loginHtml(){
+    return `
+      <div class="login">
+        <div class="login-card">
+          <div class="login-logo">LK</div>
+
+          <h1>LKR Hisab</h1>
+          <p>Personal Labour • Mistri • Site हिसाब</p>
+
+          ${
+            state.loginError
+              ? `<div class="login-error">${esc(state.loginError)}</div>`
+              : ''
           }
-        });
-      }
+
+          <form onsubmit="event.preventDefault();login()">
+
+            <div class="field">
+              <label>Full Name</label>
+              <input
+                id="loginName"
+                class="input"
+                autocomplete="name"
+                value="Shivam Kumar"
+                required
+              >
+            </div>
+
+            <div class="field">
+              <label>Password</label>
+              <input
+                id="loginPassword"
+                class="input"
+                type="password"
+                autocomplete="current-password"
+                inputmode="numeric"
+                required
+              >
+            </div>
+
+            <button class="btn btn-primary btn-block" type="submit">
+              Login
+            </button>
+          </form>
+
+          <div class="info" style="margin-top:14px">
+            यह personal app है। Login state इस browser में localStorage में रखी जाती है।
+            मुख्य हिसाब Firestore में save होता है।
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  window.login=async()=>{
+    const name=($('loginName')?.value||'').trim();
+    const pass=$('loginPassword')?.value||'';
+
+    if(name!==APP_USER.name || pass!==APP_USER.password){
+      state.loginError='Full Name या Password गलत है।';
+      render();
+      return;
     }
 
-    function updateSavedFavicon(linkId, favicon) {
-      if (!currentUser || !favicon) return;
+    state.loginError='';
+    state.loggedIn=true;
 
-      const users = loadUsers();
-      const user = users[currentUser.mobile];
-      if (!user || !Array.isArray(user.links)) return;
+    localStorage.setItem(LOGIN_KEY,'1');
 
-      const link = user.links.find(item => item.id === linkId);
-      if (!link) return;
+    loadLocalCache();
+    render();
 
-      if (link.favicon === favicon) return;
+    const ok=await initFirebase();
 
-      link.favicon = favicon;
-      users[currentUser.mobile] = user;
-      saveUsers(users);
+    if(ok){
+      await ensureUserDoc();
+      await loadFirestore();
+    }
+  };
 
-      // Keep current user object in sync.
-      currentUser = user;
+  window.logout=()=>{
+    if(unsubscribe){
+      unsubscribe();
+      unsubscribe=null;
     }
 
-    /* ---------- Link rendering ---------- */
+    state.loggedIn=false;
+    state.loaded=false;
+    state.modal=null;
 
-    function renderLinks() {
-      linksList.innerHTML = "";
+    localStorage.removeItem(LOGIN_KEY);
 
-      const links = Array.isArray(currentUser?.links) ? currentUser.links : [];
-      linkCount.textContent = String(links.length);
+    render();
+  };
 
-      if (!links.length) {
-        const empty = document.createElement("div");
-        empty.className = "empty";
-        empty.innerHTML = `
-          <div class="empty-icon">🔗</div>
-          <h3>अभी कोई link नहीं है</h3>
-          <p>ऊपर URL डालकर + दबाएँ और अपनी पहली website save करें।</p>
-        `;
-        linksList.appendChild(empty);
-        return;
+  function renderMain(){
+    const main=$('main');
+
+    if(state.view==='home'){
+      main.innerHTML=homeView();
+    }
+    else if(state.view==='people'){
+      main.innerHTML=peopleView();
+    }
+    else if(state.view==='sites'){
+      main.innerHTML=sitesView();
+    }
+    else{
+      main.innerHTML=moreView();
+    }
+  }
+
+  function homeView(){
+    const m=state.month;
+    const stats=typeStats('Labour',m);
+    const ms=typeStats('Mistri',m);
+    const comm=commissionStats(m);
+
+    return `
+      <div class="view-title">Home</div>
+      <div class="subtitle">इस महीने का पूरा सारांश</div>
+
+      ${monthNav()}
+
+      <div class="grid grid-2">
+        <div class="card orange-card stat-card">
+          <div class="stat-label">Labour count</div>
+          <div class="stat-value">${stats.count}</div>
+          <div class="stat-small">Work वाले workers</div>
+        </div>
+
+        <div class="card orange-card stat-card">
+          <div class="stat-label">Mistri count</div>
+          <div class="stat-value">${ms.count}</div>
+          <div class="stat-small">Work वाले workers</div>
+        </div>
+      </div>
+
+      <div style="height:12px"></div>
+
+      ${homeTypeCard('Labour',stats)}
+
+      <div style="height:12px"></div>
+
+      ${homeTypeCard('Mistri',ms)}
+
+      <div style="height:12px"></div>
+
+      <div class="card">
+        <div class="row-between">
+          <div>
+            <div class="section-title" style="margin:0">
+              Commission
+            </div>
+            <div class="small muted">इस महीने</div>
+          </div>
+
+          <button
+            class="btn btn-outline btn-sm"
+            onclick="openCommission()"
+          >
+            पूरा देखें
+          </button>
+        </div>
+
+        <div class="grid grid-2" style="margin-top:10px">
+          <div>
+            <div class="stat-label">Labour Commission</div>
+            <div class="stat-value">${money(comm.labour)}</div>
+          </div>
+
+          <div>
+            <div class="stat-label">Mistri Commission</div>
+            <div class="stat-value">${money(comm.mistri)}</div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="row-between">
+          <span class="muted">Total Commission</span>
+          <strong class="money">${money(comm.total)}</strong>
+        </div>
+      </div>
+    `;
+  }
+
+  function homeTypeCard(type,s){
+    const balance=s.bana-s.payment;
+
+    return `
+      <div class="card">
+        <div class="section-title">${type}</div>
+
+        <div class="grid grid-2">
+
+          <div>
+            <div class="stat-label">Total Work</div>
+            <div class="stat-value">${units(s.units)}</div>
+          </div>
+
+          <div>
+            <div class="stat-label">Total Bana</div>
+            <div class="stat-value">${money(s.bana)}</div>
+          </div>
+
+          <div>
+            <div class="stat-label">Actual Payment</div>
+            <div class="stat-value">${money(s.payment)}</div>
+          </div>
+
+          <div>
+            <div class="stat-label">
+              ${balance>=0?'Baki':'Jyada diya'}
+            </div>
+            <div class="stat-value ${balance>=0?'positive':'negative'}">
+              ${money(Math.abs(balance))}
+            </div>
+          </div>
+
+        </div>
+      </div>
+    `;
+  }
+
+  function typeStats(type,month){
+    const ps=state.people.filter(p=>p.type===type);
+
+    let count=0;
+    let u=0;
+    let b=0;
+    let pay=0;
+
+    ps.forEach(p=>{
+      const pu=personUnits(p.id,month);
+
+      if(pu>0)count++;
+
+      u+=pu;
+      b+=personBana(p.id,month);
+      pay+=personPayment(p.id,month);
+    });
+
+    return {
+      count,
+      units:u,
+      bana:b,
+      payment:pay
+    };
+  }
+
+  function commissionStats(month){
+    let labour=0;
+    let mistri=0;
+
+    worksInMonth(month)
+      .filter(w=>w.status==='work')
+      .forEach(w=>{
+        const p=getPerson(w.personId);
+        const s=getSite(w.siteId);
+
+        if(!p||!s)return;
+
+        const ownerRate=
+          p.type==='Labour'
+            ? Number(s.labourRate||0)
+            : Number(s.mistriRate||0);
+
+        const diff=ownerRate-Number(p.rate||0);
+
+        if(p.type==='Labour'){
+          labour+=diff*Number(w.units||0);
+        }
+        else{
+          mistri+=diff*Number(w.units||0);
+        }
+      });
+
+    return {
+      labour,
+      mistri,
+      total:labour+mistri
+    };
+  }
+
+  function peopleView(){
+    if(state.selectedPersonId){
+      return personDetailView(state.selectedPersonId);
+    }
+
+    return `
+      <div class="view-title">Labour / Mistri</div>
+      <div class="subtitle">Workers और उनका daily हिसाब</div>
+
+      <div class="grid grid-2">
+        <button
+          class="btn btn-primary"
+          onclick="openPersonForm('Labour')"
+        >
+          + Labour
+        </button>
+
+        <button
+          class="btn btn-outline"
+          onclick="openPersonForm('Mistri')"
+        >
+          + Mistri
+        </button>
+      </div>
+
+      <div style="height:14px"></div>
+
+      <div class="segmented">
+        <button
+          class="seg ${peopleFilter==='Labour'?'active':''}"
+          onclick="setPeopleFilter('Labour')"
+        >
+          Labour (${state.people.filter(p=>p.type==='Labour').length})
+        </button>
+
+        <button
+          class="seg ${peopleFilter==='Mistri'?'active':''}"
+          onclick="setPeopleFilter('Mistri')"
+        >
+          Mistri (${state.people.filter(p=>p.type==='Mistri').length})
+        </button>
+      </div>
+
+      <div style="height:12px"></div>
+
+      <div class="person-list">
+        ${renderPeopleList()}
+      </div>
+    `;
+  }
+
+  let peopleFilter='Labour';
+
+  window.setPeopleFilter=t=>{
+    peopleFilter=t;
+    render();
+  };
+
+  /*
+    IMPORTANT FIX:
+    Open button अब direct function call करता है।
+    dataset/attribute पर dependency नहीं है।
+  */
+  function renderPeopleList(){
+    const list=state.people.filter(
+      p=>p.type===peopleFilter
+    );
+
+    if(!list.length){
+      return `
+        <div class="empty">
+          <strong>
+            अभी कोई ${peopleFilter} नहीं है
+          </strong>
+          <span>
+            ऊपर से + ${peopleFilter} दबाकर जोड़ें।
+          </span>
+        </div>
+      `;
+    }
+
+    return list.map(p=>`
+      <div class="list-item">
+
+        <div class="row">
+
+          <div class="avatar">
+            ${esc(
+              (p.name||'?')
+                .trim()
+                .charAt(0)
+                .toUpperCase()
+            )}
+          </div>
+
+          <div style="min-width:0;flex:1">
+
+            <div class="name">
+              ${esc(p.name)}
+            </div>
+
+            <div class="meta">
+              ${esc(p.type)}
+              • Worker Rate ${money(p.rate)}/day
+            </div>
+
+          </div>
+
+          <button
+            type="button"
+            class="btn btn-outline btn-sm"
+            onclick='openPerson(${JSON.stringify(p.id)})'
+          >
+            Open
+          </button>
+
+        </div>
+
+        <div class="actions">
+
+          <button
+            class="btn btn-light btn-sm"
+            onclick='openPersonForm(${JSON.stringify(p.type)},${JSON.stringify(p.id)})'
+          >
+            Edit
+          </button>
+
+          <button
+            class="btn btn-danger btn-sm"
+            onclick='deletePerson(${JSON.stringify(p.id)})'
+          >
+            Delete
+          </button>
+
+        </div>
+
+      </div>
+    `).join('');
+  }
+
+  /*
+    IMPORTANT FIX:
+    Function form में बनाया गया है ताकि Open event
+    reliably execute हो।
+  */
+  window.openPerson=function(id){
+
+    const personId=String(id||'').trim();
+
+    const person=getPerson(personId);
+
+    if(!person){
+      toast('Worker नहीं मिला।');
+      return;
+    }
+
+    state.view='people';
+    state.selectedPersonId=personId;
+    state.selectedSiteId=null;
+    state.selectedDate=null;
+    state.modal=null;
+
+    render();
+  };
+
+  window.backToPeopleList=()=>{
+    state.view='people';
+    state.selectedPersonId=null;
+    state.selectedDate=null;
+    state.modal=null;
+    render();
+  };
+
+  /*
+    IMPORTANT FIX:
+    यहाँ extra closing </div> हटाया गया है।
+  */
+  function personDetailView(id){
+
+    const p=getPerson(id);
+
+    if(!p){
+      state.selectedPersonId=null;
+      return peopleView();
+    }
+
+    const u=personUnits(id);
+    const b=personBana(id);
+    const pay=personPayment(id);
+    const bal=b-pay;
+
+    return `
+      <button
+        type="button"
+        class="btn btn-light btn-sm"
+        onclick="backToPeopleList()"
+        style="margin-bottom:10px"
+      >
+        ← Labour / Mistri
+      </button>
+
+      <div class="view-title">
+        ${esc(p.name)}
+      </div>
+
+      <div class="subtitle">
+        ${esc(p.type)}
+        • Worker Rate ${money(p.rate)}/day
+      </div>
+
+      ${monthNav()}
+
+      <div class="card orange-card">
+
+        <div class="grid grid-2">
+
+          <div>
+            <div class="stat-label">Total Work</div>
+            <div class="stat-value">${units(u)}</div>
+          </div>
+
+          <div>
+            <div class="stat-label">Total Bana</div>
+            <div class="stat-value">${money(b)}</div>
+          </div>
+
+          <div>
+            <div class="stat-label">Actual Payment</div>
+            <div class="stat-value">${money(pay)}</div>
+          </div>
+
+          <div>
+            <div class="stat-label">
+              ${bal>=0?'Baki':'Jyada diya'}
+            </div>
+
+            <div class="stat-value ${bal>=0?'positive':'negative'}">
+              ${money(Math.abs(bal))}
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div style="height:13px"></div>
+
+      <div class="section-title">
+        Monthly Calendar
+      </div>
+
+      ${calendarHtml(id)}
+
+      <div style="height:13px"></div>
+
+      ${selectedDatePanel(id)}
+    `;
+  }
+
+  function calendarHtml(personId){
+
+    const first=firstOfMonth(state.month);
+    const start=new Date(first);
+
+    start.setDate(1-first.getDay());
+
+    const days=[];
+
+    for(let i=0;i<42;i++){
+
+      const d=new Date(start);
+      d.setDate(start.getDate()+i);
+
+      const key=dateKey(d);
+
+      const ws=state.works.filter(
+        w=>w.personId===personId&&w.date===key
+      );
+
+      const work=ws.filter(
+        w=>w.status==='work'
+      );
+
+      const off=ws.some(
+        w=>w.status==='off'
+      );
+
+      const u=work.reduce(
+        (s,w)=>s+Number(w.units||0),
+        0
+      );
+
+      const classes=[
+        isSameMonth(d,state.month)?'':'muted-day',
+        work.length?'has-work':'',
+        off&&!work.length?'off':'',
+        state.selectedDate===key?'selected':'',
+        dateKey(new Date())===key?'today':''
+      ].join(' ');
+
+      days.push(`
+        <button
+          class="day ${classes}"
+          onclick="selectWorkDate('${key}')"
+        >
+          <div class="day-num">${d.getDate()}</div>
+
+          ${
+            u
+              ? `<span class="units-badge">${units(u)}</span>`
+              : ''
+          }
+
+          <div class="day-status">
+            ${
+              work.length
+                ? `काम${work.length>1?' ×'+work.length:''}`
+                : off
+                  ? 'छुट्टी'
+                  : ''
+            }
+          </div>
+        </button>
+      `);
+    }
+
+    return `
+      <div class="calendar">
+
+        <div class="weekdays">
+          <div class="weekday">रवि</div>
+          <div class="weekday">सोम</div>
+          <div class="weekday">मंगल</div>
+          <div class="weekday">बुध</div>
+          <div class="weekday">गुरु</div>
+          <div class="weekday">शुक्र</div>
+          <div class="weekday">शनि</div>
+        </div>
+
+        <div class="days">
+          ${days.join('')}
+        </div>
+
+      </div>
+    `;
+  }
+
+  window.selectWorkDate=key=>{
+    state.selectedDate=key;
+    render();
+  };
+
+  function selectedDatePanel(personId){
+
+    if(!state.selectedDate){
+      return `
+        <div class="card">
+          <div class="section-title">
+            Daily Entry
+          </div>
+
+          <div class="muted small">
+            Calendar में कोई date चुनें।
+            उस date का काम/छुट्टी यहीं manage होगा।
+          </div>
+        </div>
+      `;
+    }
+
+    const p=getPerson(personId);
+    const key=state.selectedDate;
+
+    const ws=state.works.filter(
+      w=>w.personId===personId&&w.date===key
+    );
+
+    const workEntries=ws.filter(
+      w=>w.status==='work'
+    );
+
+    const hasOff=ws.some(
+      w=>w.status==='off'
+    );
+
+    return `
+      <div class="card">
+
+        <div class="row-between">
+
+          <div>
+            <div class="section-title" style="margin:0">
+              ${formatDateHindi(parseDate(key))}
+            </div>
+
+            <div class="small muted">
+              ${
+                workEntries.length
+                  ? `${workEntries.length} work ${
+                      workEntries.length===1
+                        ? 'entry'
+                        : 'entries'
+                    }`
+                  : hasOff
+                    ? 'Chhutti / No Work'
+                    : 'अभी entry नहीं है'
+              }
+            </div>
+          </div>
+
+        </div>
+
+        <div style="height:10px"></div>
+
+        <div class="field">
+
+          <label>Kaam kiya?</label>
+
+          <div class="segmented">
+
+            <button
+              type="button"
+              class="seg ${workEntries.length?'active':''}"
+              onclick="openWorkForm('${personId}','${key}')"
+            >
+              Haan — Kaam kiya
+            </button>
+
+            <button
+              type="button"
+              class="seg ${hasOff&&!workEntries.length?'active':''}"
+              onclick="saveOffDay('${personId}','${key}')"
+            >
+              Nahi — Chhutti / No Work
+            </button>
+
+          </div>
+        </div>
+
+        ${
+          workEntries.length
+            ? `
+              <div
+                class="row-between"
+                style="margin:10px 0 8px"
+              >
+                <strong>इस date का काम</strong>
+
+                <span class="pill orange">
+                  ${units(
+                    workEntries.reduce(
+                      (a,w)=>a+Number(w.units||0),
+                      0
+                    )
+                  )}
+                  total units
+                </span>
+              </div>
+
+              ${workEntries
+                .map(w=>workEntryHtml(w,p))
+                .join('')}
+
+              <button
+                type="button"
+                class="btn btn-outline btn-block"
+                onclick="openWorkForm('${personId}','${key}')"
+              >
+                + दूसरी जगह का काम जोड़ें
+              </button>
+            `
+            : ''
+        }
+
+        ${
+          hasOff&&!workEntries.length
+            ? ws
+                .filter(w=>w.status==='off')
+                .map(w=>workEntryHtml(w,p))
+                .join('')
+            : ''
+        }
+
+      </div>
+    `;
+  }
+
+  window.saveOffDay=async(personId,date)=>{
+
+    const same=state.works.filter(
+      w=>w.personId===personId&&w.date===date
+    );
+
+    if(same.some(w=>w.status==='work')){
+      return toast(
+        'इस date पर work entries मौजूद हैं। पहले उन्हें delete करें।'
+      );
+    }
+
+    if(same.some(w=>w.status==='off')){
+      return toast(
+        'इस date पर Chhutti पहले से saved है।'
+      );
+    }
+
+    const item={
+      id:uid(),
+      personId,
+      type:getPerson(personId)?.type||'',
+      date,
+      status:'off',
+      siteId:null,
+      units:0,
+      paymentYes:false,
+      paymentAmount:0
+    };
+
+    await persistAdd('works',item);
+    render();
+  };
+
+  function formatDateHindi(d){
+    return d.toLocaleDateString(
+      'hi-IN',
+      {
+        weekday:'long',
+        day:'numeric',
+        month:'long',
+        year:'numeric'
+      }
+    );
+  }
+
+  function workEntryHtml(w,p){
+
+    if(w.status==='off'){
+      return `
+        <div class="work-entry off-entry">
+
+          <div class="row-between">
+
+            <div>
+              <strong>Chhutti / No Work</strong>
+
+              <div class="small muted">
+                इस date पर कोई काम नहीं
+              </div>
+            </div>
+
+            <button
+              class="btn btn-danger btn-sm"
+              onclick="deleteWork('${w.id}')"
+            >
+              Delete
+            </button>
+
+          </div>
+
+        </div>
+      `;
+    }
+
+    const s=getSite(w.siteId);
+
+    return `
+      <div class="work-entry">
+
+        <div class="row-between">
+
+          <div>
+
+            <strong>
+              ${esc(s?s.name:'Deleted Site')}
+            </strong>
+
+            <div class="small muted">
+              ${esc(p.type)}
+              • ${units(w.units)} unit
+              • ${
+                w.paymentYes
+                  ? 'Payment '+money(w.paymentAmount)
+                  : 'Payment नहीं'
+              }
+            </div>
+
+          </div>
+
+          <button
+            class="btn btn-danger btn-sm"
+            onclick="deleteWork('${w.id}')"
+          >
+            Delete
+          </button>
+
+        </div>
+
+        <div
+          class="row wrap"
+          style="margin-top:8px"
+        >
+
+          <span class="pill orange">
+            ${
+              Number(w.units)===.5
+                ? 'Half Day'
+                : Number(w.units)===1
+                  ? 'Full Day'
+                  : 'Double Day'
+            }
+          </span>
+
+          ${
+            w.paymentYes
+              ? '<span class="pill green">Payment दिया</span>'
+              : '<span class="pill">Payment बाकी</span>'
+          }
+
+        </div>
+
+      </div>
+    `;
+  }
+
+  function sitesView(){
+
+    if(state.selectedSiteId){
+      return siteDetailView(state.selectedSiteId);
+    }
+
+    return `
+      <div class="view-title">
+        Owner / Site
+      </div>
+
+      <div class="subtitle">
+        Owner और Site एक ही record में
+      </div>
+
+      <button
+        class="btn btn-primary btn-block"
+        onclick="openSiteForm()"
+      >
+        + New Owner / Site
+      </button>
+
+      <div style="height:14px"></div>
+
+      <div class="site-list">
+        ${renderSiteList()}
+      </div>
+    `;
+  }
+
+  function renderSiteList(){
+
+    if(!state.sites.length){
+      return `
+        <div class="empty">
+          <strong>अभी कोई Site नहीं है</strong>
+          <span>
+            पहली Site जोड़कर हिसाब शुरू करें।
+          </span>
+        </div>
+      `;
+    }
+
+    return state.sites.map(s=>`
+      <div class="list-item">
+
+        <div class="row">
+
+          <div class="avatar">🏠</div>
+
+          <div style="min-width:0;flex:1">
+
+            <div class="name">
+              ${esc(s.name)}
+            </div>
+
+            <div class="meta">
+              Labour ${money(s.labourRate)}/day
+              • Mistri ${money(s.mistriRate)}/day
+            </div>
+
+          </div>
+
+          <button
+            class="btn btn-outline btn-sm"
+            onclick="openSite('${s.id}')"
+          >
+            Open
+          </button>
+
+        </div>
+
+        <div class="actions">
+
+          <button
+            class="btn btn-light btn-sm"
+            onclick="openSiteForm('${s.id}')"
+          >
+            Edit
+          </button>
+
+          <button
+            class="btn btn-danger btn-sm"
+            onclick="deleteSite('${s.id}')"
+          >
+            Delete
+          </button>
+
+        </div>
+
+      </div>
+    `).join('');
+  }
+
+  window.openSite=id=>{
+    state.selectedSiteId=id;
+    render();
+  };
+
+  function siteDetailView(id){
+
+    const s=getSite(id);
+
+    if(!s){
+      state.selectedSiteId=null;
+      return sitesView();
+    }
+
+    const labour=siteTypeStats(id,'Labour');
+    const mistri=siteTypeStats(id,'Mistri');
+
+    return `
+      <button
+        class="btn btn-light btn-sm"
+        onclick="go('sites')"
+        style="margin-bottom:10px"
+      >
+        ← Sites
+      </button>
+
+      <div class="view-title">
+        ${esc(s.name)}
+      </div>
+
+      <div class="subtitle">
+        Selected month का Owner accounting
+      </div>
+
+      ${monthNav()}
+
+      ${siteAccountingCard(
+        'Labour',
+        labour,
+        s.labourRate
+      )}
+
+      <div style="height:12px"></div>
+
+      ${siteAccountingCard(
+        'Mistri',
+        mistri,
+        s.mistriRate
+      )}
+
+      <div style="height:12px"></div>
+
+      <div class="card orange-card">
+
+        <div class="section-title">
+          Total Owner Amount
+        </div>
+
+        <div class="grid grid-2">
+
+          <div>
+            <div class="stat-label">Total Work</div>
+            <div class="stat-value">
+              ${units(labour.units+mistri.units)}
+            </div>
+          </div>
+
+          <div>
+            <div class="stat-label">
+              Total Owner Amount
+            </div>
+            <div class="stat-value">
+              ${money(labour.amount+mistri.amount)}
+            </div>
+          </div>
+
+        </div>
+
+        <div
+          class="small muted"
+          style="margin-top:8px"
+        >
+          Worker को दिया गया payment Owner/Site total से
+          subtract नहीं होता।
+        </div>
+
+      </div>
+    `;
+  }
+
+  function siteTypeStats(siteId,type){
+
+    const list=worksInMonth(state.month)
+      .filter(w=>
+        w.siteId===siteId &&
+        w.status==='work' &&
+        getPerson(w.personId)?.type===type
+      );
+
+    const by={};
+    let u=0;
+
+    list.forEach(w=>{
+
+      const p=getPerson(w.personId);
+
+      u+=Number(w.units||0);
+
+      if(!by[p.id]){
+        by[p.id]={
+          person:p,
+          units:0
+        };
       }
 
-      links.forEach(link => {
-        const card = document.createElement("article");
-        card.className = "link-card";
-        card.dataset.id = link.id;
+      by[p.id].units+=Number(w.units||0);
+    });
 
-        const icon = document.createElement("div");
-        icon.className = "site-icon";
-        icon.setAttribute("aria-hidden", "true");
+    const s=getSite(siteId);
 
-        const info = document.createElement("div");
-        info.className = "site-info";
+    const rate=
+      type==='Labour'
+        ? Number(s?.labourRate||0)
+        : Number(s?.mistriRate||0);
 
-        const title = document.createElement("h3");
-        title.className = "site-title";
-        title.textContent = link.title || titleFromDomain(link.domain);
+    return {
+      units:u,
+      amount:u*rate,
+      rate,
+      by:Object.values(by)
+    };
+  }
 
-        const domain = document.createElement("p");
-        domain.className = "site-domain";
-        domain.textContent = link.domain || getDomainDisplay(link.url);
+  function siteAccountingCard(type,s,rate){
 
-        info.appendChild(title);
-        info.appendChild(domain);
+    return `
+      <div class="card">
 
-        const actions = document.createElement("div");
-        actions.className = "card-actions";
+        <div class="row-between">
 
-        const open = document.createElement("button");
-        open.type = "button";
-        open.className = "open-btn";
-        open.textContent = "Open";
-        open.addEventListener("click", () => {
-          window.open(link.url, "_blank", "noopener,noreferrer");
-        });
+          <div class="section-title" style="margin:0">
+            ${type}
+          </div>
 
-        const del = document.createElement("button");
-        del.type = "button";
-        del.className = "delete-btn";
-        del.title = "Delete";
-        del.setAttribute("aria-label", "Delete link");
-        del.textContent = "🗑";
-        del.addEventListener("click", () => openDeleteModal(link));
+          <span class="pill orange">
+            Owner Rate ${money(rate)}/day
+          </span>
 
-        actions.appendChild(open);
-        actions.appendChild(del);
+        </div>
 
-        card.appendChild(icon);
-        card.appendChild(info);
-        card.appendChild(actions);
-        linksList.appendChild(card);
+        <div
+          class="grid grid-2"
+          style="margin-top:11px"
+        >
 
-        renderIcon(
-          icon,
-          link.title || link.domain,
-          link.favicon || "",
-          link.id,
-          link.url
+          <div>
+            <div class="stat-label">
+              ${type} work units
+            </div>
+            <div class="stat-value">
+              ${units(s.units)}
+            </div>
+          </div>
+
+          <div>
+            <div class="stat-label">
+              Total ${type} Amount
+            </div>
+            <div class="stat-value">
+              ${money(s.amount)}
+            </div>
+          </div>
+
+        </div>
+
+        <div class="divider"></div>
+
+        <div
+          class="small"
+          style="font-weight:850;margin-bottom:7px"
+        >
+          Worker-wise breakdown
+        </div>
+
+        <div class="breakdown">
+
+          ${
+            s.by.length
+              ? s.by.map(x=>`
+                  <div class="breakdown-item">
+                    <span>
+                      ${esc(x.person.name)}
+                    </span>
+
+                    <strong>
+                      ${units(x.units)}
+                      × ${money(rate)}
+                      = ${money(x.units*rate)}
+                    </strong>
+                  </div>
+                `).join('')
+              : `
+                <div class="muted small">
+                  इस महीने कोई ${type} work नहीं।
+                </div>
+              `
+          }
+
+        </div>
+      </div>
+    `;
+  }
+
+  function moreView(){
+
+    return `
+      <div class="view-title">More</div>
+
+      <div class="subtitle">
+        App settings और reports
+      </div>
+
+      <div class="grid">
+
+        <div class="card">
+
+          <div class="row">
+
+            <div class="avatar">SK</div>
+
+            <div>
+              <div class="name">
+                Shivam Kumar
+              </div>
+
+              <div class="meta">
+                Personal account
+              </div>
+            </div>
+
+          </div>
+
+          <div style="height:11px"></div>
+
+          <button
+            class="btn btn-light btn-block"
+            onclick="openProfile()"
+          >
+            Profile
+          </button>
+
+        </div>
+
+        <div class="card">
+
+          <div class="section-title">
+            Commission
+          </div>
+
+          <div
+            class="small muted"
+            style="margin-bottom:10px"
+          >
+            Rate difference × work units
+          </div>
+
+          <button
+            class="btn btn-primary btn-block"
+            onclick="openCommission()"
+          >
+            Commission खोलें
+          </button>
+
+        </div>
+
+        <div class="card">
+
+          <div class="section-title">
+            Cloud Data
+          </div>
+
+          <div class="small muted">
+            मुख्य data Firestore में रहता है।
+            LocalStorage केवल login/cache के लिए है।
+          </div>
+
+          <div style="height:10px"></div>
+
+          <button
+            class="btn btn-light btn-block"
+            onclick="reloadCloud()"
+          >
+            Firestore से Refresh
+          </button>
+
+        </div>
+
+        <div class="card">
+
+          <button
+            class="btn btn-danger btn-block"
+            onclick="logout()"
+          >
+            Logout
+          </button>
+
+        </div>
+
+      </div>
+    `;
+  }
+
+  window.reloadCloud=async()=>{
+    const ok=await initFirebase();
+
+    if(ok){
+      await loadFirestore();
+    }
+  };
+
+  window.openProfile=()=>{
+    state.modal={type:'profile'};
+    renderModal();
+  };
+
+  window.openCommission=()=>{
+    state.modal={type:'commission'};
+    renderModal();
+  };
+
+  function commissionPage(){
+
+    const c=commissionStats(state.month);
+
+    const rows=worksInMonth(state.month)
+      .filter(w=>w.status==='work')
+      .map(w=>{
+
+        const p=getPerson(w.personId);
+        const s=getSite(w.siteId);
+
+        if(!p||!s)return null;
+
+        const ownerRate=
+          p.type==='Labour'
+            ? Number(s.labourRate||0)
+            : Number(s.mistriRate||0);
+
+        const value=
+          (ownerRate-Number(p.rate||0)) *
+          Number(w.units||0);
+
+        return {
+          p,
+          s,
+          w,
+          ownerRate,
+          value
+        };
+      })
+      .filter(Boolean);
+
+    return `
+      <div class="view-title">
+        Commission
+      </div>
+
+      <div class="subtitle">
+        Owner rate और worker rate के अंतर से
+      </div>
+
+      ${monthNav()}
+
+      <div class="grid grid-2">
+
+        <div class="card orange-card">
+          <div class="stat-label">
+            Labour Commission
+          </div>
+          <div class="stat-value">
+            ${money(c.labour)}
+          </div>
+        </div>
+
+        <div class="card orange-card">
+          <div class="stat-label">
+            Mistri Commission
+          </div>
+          <div class="stat-value">
+            ${money(c.mistri)}
+          </div>
+        </div>
+
+      </div>
+
+      <div style="height:12px"></div>
+
+      <div class="card">
+
+        <div class="row-between">
+
+          <div class="section-title" style="margin:0">
+            Total Commission
+          </div>
+
+          <strong class="stat-value">
+            ${money(c.total)}
+          </strong>
+
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="breakdown">
+
+          ${
+            rows.length
+              ? rows.map(r=>`
+                  <div class="breakdown-item">
+
+                    <div>
+
+                      <strong>
+                        ${esc(r.p.name)}
+                      </strong>
+
+                      <div class="small muted">
+                        ${esc(r.s.name)}
+                        • ${esc(r.p.type)}
+                        • ${units(r.w.units)} unit
+                      </div>
+
+                    </div>
+
+                    <div class="right">
+
+                      <strong>
+                        ${money(r.value)}
+                      </strong>
+
+                      <div class="small muted">
+                        ${money(r.ownerRate)}
+                        - ${money(r.p.rate)}
+                      </div>
+
+                    </div>
+
+                  </div>
+                `).join('')
+              : `
+                <div class="empty">
+                  <strong>
+                    इस महीने commission data नहीं है
+                  </strong>
+                  <span>
+                    Work entries होने पर यहाँ calculation दिखेगी।
+                  </span>
+                </div>
+              `
+          }
+
+        </div>
+      </div>
+    `;
+  }
+
+  function renderModal(){
+
+    const r=$('modalRoot');
+
+    if(!r)return;
+
+    r.innerHTML=modalHtml();
+  }
+
+  function modalShell(title,body){
+
+    return `
+      <div
+        class="modal-backdrop"
+        onclick="modalBackdrop(event)"
+      >
+
+        <div class="modal">
+
+          <div class="modal-head">
+
+            <div class="modal-title">
+              ${title}
+            </div>
+
+            <button
+              class="close"
+              onclick="closeModal()"
+            >
+              ×
+            </button>
+
+          </div>
+
+          ${body}
+
+        </div>
+      </div>
+    `;
+  }
+
+  window.modalBackdrop=e=>{
+    if(e.target.classList.contains('modal-backdrop')){
+      closeModal();
+    }
+  };
+
+  window.closeModal=()=>{
+    state.modal=null;
+    render();
+  };
+
+  function modalHtml(){
+
+    const m=state.modal;
+
+    if(!m)return '';
+
+    if(m.type==='profile'){
+      return modalShell(
+        'Profile',
+        `
+          <div
+            class="card"
+            style="box-shadow:none;background:#fafafa"
+          >
+            <div class="row">
+
+              <div class="avatar">SK</div>
+
+              <div>
+                <div class="name">
+                  Shivam Kumar
+                </div>
+
+                <div class="meta">
+                  Personal account
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div
+            class="info"
+            style="margin-top:12px"
+          >
+            इस app में mobile number रखा या दिखाया नहीं जाता।
+          </div>
+        `
+      );
+    }
+
+    if(m.type==='commission'){
+      return modalShell(
+        'Commission',
+        commissionPage()
+      );
+    }
+
+    if(m.type==='person'){
+      return personFormHtml(m);
+    }
+
+    if(m.type==='site'){
+      return siteFormHtml(m);
+    }
+
+    if(m.type==='work'){
+      return workFormHtml(m);
+    }
+
+    if(m.type==='confirm'){
+      return confirmHtml(m);
+    }
+
+    return '';
+  }
+
+  window.openPersonForm=(type='Labour',id=null)=>{
+    state.modal={
+      type:'person',
+      mode:id?'edit':'add',
+      personType:type,
+      id
+    };
+
+    renderModal();
+  };
+
+  function personFormHtml(m){
+
+    const p=m.id
+      ? getPerson(m.id)
+      : {
+          name:'',
+          type:m.personType||'Labour',
+          rate:''
+        };
+
+    return modalShell(
+      m.mode==='edit'
+        ? 'Edit Worker'
+        : 'Add Worker',
+      `
+        <form
+          onsubmit="event.preventDefault();savePerson('${m.mode}','${m.id||''}')"
+        >
+
+          <div class="field">
+
+            <label>Name</label>
+
+            <input
+              id="personName"
+              class="input"
+              value="${esc(p.name)}"
+              required
+            >
+
+          </div>
+
+          <div class="field">
+
+            <label>Type</label>
+
+            <div class="segmented">
+
+              <button
+                type="button"
+                class="seg ${p.type==='Labour'?'active':''}"
+                onclick="setModalPersonType('Labour')"
+              >
+                Labour
+              </button>
+
+              <button
+                type="button"
+                class="seg ${p.type==='Mistri'?'active':''}"
+                onclick="setModalPersonType('Mistri')"
+              >
+                Mistri
+              </button>
+
+            </div>
+
+            <input
+              type="hidden"
+              id="personType"
+              value="${esc(p.type)}"
+            >
+
+          </div>
+
+          <div class="field">
+
+            <label>
+              Worker payment rate (₹/day)
+            </label>
+
+            <input
+              id="personRate"
+              class="input"
+              type="number"
+              min="0"
+              step="1"
+              value="${esc(p.rate)}"
+              required
+            >
+
+          </div>
+
+          <div class="sticky-actions">
+
+            <button
+              class="btn btn-primary btn-block"
+              type="submit"
+            >
+              ${m.mode==='edit'
+                ? 'Save Changes'
+                : 'Add Worker'}
+            </button>
+
+          </div>
+
+        </form>
+      `
+    );
+  }
+
+  window.setModalPersonType=t=>{
+    $('personType').value=t;
+
+    document
+      .querySelectorAll('#modalRoot .segmented .seg')
+      .forEach(b=>{
+        b.classList.toggle(
+          'active',
+          b.textContent.trim()===t
         );
       });
+  };
+
+  window.savePerson=async(mode,id)=>{
+
+    const name=$('personName').value.trim();
+    const type=$('personType').value;
+    const rate=Number($('personRate').value);
+
+    if(!name||rate<0){
+      return toast('Name और valid rate भरें।');
     }
 
-    /* ---------- Login ---------- */
+    const item={
+      id:id||uid(),
+      name,
+      type,
+      rate
+    };
 
-    loginForm.addEventListener("submit", event => {
-      event.preventDefault();
+    state.modal=null;
 
-      const name = fullNameInput.value.trim().replace(/\s+/g, " ");
-      const mobile = normalizeMobile(mobileInput.value);
+    if(mode==='edit'){
+      await persistUpdate('people',item);
+    }
+    else{
+      await persistAdd('people',item);
+    }
 
-      if (name.length < 2) {
-        showToast("कृपया सही Full Name डालें");
-        fullNameInput.focus();
-        return;
-      }
+    render();
+  };
 
-      if (mobile.length < 10) {
-        showToast("कृपया सही mobile number डालें");
-        mobileInput.focus();
-        return;
-      }
+  window.openSiteForm=id=>{
+    state.modal={
+      type:'site',
+      mode:id?'edit':'add',
+      id:id||null
+    };
 
-      loginBtn.disabled = true;
+    renderModal();
+  };
 
-      try {
-        const users = loadUsers();
+  function siteFormHtml(m){
 
-        if (!users[mobile]) {
-          users[mobile] = {
-            name,
-            mobile,
-            links: []
-          };
-        } else {
-          // Same mobile number = same account/data.
-          // Update display name to the latest entered name.
-          users[mobile].name = name;
-          if (!Array.isArray(users[mobile].links)) {
-            users[mobile].links = [];
-          }
-        }
+    const s=m.id
+      ? getSite(m.id)
+      : {
+          name:'',
+          labourRate:'',
+          mistriRate:''
+        };
 
-        saveUsers(users);
-        saveSession(mobile);
+    return modalShell(
+      m.mode==='edit'
+        ? 'Edit Site'
+        : 'New Owner / Site',
+      `
+        <form
+          onsubmit="event.preventDefault();saveSite('${m.mode}','${m.id||''}')"
+        >
 
-        currentUser = users[mobile];
-        updateUserUI();
-        renderLinks();
-        showMain();
+          <div class="field">
 
-        showToast("Login successful");
-        urlInput.focus();
-      } finally {
-        loginBtn.disabled = false;
-      }
-    });
+            <label>Site / Owner name</label>
 
-    /* ---------- Add Link ---------- */
+            <input
+              id="siteName"
+              class="input"
+              placeholder="Rajesh ji ka do talla ka makan"
+              value="${esc(s.name)}"
+              required
+            >
 
-    addLinkForm.addEventListener("submit", async event => {
-      event.preventDefault();
+          </div>
 
-      let url;
+          <div class="field">
 
-      try {
-        url = normalizeUrl(urlInput.value);
-      } catch (error) {
-        showToast(error.message || "कृपया सही URL डालें");
-        urlInput.focus();
-        return;
-      }
+            <label>
+              Labour Owner Rate (₹/day)
+            </label>
 
-      if (!currentUser) {
-        showLogin();
-        return;
-      }
+            <input
+              id="siteLabourRate"
+              class="input"
+              type="number"
+              min="0"
+              step="1"
+              value="${esc(s.labourRate)}"
+              required
+            >
 
-      const domain = getDomain(url);
+          </div>
 
-      if (!domain) {
-        showToast("URL का domain नहीं मिला");
-        return;
-      }
+          <div class="field">
 
-      const users = loadUsers();
-      const user = users[currentUser.mobile];
+            <label>
+              Mistri Owner Rate (₹/day)
+            </label>
 
-      if (!user) {
-        showToast("Session expired. कृपया फिर login करें");
-        clearSession();
-        currentUser = null;
-        showLogin();
-        return;
-      }
+            <input
+              id="siteMistriRate"
+              class="input"
+              type="number"
+              min="0"
+              step="1"
+              value="${esc(s.mistriRate)}"
+              required
+            >
 
-      if (!Array.isArray(user.links)) user.links = [];
+          </div>
 
-      // Prevent exact duplicate URL.
-      const duplicate = user.links.some(item => {
-        try {
-          return new URL(item.url).href === new URL(url).href;
-        } catch {
-          return item.url === url;
-        }
+          <div class="info">
+            Site edit करने पर Site ID वही रहती है
+            और पुराने work records delete नहीं होते।
+          </div>
+
+          <div
+            class="sticky-actions"
+            style="margin-top:10px"
+          >
+
+            <button
+              class="btn btn-primary btn-block"
+              type="submit"
+            >
+              ${m.mode==='edit'
+                ? 'Save Changes'
+                : 'Add Site'}
+            </button>
+
+          </div>
+
+        </form>
+      `
+    );
+  }
+
+  window.saveSite=async(mode,id)=>{
+
+    const name=$('siteName').value.trim();
+    const labourRate=Number($('siteLabourRate').value);
+    const mistriRate=Number($('siteMistriRate').value);
+
+    if(
+      !name ||
+      labourRate<0 ||
+      mistriRate<0
+    ){
+      return toast(
+        'Site name और valid rates भरें।'
+      );
+    }
+
+    const item={
+      id:id||uid(),
+      name,
+      labourRate,
+      mistriRate
+    };
+
+    state.modal=null;
+
+    if(mode==='edit'){
+      await persistUpdate('sites',item);
+    }
+    else{
+      await persistAdd('sites',item);
+    }
+
+    render();
+  };
+
+  window.openWorkForm=(personId,date)=>{
+
+    state.modal={
+      type:'work',
+      personId,
+      date,
+      mode:'add',
+      units:1,
+      paymentYes:false
+    };
+
+    renderModal();
+  };
+
+  function workFormHtml(m){
+
+    const p=getPerson(m.personId);
+
+    return modalShell(
+      `Work Entry • ${formatDateHindi(parseDate(m.date))}`,
+      `
+        <div
+          class="small muted"
+          style="margin-bottom:12px"
+        >
+          Worker:
+          <strong>${esc(p?.name||'')}</strong>
+        </div>
+
+        <div class="field">
+
+          <label>Kaam kiya?</label>
+
+          <div class="segmented">
+
+            <button
+              type="button"
+              id="workYesBtn"
+              class="seg active"
+              onclick="setWorkStatus(true)"
+            >
+              Haan
+            </button>
+
+            <button
+              type="button"
+              id="workNoBtn"
+              class="seg"
+              onclick="setWorkStatus(false)"
+            >
+              Nahi
+            </button>
+
+          </div>
+
+          <input
+            type="hidden"
+            id="workStatus"
+            value="work"
+          >
+
+        </div>
+
+        <div id="workFields">
+
+          <div class="field">
+
+            <label>Owner / Site</label>
+
+            <select
+              id="workSite"
+              class="select"
+            >
+              <option value="">
+                Site चुनें
+              </option>
+
+              ${state.sites.map(s=>`
+                <option value="${esc(s.id)}">
+                  ${esc(s.name)}
+                </option>
+              `).join('')}
+
+            </select>
+
+          </div>
+
+          <div class="field">
+
+            <label>Work type</label>
+
+            <div class="segmented three">
+
+              <button
+                type="button"
+                class="seg"
+                onclick="setWorkUnits(.5,this)"
+              >
+                Half Day
+              </button>
+
+              <button
+                type="button"
+                class="seg active"
+                onclick="setWorkUnits(1,this)"
+              >
+                Full Day
+              </button>
+
+              <button
+                type="button"
+                class="seg"
+                onclick="setWorkUnits(2,this)"
+              >
+                Double Day
+              </button>
+
+            </div>
+
+            <input
+              type="hidden"
+              id="workUnits"
+              value="1"
+            >
+
+          </div>
+
+          <div class="field">
+
+            <label>Payment diya?</label>
+
+            <div class="segmented">
+
+              <button
+                type="button"
+                class="seg active"
+                onclick="setPayment(true)"
+              >
+                Haan
+              </button>
+
+              <button
+                type="button"
+                class="seg"
+                onclick="setPayment(false)"
+              >
+                Nahi
+              </button>
+
+            </div>
+
+            <input
+              type="hidden"
+              id="paymentYes"
+              value="1"
+            >
+
+          </div>
+
+          <div
+            class="field"
+            id="paymentAmountField"
+          >
+
+            <label>Payment amount (₹)</label>
+
+            <input
+              id="paymentAmount"
+              class="input"
+              type="number"
+              min="0"
+              step="1"
+              value=""
+            >
+
+          </div>
+
+        </div>
+
+        <div
+          class="warning"
+          style="margin-bottom:10px"
+        >
+          एक date पर कई जगह काम जोड़ सकते हैं।
+          हर entry अलग record बनेगी।
+        </div>
+
+        <div class="sticky-actions">
+
+          <button
+            class="btn btn-primary btn-block"
+            onclick="saveWork()"
+          >
+            Save Work
+          </button>
+
+        </div>
+      `
+    );
+  }
+
+  window.setWorkStatus=work=>{
+
+    $('workStatus').value=
+      work ? 'work' : 'off';
+
+    $('workYesBtn').classList.toggle(
+      'active',
+      work
+    );
+
+    $('workNoBtn').classList.toggle(
+      'active',
+      !work
+    );
+
+    $('workFields').classList.toggle(
+      'hidden',
+      !work
+    );
+  };
+
+  window.setWorkUnits=(u,el)=>{
+
+    $('workUnits').value=u;
+
+    el.parentElement
+      .querySelectorAll('.seg')
+      .forEach(x=>x.classList.remove('active'));
+
+    el.classList.add('active');
+  };
+
+  window.setPayment=yes=>{
+
+    $('paymentYes').value=
+      yes ? '1' : '0';
+
+    const parent=$('paymentYes').parentElement;
+
+    parent
+      .querySelectorAll('.seg')
+      .forEach((x,i)=>{
+        x.classList.toggle(
+          'active',
+          yes ? i===0 : i===1
+        );
       });
 
-      if (duplicate) {
-        showToast("यह link पहले से saved है");
-        urlInput.select();
-        return;
+    $('paymentAmountField')
+      .classList.toggle(
+        'hidden',
+        !yes
+      );
+  };
+
+  window.saveWork=async()=>{
+
+    const m=state.modal;
+
+    if(!m)return;
+
+    const status=$('workStatus').value;
+
+    if(status==='off'){
+
+      const same=state.works.filter(
+        w=>
+          w.personId===m.personId &&
+          w.date===m.date
+      );
+
+      if(same.length){
+        return toast(
+          'इस date पर existing work entries हैं। पहले उन्हें delete करें, फिर Chhutti save करें।'
+        );
       }
 
-      addBtn.disabled = true;
-
-      const title = titleFromDomain(domain);
-
-      const newLink = {
-        id: makeId(),
-        url,
-        domain,
-        title,
-        favicon: "",
-        addedAt: Date.now()
+      const item={
+        id:uid(),
+        personId:m.personId,
+        type:getPerson(m.personId)?.type||'',
+        date:m.date,
+        status:'off',
+        siteId:null,
+        units:0,
+        paymentYes:false,
+        paymentAmount:0
       };
 
-      user.links.unshift(newLink);
-      users[currentUser.mobile] = user;
-      saveUsers(users);
-      currentUser = user;
+      state.modal=null;
 
-      urlInput.value = "";
-      renderLinks();
+      await persistAdd('works',item);
+      render();
 
-      showToast("Link save हो गया");
-      addBtn.disabled = false;
-
-      /*
-        Start favicon discovery after card is visible.
-        The card itself immediately shows the first letter, so UI never
-        stays blank while icon resolution is happening.
-      */
-      setTimeout(() => {
-        const card = linksList.querySelector(`[data-id="${CSS.escape(newLink.id)}"]`);
-        const icon = card?.querySelector(".site-icon");
-        if (icon) {
-          renderIcon(icon, newLink.title, "", newLink.id, newLink.url);
-        }
-      }, 0);
-    });
-
-    /* ---------- Delete ---------- */
-
-    function openDeleteModal(link) {
-      pendingDeleteId = link.id;
-      deleteMessage.textContent =
-        `“${link.title || link.domain || link.url}” आपकी list से हट जाएगा।`;
-      modalBackdrop.classList.add("show");
+      return;
     }
 
-    function closeDeleteModal() {
-      pendingDeleteId = null;
-      modalBackdrop.classList.remove("show");
+    const siteId=$('workSite').value;
+
+    if(!siteId){
+      return toast(
+        'Owner/Site चुनें।'
+      );
     }
 
-    cancelDelete.addEventListener("click", closeDeleteModal);
+    const paymentYes=
+      $('paymentYes').value==='1';
 
-    modalBackdrop.addEventListener("click", event => {
-      if (event.target === modalBackdrop) {
-        closeDeleteModal();
-      }
-    });
+    const paymentAmount=
+      paymentYes
+        ? Number($('paymentAmount').value||0)
+        : 0;
 
-    confirmDelete.addEventListener("click", () => {
-      if (!currentUser || !pendingDeleteId) {
-        closeDeleteModal();
-        return;
-      }
+    const item={
+      id:uid(),
+      personId:m.personId,
+      type:getPerson(m.personId)?.type||'',
+      date:m.date,
+      status:'work',
+      siteId,
+      units:Number($('workUnits').value),
+      paymentYes,
+      paymentAmount
+    };
 
-      const users = loadUsers();
-      const user = users[currentUser.mobile];
+    /*
+      selectedDate को जानबूझकर clear नहीं किया गया।
+      इसलिए Save के बाद उसी date पर वापस आकर
+      "+ दूसरी जगह का काम जोड़ें" दिखेगा।
+    */
+    state.modal=null;
 
-      if (user && Array.isArray(user.links)) {
-        user.links = user.links.filter(link => link.id !== pendingDeleteId);
-        users[currentUser.mobile] = user;
-        saveUsers(users);
-        currentUser = user;
-        renderLinks();
-        showToast("Link delete हो गया");
-      }
+    await persistAdd('works',item);
+    render();
+  };
 
-      closeDeleteModal();
-    });
+  window.deleteWork=id=>{
 
-    /* ---------- Logout ---------- */
+    const w=state.works.find(
+      x=>x.id===id
+    );
 
-    logoutBtn.addEventListener("click", () => {
-      clearSession();
-      currentUser = null;
-      closeDeleteModal();
+    if(!w)return;
 
-      fullNameInput.value = "";
-      mobileInput.value = "";
-      urlInput.value = "";
+    state.modal={
+      type:'confirm',
+      action:'deleteWork',
+      id,
+      title:'Work delete करें?',
+      message:'यह work entry permanently delete होगी।'
+    };
 
-      showLogin();
-      showToast("Logout हो गया — links सुरक्षित हैं");
-      setTimeout(() => fullNameInput.focus(), 80);
-    });
+    renderModal();
+  };
 
-    /* ---------- Keyboard ---------- */
+  window.deletePerson=id=>{
 
-    document.addEventListener("keydown", event => {
-      if (event.key === "Escape") {
-        closeDeleteModal();
-      }
-    });
+    const p=getPerson(id);
 
-    /* ---------- Boot ---------- */
+    const related=state.works.filter(
+      w=>w.personId===id
+    ).length;
 
-    function boot() {
-      const session = loadSession();
+    state.modal={
+      type:'confirm',
+      action:'deletePerson',
+      id,
+      title:'Worker delete करें?',
+      message:
+        `${p?.name||'यह worker'} delete होगा। `+
+        `${related} related work/payment record`+
+        `${related===1?'':'s'} भी delete होंगे। `+
+        `यह action वापस नहीं होगा।`
+    };
 
-      if (session?.mobile) {
-        const users = loadUsers();
-        const user = users[session.mobile];
+    renderModal();
+  };
 
-        if (user) {
-          currentUser = user;
-          if (!Array.isArray(currentUser.links)) currentUser.links = [];
-          updateUserUI();
-          renderLinks();
-          showMain();
-          return;
-        }
+  window.deleteSite=id=>{
 
-        clearSession();
-      }
+    const s=getSite(id);
 
-      showLogin();
-      setTimeout(() => fullNameInput.focus(), 100);
+    const related=state.works.filter(
+      w=>w.siteId===id
+    ).length;
+
+    state.modal={
+      type:'confirm',
+      action:'deleteSite',
+      id,
+      title:'Site delete करें?',
+      message:
+        `${s?.name||'यह site'} delete होगी। `+
+        `${related} related work record`+
+        `${related===1?'':'s'} भी delete होंगे। `+
+        `Site edit करने से records delete नहीं होते; `+
+        `यह केवल Delete पर होगा।`
+    };
+
+    renderModal();
+  };
+
+  function confirmHtml(m){
+
+    return modalShell(
+      m.title,
+      `
+        <div class="confirm-text">
+          ${esc(m.message)}
+        </div>
+
+        <div
+          class="actions"
+          style="margin-top:17px"
+        >
+
+          <button
+            class="btn btn-light"
+            onclick="closeModal()"
+          >
+            Cancel
+          </button>
+
+          <button
+            class="btn btn-danger"
+            onclick="confirmAction()"
+          >
+            Delete
+          </button>
+
+        </div>
+      `
+    );
+  }
+
+  window.confirmAction=async()=>{
+
+    const m=state.modal;
+
+    state.modal=null;
+
+    if(m.action==='deleteWork'){
+
+      await persistDelete(
+        'works',
+        m.id
+      );
     }
 
-    boot();
-  </script>
+    else if(m.action==='deletePerson'){
+
+      const related=state.works
+        .filter(w=>w.personId===m.id)
+        .map(w=>w.id);
+
+      for(const id of related){
+        await persistDelete(
+          'works',
+          id
+        );
+      }
+
+      await persistDelete(
+        'people',
+        m.id
+      );
+
+      if(state.selectedPersonId===m.id){
+        state.selectedPersonId=null;
+      }
+    }
+
+    else if(m.action==='deleteSite'){
+
+      const related=state.works
+        .filter(w=>w.siteId===m.id)
+        .map(w=>w.id);
+
+      for(const id of related){
+        await persistDelete(
+          'works',
+          id
+        );
+      }
+
+      await persistDelete(
+        'sites',
+        m.id
+      );
+
+      if(state.selectedSiteId===m.id){
+        state.selectedSiteId=null;
+      }
+    }
+
+    render();
+  };
+
+  /*
+    Toast helper
+  */
+  function toast(message){
+
+    const root=$('toastRoot');
+
+    if(!root)return;
+
+    root.innerHTML=`
+      <div class="toast">
+        ${esc(message)}
+      </div>
+    `;
+
+    clearTimeout(window.__lkrToastTimer);
+
+    window.__lkrToastTimer=setTimeout(()=>{
+      if(root)root.innerHTML='';
+    },2600);
+  }
+
+  /*
+    Restore login across refresh/browser reopen.
+    Firestore is always reloaded when possible.
+  */
+  async function boot(){
+
+    const logged=
+      localStorage.getItem(LOGIN_KEY)==='1';
+
+    if(!logged){
+      render();
+      return;
+    }
+
+    state.loggedIn=true;
+
+    loadLocalCache();
+    render();
+
+    const ok=await initFirebase();
+
+    if(ok){
+      await ensureUserDoc();
+      await loadFirestore();
+    }
+  }
+
+  window.addEventListener(
+    'online',
+    ()=>{
+      if(state.loggedIn){
+        setCloud('connected');
+      }
+    }
+  );
+
+  window.addEventListener(
+    'offline',
+    ()=>{
+      setCloud('offline');
+    }
+  );
+
+  boot();
+
+})();
+</script>
 </body>
 </html>
