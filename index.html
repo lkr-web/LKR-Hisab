@@ -1,3169 +1,1450 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#f97316">
-  <meta name="description" content="LKR Hisab - Personal Labour, Mistri aur Site hisab app">
-  <title>LKR Hisab</title>
-  <link rel="icon" type="image/jpeg" href="https://static.vecteezy.com/system/resources/thumbnails/020/921/931/small_2x/main-menu-icon-in-flat-design-style-application-list-signs-illustration-png.png">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0066FF" />
+  <meta name="description" content="R Lal College, Lakhisarai - Discover Web Projects" />
+  <title>R Lal College, Lakhisarai</title>
+
   <style>
     :root{
-      --orange:#f97316;--orange-dark:#ea580c;--orange-soft:#fff7ed;--orange-pale:#ffedd5;
-      --bg:#f7f8fa;--card:#fff;--text:#1f2937;--muted:#6b7280;--border:#e5e7eb;
-      --green:#16a34a;--green-soft:#f0fdf4;--red:#dc2626;--red-soft:#fef2f2;--blue:#2563eb;--blue-soft:#eff6ff;
-      --shadow:0 8px 24px rgba(15,23,42,.07);--radius:18px;
+      --primary:#0066FF;
+      --primary-dark:#0052cc;
+      --primary-soft:#eaf2ff;
+      --text:#172033;
+      --muted:#6f7b90;
+      --border:#e8edf5;
+      --surface:#ffffff;
+      --bg:#f6f8fc;
+      --danger:#e5484d;
+      --success:#16834a;
+      --shadow:0 8px 30px rgba(28,53,91,.08);
+      --radius:18px;
+      --nav-height:74px;
     }
-    *{box-sizing:border-box}
-    html,body{
-      margin:0;padding:0;background:var(--bg);color:var(--text);
-      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans Devanagari",sans-serif
+    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      min-height:100vh;
+      overflow-x:hidden;
     }
-    body{min-height:100vh}
-    button,input,select{font:inherit}
+    button,input{font:inherit}
     button{cursor:pointer}
-    .hidden{display:none!important}
+    img{max-width:100%;display:block}
+    a{text-decoration:none;color:inherit}
 
-    .app{min-height:100vh}
+    .app-shell{min-height:100vh}
     .topbar{
-      position:sticky;top:0;z-index:20;background:rgba(255,255,255,.94);
-      backdrop-filter:blur(12px);border-bottom:1px solid var(--border);
-      padding:12px 14px 10px
+      position:sticky;
+      top:0;
+      z-index:30;
+      background:rgba(255,255,255,.94);
+      backdrop-filter:blur(14px);
+      border-bottom:1px solid rgba(232,237,245,.9);
     }
-    .topbar-row{
-      max-width:760px;margin:auto;display:flex;align-items:center;
-      justify-content:space-between;gap:10px
+    .topbar-inner{
+      width:min(100%,760px);
+      margin:auto;
+      padding:14px 16px 12px;
     }
-    .brand{font-weight:850;font-size:21px;letter-spacing:-.4px}
-    .brand span{color:var(--orange)}
-    .cloud{
-      font-size:12px;font-weight:750;padding:7px 10px;border-radius:999px;
-      background:#f3f4f6;color:var(--muted);white-space:nowrap
+    .brand-row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:12px;
     }
-    .cloud.connected,.cloud.saved{background:var(--green-soft);color:var(--green)}
-    .cloud.offline{background:#fff7ed;color:#c2410c}
-    .cloud.error{background:var(--red-soft);color:var(--red)}
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width:0;
+    }
+    .brand-logo{
+      width:42px;height:42px;border-radius:13px;
+      display:grid;place-items:center;
+      background:var(--primary);
+      color:#fff;
+      font-size:21px;
+      box-shadow:0 7px 18px rgba(0,102,255,.25);
+      flex:none;
+    }
+    .brand-copy{min-width:0}
+    .brand-title{
+      margin:0;
+      font-size:21px;
+      line-height:1.1;
+      font-weight:800;
+      letter-spacing:-.3px;
+    }
+    .brand-subtitle{
+      margin:3px 0 0;
+      color:var(--muted);
+      font-size:11px;
+      white-space:nowrap;
+    }
+    .header-profile{
+      width:42px;height:42px;border:1px solid var(--border);
+      background:#fff;border-radius:14px;
+      display:grid;place-items:center;font-size:19px;
+      color:var(--text);
+    }
+    .search-wrap{position:relative}
+    .search-icon{
+      position:absolute;left:15px;top:50%;
+      transform:translateY(-50%);
+      color:#8490a4;font-size:17px;
+      pointer-events:none;
+    }
+    .search-input{
+      width:100%;
+      height:48px;
+      border:1px solid var(--border);
+      outline:none;
+      background:#f7f9fd;
+      border-radius:15px;
+      padding:0 44px;
+      color:var(--text);
+      transition:.2s;
+    }
+    .search-input:focus{
+      background:#fff;border-color:#a9c9ff;
+      box-shadow:0 0 0 4px rgba(0,102,255,.08);
+    }
+    .search-clear{
+      position:absolute;right:10px;top:50%;
+      transform:translateY(-50%);
+      border:0;background:transparent;color:#77839a;
+      width:34px;height:34px;border-radius:50%;
+      display:none;
+    }
+    .search-clear.show{display:block}
 
-    main{max-width:760px;margin:0 auto;padding:16px 14px 100px}
-    .view-title{font-size:25px;font-weight:850;margin:4px 0 3px}
-    .subtitle{font-size:13px;color:var(--muted);margin-bottom:16px}
-
-    .monthbar{
-      display:flex;align-items:center;justify-content:space-between;
-      background:var(--card);border:1px solid var(--border);border-radius:15px;
-      padding:7px;margin:0 0 15px;box-shadow:0 3px 12px rgba(15,23,42,.04)
+    main{
+      width:min(100%,760px);
+      margin:auto;
+      padding:18px 16px calc(var(--nav-height) + 28px);
     }
-    .monthbar button{
-      width:42px;height:42px;border:0;border-radius:12px;
-      background:var(--orange-soft);color:var(--orange-dark);font-size:25px
+    .screen{display:none;animation:screenIn .18s ease}
+    .screen.active{display:block}
+    @keyframes screenIn{from{opacity:.4;transform:translateY(5px)}to{opacity:1;transform:none}}
+
+    .section-head{
+      display:flex;align-items:end;justify-content:space-between;
+      gap:12px;margin:3px 0 12px;
     }
-    .month-label{text-align:center;font-weight:800;font-size:16px;flex:1}
-
-    .grid{display:grid;gap:12px}
-    .grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
-    .card{
-      background:var(--card);border:1px solid var(--border);
-      border-radius:var(--radius);box-shadow:var(--shadow);padding:15px
+    .section-title{font-size:18px;margin:0;font-weight:800;letter-spacing:-.2px}
+    .section-note{font-size:12px;color:var(--muted);margin:0}
+    .category-row{
+      display:flex;gap:9px;overflow:auto;
+      padding:2px 1px 9px;
+      scrollbar-width:none;
     }
-    .section-title{font-weight:850;font-size:16px;margin:0 0 11px}
-    .stat-card{padding:14px}
-    .stat-label{font-size:12px;color:var(--muted)}
-    .stat-value{font-size:22px;font-weight:850;margin-top:3px}
-    .stat-small{font-size:12px;color:var(--muted);margin-top:2px}
-    .orange-card{background:linear-gradient(135deg,#fff7ed,#fff)}
-
-    .btn{
-      border:0;border-radius:13px;min-height:44px;padding:10px 14px;
-      font-weight:800;transition:.15s transform,.15s opacity
+    .category-row::-webkit-scrollbar{display:none}
+    .category-chip{
+      flex:none;border:1px solid var(--border);background:#fff;
+      color:#46536a;border-radius:999px;padding:9px 14px;
+      font-size:13px;font-weight:650;
     }
-    .btn:active{transform:scale(.98)}
-    .btn-primary{background:var(--orange);color:#fff}
-    .btn-primary:hover{background:var(--orange-dark)}
-    .btn-light{background:#f3f4f6;color:var(--text)}
-    .btn-danger{background:var(--red-soft);color:var(--red)}
-    .btn-success{background:var(--green);color:#fff}
-    .btn-outline{background:#fff;color:var(--orange-dark);border:1px solid #fed7aa}
-    .btn-block{width:100%}
-    .btn-sm{min-height:36px;padding:7px 10px;border-radius:10px;font-size:12px}
+    .category-chip.active{background:var(--primary);color:#fff;border-color:var(--primary)}
 
-    .row{display:flex;align-items:center;gap:10px}
-    .row-between{display:flex;align-items:center;justify-content:space-between;gap:10px}
-    .wrap{flex-wrap:wrap}
-    .muted{color:var(--muted)}
-    .right{text-align:right}
-    .money{font-variant-numeric:tabular-nums}
-    .positive{color:var(--green)}
-    .negative{color:var(--red)}
-
-    .person-list,.site-list{display:grid;gap:10px}
-    .list-item{
+    .app-list{display:grid;gap:12px}
+    .app-card{
       background:#fff;border:1px solid var(--border);
-      border-radius:16px;padding:13px
+      border-radius:18px;padding:14px;
+      box-shadow:0 5px 20px rgba(32,55,88,.045);
+      transition:transform .16s,box-shadow .16s;
     }
+    .app-card:active{transform:scale(.992)}
+    .card-main{
+      display:grid;grid-template-columns:58px minmax(0,1fr) auto;
+      gap:12px;align-items:start;
+    }
+    .app-icon{
+      width:58px;height:58px;border-radius:16px;object-fit:cover;
+      background:#edf2fa;border:1px solid #e5eaf2;
+      flex:none;
+    }
+    .icon-placeholder{
+      width:58px;height:58px;border-radius:16px;
+      background:var(--primary-soft);color:var(--primary);
+      display:grid;place-items:center;font-weight:850;font-size:21px;
+      flex:none;
+    }
+    .app-info{min-width:0}
+    .app-name{
+      font-size:16px;font-weight:800;line-height:1.25;
+      margin:2px 0 4px;
+      overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+    }
+    .app-description{
+      color:var(--muted);font-size:12px;line-height:1.4;
+      display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+    }
+    .app-meta{
+      display:flex;align-items:center;gap:7px;flex-wrap:wrap;
+      margin-top:7px;font-size:11px;
+    }
+    .category-badge{
+      background:#f1f5fb;color:#526079;border-radius:7px;
+      padding:4px 7px;font-weight:650;
+    }
+    .rating-inline{color:#f49b17;font-weight:750}
+    .rating-count{color:#8a95a7}
+    .favorite-btn{
+      width:36px;height:36px;border:1px solid var(--border);
+      border-radius:11px;background:#fff;display:grid;place-items:center;
+      color:#8b96a8;font-size:18px;flex:none;
+    }
+    .favorite-btn.active{color:#e33f5b;background:#fff3f5;border-color:#ffd5dd}
+    .card-footer{
+      display:flex;justify-content:flex-end;align-items:center;
+      gap:8px;margin-top:13px;
+    }
+    .open-btn{
+      min-width:92px;height:38px;border:0;border-radius:11px;
+      background:var(--primary);color:#fff;font-size:13px;font-weight:800;
+      padding:0 15px;
+      box-shadow:0 5px 13px rgba(0,102,255,.18);
+    }
+    .open-btn:active{background:var(--primary-dark)}
+    .secondary-btn{
+      height:38px;border:1px solid var(--border);background:#fff;
+      border-radius:11px;padding:0 13px;color:#44516a;font-weight:700;font-size:12px;
+    }
+
+    .detail-header{
+      display:flex;align-items:center;gap:8px;margin-bottom:17px;
+    }
+    .back-btn{
+      width:40px;height:40px;border:1px solid var(--border);background:#fff;
+      border-radius:12px;font-size:19px;display:grid;place-items:center;
+    }
+    .detail-title{font-size:17px;font-weight:800;margin:0}
+    .detail-hero{
+      background:#fff;border:1px solid var(--border);border-radius:20px;
+      padding:18px;box-shadow:var(--shadow);
+    }
+    .detail-top{
+      display:flex;gap:14px;align-items:flex-start;
+    }
+    .detail-icon{width:78px;height:78px;border-radius:20px;object-fit:cover;border:1px solid var(--border);background:#edf2fa}
+    .detail-app-name{font-size:21px;font-weight:850;margin:2px 0 5px}
+    .detail-description{font-size:13px;line-height:1.55;color:var(--muted);margin:14px 0 0}
+    .detail-actions{display:flex;gap:9px;margin-top:16px}
+    .detail-actions .open-btn{flex:1}
+    .media-section{margin-top:20px}
+    .media-list{
+      display:grid;gap:14px;
+    }
+    .media-card{
+      background:#fff;border:1px solid var(--border);border-radius:18px;
+      overflow:hidden;box-shadow:0 5px 20px rgba(32,55,88,.04);
+    }
+    .media-image{
+      width:100%;aspect-ratio:16/10;object-fit:cover;background:#eef2f8;cursor:pointer;
+    }
+    .video-frame{
+      width:100%;aspect-ratio:16/9;border:0;display:block;background:#111;
+    }
+    .media-caption{
+      padding:9px 12px;font-size:11px;color:var(--muted);
+    }
+
+    .media-viewer{
+      position:fixed;inset:0;background:#07101f;z-index:100;
+      display:none;flex-direction:column;
+    }
+    .media-viewer.show{display:flex}
+    .viewer-bar{
+      min-height:60px;padding:10px 14px;
+      display:flex;align-items:center;justify-content:space-between;
+      color:#fff;
+    }
+    .viewer-close{
+      width:40px;height:40px;border:1px solid rgba(255,255,255,.15);
+      background:rgba(255,255,255,.08);color:#fff;border-radius:12px;
+      font-size:18px;
+    }
+    .viewer-content{flex:1;display:grid;place-items:center;padding:10px}
+    .viewer-content img{max-height:82vh;max-width:96vw;object-fit:contain}
+    .viewer-content iframe{width:min(94vw,900px);aspect-ratio:16/9;border:0}
+
+    .profile-card{
+      background:#fff;border:1px solid var(--border);border-radius:20px;
+      padding:18px;box-shadow:var(--shadow);
+    }
+    .profile-head{display:flex;align-items:center;gap:13px}
     .avatar{
-      width:42px;height:42px;border-radius:13px;background:var(--orange-pale);
-      color:var(--orange-dark);display:grid;place-items:center;
-      font-weight:900;flex:0 0 auto
+      width:58px;height:58px;border-radius:18px;background:var(--primary-soft);
+      color:var(--primary);display:grid;place-items:center;font-size:21px;font-weight:850;
     }
-    .name{font-weight:850}
-    .meta{font-size:12px;color:var(--muted);margin-top:3px}
-    .actions{display:flex;gap:7px;margin-top:10px}
-    .actions .btn{flex:1}
+    .profile-name{margin:0;font-size:18px;font-weight:850}
+    .profile-mobile{margin:4px 0 0;color:var(--muted);font-size:12px}
+    .profile-status{
+      display:inline-flex;align-items:center;gap:6px;
+      margin-top:7px;font-size:11px;font-weight:700;color:var(--success);
+    }
+    .status-dot{width:7px;height:7px;border-radius:50%;background:#22b66d}
+    .profile-info{display:grid;gap:1px;margin-top:18px}
+    .info-row{
+      display:flex;justify-content:space-between;gap:15px;
+      padding:13px 0;border-top:1px solid var(--border);font-size:13px;
+    }
+    .info-label{color:var(--muted)}
+    .info-value{text-align:right;font-weight:700}
+    .full-btn{
+      width:100%;height:45px;border:0;border-radius:13px;
+      background:var(--primary);color:#fff;font-weight:800;margin-top:16px;
+    }
+    .outline-btn{
+      width:100%;height:45px;border:1px solid var(--border);border-radius:13px;
+      background:#fff;color:var(--text);font-weight:800;margin-top:10px;
+    }
+    .danger-btn{color:var(--danger);border-color:#ffd9dc;background:#fff8f8}
 
-    .empty{
-      padding:28px 14px;text-align:center;color:var(--muted);
-      background:#fff;border:1px dashed var(--border);border-radius:16px
+    .rating-box{
+      margin-top:18px;padding-top:16px;border-top:1px solid var(--border);
     }
-    .empty strong{display:block;color:var(--text);margin-bottom:4px}
-
-    label{display:block;font-size:13px;font-weight:750;margin:0 0 6px}
-    .field{margin-bottom:13px}
-    .input,.select{
-      width:100%;min-height:46px;padding:11px 12px;
-      border:1px solid #d1d5db;border-radius:12px;
-      background:#fff;color:var(--text);outline:none
+    .rating-label{font-size:13px;font-weight:800;margin-bottom:10px}
+    .stars{display:flex;gap:5px}
+    .star-btn{
+      width:39px;height:39px;border:1px solid var(--border);border-radius:10px;
+      background:#fff;color:#c4cad5;font-size:20px;
     }
-    .input:focus,.select:focus{
-      border-color:var(--orange);
-      box-shadow:0 0 0 3px rgba(249,115,22,.12)
-    }
-
-    .segmented{
-      display:grid;grid-template-columns:repeat(2,1fr);gap:7px;
-      background:#f3f4f6;padding:5px;border-radius:13px
-    }
-    .segmented.three{grid-template-columns:repeat(3,1fr)}
-    .seg{
-      min-height:42px;border:0;border-radius:9px;background:transparent;
-      font-weight:800;color:var(--muted)
-    }
-    .seg.active{
-      background:#fff;color:var(--orange-dark);
-      box-shadow:0 2px 7px rgba(15,23,42,.08)
-    }
+    .star-btn.selected,.star-btn:hover{color:#f3a117;border-color:#ffdca0;background:#fffaf0}
+    .rating-message{font-size:11px;color:var(--muted);margin-top:8px;min-height:15px}
 
     .bottom-nav{
-      position:fixed;z-index:30;left:0;right:0;bottom:0;
-      background:rgba(255,255,255,.97);backdrop-filter:blur(14px);
+      position:fixed;left:0;right:0;bottom:0;z-index:40;
+      height:var(--nav-height);
+      background:rgba(255,255,255,.97);backdrop-filter:blur(16px);
       border-top:1px solid var(--border);
-      padding:7px max(8px,env(safe-area-inset-left))
-      calc(7px + env(safe-area-inset-bottom));
-      display:grid;grid-template-columns:repeat(4,1fr)
+      padding:7px max(8px,env(safe-area-inset-left)) calc(7px + env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-right));
+    }
+    .bottom-nav-inner{
+      width:min(100%,760px);height:100%;margin:auto;
+      display:grid;grid-template-columns:repeat(4,1fr);gap:4px;
     }
     .nav-btn{
-      border:0;background:none;color:#6b7280;min-height:52px;
-      border-radius:12px;font-size:11px;font-weight:800;
-      display:flex;flex-direction:column;align-items:center;
-      justify-content:center;gap:3px
+      border:0;background:transparent;color:#7a869a;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      gap:4px;border-radius:13px;font-size:10px;font-weight:700;
     }
-    .nav-icon{font-size:21px;line-height:1}
-    .nav-btn.active{color:var(--orange-dark);background:var(--orange-soft)}
+    .nav-icon{font-size:20px;line-height:1}
+    .nav-btn.active{color:var(--primary);background:var(--primary-soft)}
 
-    .calendar{
-      background:#fff;border:1px solid var(--border);
-      border-radius:18px;overflow:hidden
+    .state{
+      background:#fff;border:1px solid var(--border);border-radius:18px;
+      padding:30px 18px;text-align:center;color:var(--muted);
     }
-    .weekdays,.days{display:grid;grid-template-columns:repeat(7,1fr)}
-    .weekday{
-      padding:9px 2px;text-align:center;color:var(--muted);
-      font-size:11px;font-weight:800;border-bottom:1px solid var(--border)
-    }
-    .day{
-      min-height:65px;border:0;border-right:1px solid var(--border);
-      border-bottom:1px solid var(--border);background:#fff;
-      padding:5px 3px;text-align:left;position:relative
-    }
-    .day:nth-child(7n){border-right:0}
-    .day.muted-day{background:#fafafa;color:#c4c7cc}
-    .day-num{font-size:12px;font-weight:850}
-    .day-status{
-      font-size:9px;margin-top:4px;font-weight:800;line-height:1.15
-    }
-    .day.work .day-status{color:var(--green)}
-    .day.off .day-status{color:var(--red)}
-    .day.has-work{background:#f7fff9}
-    .day.selected{
-      outline:2px solid var(--orange);
-      outline-offset:-2px;z-index:1
-    }
-    .day.today .day-num{
-      display:inline-grid;width:24px;height:24px;place-items:center;
-      border-radius:50%;background:var(--orange);color:#fff
-    }
-    .units-badge{
-      position:absolute;right:3px;top:4px;background:var(--orange-pale);
-      color:var(--orange-dark);border-radius:8px;padding:2px 4px;
-      font-size:9px;font-weight:900
+    .state-icon{font-size:32px;margin-bottom:9px}
+    .state-title{font-weight:800;color:var(--text);margin-bottom:5px}
+    .state-text{font-size:12px;line-height:1.5}
+    .retry-btn{
+      margin-top:14px;border:0;background:var(--primary);color:#fff;
+      height:38px;border-radius:11px;padding:0 15px;font-weight:800;font-size:12px;
     }
 
-    .work-entry{
-      border:1px solid var(--border);border-radius:14px;
-      padding:11px;margin-bottom:9px;background:#fff
+    .skeleton-list{display:grid;gap:12px}
+    .skeleton{
+      height:118px;border-radius:18px;
+      background:linear-gradient(90deg,#edf1f7 25%,#f7f9fc 37%,#edf1f7 63%);
+      background-size:400% 100%;animation:shimmer 1.2s infinite;
     }
-    .work-entry.off-entry{background:#fafafa}
-    .pill{
-      display:inline-flex;align-items:center;border-radius:999px;
-      padding:4px 8px;font-size:11px;font-weight:800;
-      background:#f3f4f6;color:var(--muted)
-    }
-    .pill.orange{background:var(--orange-soft);color:var(--orange-dark)}
-    .pill.green{background:var(--green-soft);color:var(--green)}
-    .pill.red{background:var(--red-soft);color:var(--red)}
+    @keyframes shimmer{0%{background-position:100% 0}100%{background-position:-100% 0}}
 
     .modal-backdrop{
-      position:fixed;inset:0;background:rgba(15,23,42,.45);z-index:50;
-      display:flex;align-items:flex-end;justify-content:center
+      position:fixed;inset:0;z-index:80;
+      background:rgba(10,21,40,.48);display:none;align-items:flex-end;
+      padding:12px;
     }
+    .modal-backdrop.show{display:flex}
     .modal{
-      width:100%;max-width:760px;background:#fff;
-      border-radius:24px 24px 0 0;max-height:92vh;overflow:auto;
-      padding:16px 14px calc(18px + env(safe-area-inset-bottom));
-      box-shadow:0 -12px 35px rgba(15,23,42,.18)
+      width:min(100%,520px);margin:auto;
+      background:#fff;border-radius:24px;padding:21px;
+      box-shadow:0 20px 70px rgba(0,0,0,.22);
+      max-height:90vh;overflow:auto;
+      animation:modalIn .2s ease;
     }
-    .modal-head{
-      display:flex;justify-content:space-between;
-      align-items:center;margin-bottom:15px
+    @keyframes modalIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+    .modal h2{font-size:20px;margin:0 0 7px}
+    .modal p{font-size:12px;color:var(--muted);line-height:1.5;margin:0 0 17px}
+    .field{margin-bottom:12px}
+    .field label{display:block;font-size:12px;font-weight:750;margin-bottom:6px}
+    .field input{
+      width:100%;height:45px;border:1px solid var(--border);border-radius:12px;
+      outline:0;padding:0 12px;background:#f8fafd;color:var(--text);
     }
-    .modal-title{font-size:19px;font-weight:900}
-    .close{
-      width:38px;height:38px;border:0;border-radius:11px;
-      background:#f3f4f6;font-size:21px
-    }
-    .confirm-text{line-height:1.55;color:#4b5563;font-size:14px}
-
-    .login{
-      min-height:100vh;display:grid;place-items:center;padding:22px;
-      background:linear-gradient(160deg,#fff7ed 0%,#fff 55%,#f8fafc 100%)
-    }
-    .login-card{
-      width:100%;max-width:420px;background:#fff;
-      border:1px solid #fed7aa;border-radius:25px;padding:23px;
-      box-shadow:0 20px 60px rgba(15,23,42,.1)
-    }
-    .login-logo{
-      width:62px;height:62px;border-radius:18px;background:var(--orange);
-      color:#fff;display:grid;place-items:center;font-weight:950;
-      font-size:25px;margin-bottom:14px
-    }
-    .login h1{font-size:29px;margin:0 0 4px}
-    .login p{margin:0 0 22px;color:var(--muted);font-size:14px}
-    .login-error{
-      background:var(--red-soft);color:var(--red);
-      padding:10px;border-radius:11px;font-size:13px;margin-bottom:12px
-    }
+    .field input:focus{background:#fff;border-color:#9fc3ff;box-shadow:0 0 0 4px rgba(0,102,255,.07)}
+    .form-error{font-size:11px;color:var(--danger);min-height:15px;margin:4px 0 7px}
+    .modal-actions{display:flex;gap:9px;margin-top:8px}
+    .modal-actions button{flex:1;height:44px;border-radius:12px;font-weight:800}
+    .modal-cancel{border:1px solid var(--border);background:#fff;color:#48546a}
+    .modal-submit{border:0;background:var(--primary);color:#fff}
 
     .toast{
-      position:fixed;z-index:100;left:50%;bottom:84px;
-      transform:translateX(-50%);background:#111827;color:#fff;
-      padding:10px 14px;border-radius:12px;font-size:13px;font-weight:750;
-      box-shadow:0 8px 30px rgba(0,0,0,.2);max-width:90%;
-      text-align:center
+      position:fixed;left:50%;bottom:calc(var(--nav-height) + 16px);
+      transform:translate(-50%,20px);z-index:120;
+      background:#172033;color:#fff;padding:11px 14px;border-radius:12px;
+      font-size:12px;max-width:calc(100% - 32px);text-align:center;
+      opacity:0;pointer-events:none;transition:.2s;box-shadow:0 9px 30px rgba(0,0,0,.2);
+    }
+    .toast.show{opacity:1;transform:translate(-50%,0)}
+
+    .login-note{
+      padding:12px 13px;border-radius:13px;background:var(--primary-soft);
+      color:#365887;font-size:11px;line-height:1.45;margin-bottom:15px;
     }
 
-    .divider{height:1px;background:var(--border);margin:14px 0}
-    .info{
-      padding:11px 12px;background:var(--blue-soft);color:#1e40af;
-      border-radius:12px;font-size:12px;line-height:1.5
-    }
-    .warning{
-      padding:11px 12px;background:#fff7ed;color:#9a3412;
-      border-radius:12px;font-size:12px;line-height:1.5
-    }
-    .summary-row{
-      display:flex;justify-content:space-between;gap:12px;
-      padding:9px 0;border-bottom:1px solid #f0f0f0
-    }
-    .summary-row:last-child{border-bottom:0}
-    .summary-row span:first-child{color:var(--muted);font-size:13px}
-    .summary-row strong{font-size:14px}
-    .breakdown{display:grid;gap:8px}
-    .breakdown-item{
-      display:flex;justify-content:space-between;gap:10px;
-      padding:10px;border-radius:12px;background:#fafafa
-    }
-    .small{font-size:12px}
-    .sticky-actions{
-      position:sticky;bottom:0;background:#fff;padding-top:10px
-    }
-
-    @media(min-width:700px){
-      .bottom-nav{
-        left:50%;right:auto;transform:translateX(-50%);
-        width:min(760px,100%);border-left:1px solid var(--border);
-        border-right:1px solid var(--border);
-        border-radius:18px 18px 0 0
-      }
-      .modal-backdrop{align-items:center;padding:20px}
-      .modal{border-radius:22px;max-height:88vh}
-      .toast{bottom:95px}
+    @media (min-width:700px){
+      main{padding-left:20px;padding-right:20px}
+      .app-list{grid-template-columns:1fr 1fr}
+      .media-list{grid-template-columns:1fr 1fr}
+      .media-card:first-child:last-child{grid-column:1/-1}
+      .modal-backdrop{align-items:center}
     }
   </style>
 </head>
 
 <body>
-<div id="root"></div>
-
-<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
-
-<script>
-(() => {
-  'use strict';
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyAz4vnf3BJ_Hs54lksg3Og8n5a7fr7DhyU",
-    authDomain: "lkr-hisab.firebaseapp.com",
-    projectId: "lkr-hisab",
-    storageBucket: "lkr-hisab.firebasestorage.app",
-    messagingSenderId: "1054769717706",
-    appId: "1:1054769717706:web:b6011c1a2023c6dc7b2f33"
-  };
-
-  const APP_USER = {
-    name: 'Shivam Kumar',
-    password: '14141414',
-    id: 'shivam-kumar'
-  };
-
-  const LOGIN_KEY = 'lkr_hisab_logged_in';
-  const CACHE_KEY = 'lkr_hisab_cache_v1';
-
-  const state = {
-    loggedIn: false,
-    view: 'home',
-    month: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
-    people: [],
-    sites: [],
-    works: [],
-    selectedPersonId: null,
-    selectedSiteId: null,
-    selectedDate: null,
-    cloud: 'offline',
-    loaded: false,
-    modal: null,
-    editing: null,
-    loginError: '',
-    busy: false
-  };
-
-  let db = null;
-  let unsubscribe = null;
-
-  const $ = id => document.getElementById(id);
-
-  const esc = value =>
-    String(value ?? '').replace(/[&<>'"]/g, c => ({
-      '&':'&amp;',
-      '<':'&lt;',
-      '>':'&gt;',
-      "'":'&#39;',
-      '"':'&quot;'
-    }[c]));
-
-  const money = n =>
-    '₹' + Math.round(Number(n) || 0).toLocaleString('en-IN');
-
-  const units = n =>
-    Number(n || 0).toLocaleString('en-IN', {
-      maximumFractionDigits:2
-    });
-
-  const uid = () =>
-    (crypto && crypto.randomUUID)
-      ? crypto.randomUUID()
-      : Date.now().toString(36) + Math.random().toString(36).slice(2);
-
-  const pad = n => String(n).padStart(2,'0');
-
-  const dateKey = d =>
-    `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
-
-  const parseDate = s => {
-    const [y,m,d] = String(s).split('-').map(Number);
-    return new Date(y,m-1,d);
-  };
-
-  const monthKey = d =>
-    `${d.getFullYear()}-${pad(d.getMonth()+1)}`;
-
-  const monthLabel = d =>
-    d.toLocaleDateString('en-IN',{
-      month:'long',
-      year:'numeric'
-    });
-
-  const isSameMonth = (date, month) =>
-    date.getFullYear()===month.getFullYear() &&
-    date.getMonth()===month.getMonth();
-
-  const firstOfMonth = d =>
-    new Date(d.getFullYear(),d.getMonth(),1);
-
-  const getPerson = id =>
-    state.people.find(p => p.id === id);
-
-  const getSite = id =>
-    state.sites.find(s => s.id === id);
-
-  const worksInMonth = (month=state.month) =>
-    state.works.filter(w =>
-      String(w.date).startsWith(monthKey(month))
-    );
-
-  const workForPersonMonth = (personId, month=state.month) =>
-    worksInMonth(month).filter(w => w.personId===personId);
-
-  const activeWorkEntries = (personId, month=state.month) =>
-    workForPersonMonth(personId,month)
-      .filter(w => w.status==='work');
-
-  const personUnits = (personId, month=state.month) =>
-    activeWorkEntries(personId,month)
-      .reduce((s,w)=>s+Number(w.units||0),0);
-
-  const personPayment = (personId, month=state.month) =>
-    activeWorkEntries(personId,month)
-      .reduce((s,w)=>s+(w.paymentYes ? Number(w.paymentAmount||0) : 0),0);
-
-  const personBana = (personId, month=state.month) => {
-    const p=getPerson(personId);
-    return (p ? Number(p.rate||0) : 0) *
-      personUnits(personId,month);
-  };
-
-  const personBalance = (personId, month=state.month) =>
-    personBana(personId,month)-personPayment(personId,month);
-
-  function setCloud(status){
-    state.cloud=status;
-    const el=$('cloudStatus');
-    if(!el)return;
-
-    const map={
-      connected:['☁ Cloud • Connected','connected'],
-      saved:['☁ Cloud • Saved','saved'],
-      offline:['☁ Cloud • Offline','offline'],
-      error:['☁ Sync error','error']
-    };
-
-    el.textContent=map[status]?.[0] || '☁ Cloud • Offline';
-    el.className='cloud '+(map[status]?.[1] || '');
-  }
-
-  function saveLocalCache(){
-    try{
-      localStorage.setItem(
-        CACHE_KEY,
-        JSON.stringify({
-          people:state.people,
-          sites:state.sites,
-          works:state.works
-        })
-      );
-    }catch(e){}
-  }
-
-  function loadLocalCache(){
-    try{
-      const raw=localStorage.getItem(CACHE_KEY);
-      if(!raw)return;
-
-      const d=JSON.parse(raw);
-
-      state.people=Array.isArray(d.people) ? d.people : [];
-      state.sites=Array.isArray(d.sites) ? d.sites : [];
-      state.works=Array.isArray(d.works) ? d.works : [];
-    }catch(e){}
-  }
-
-  async function initFirebase(){
-    try{
-      if(!firebase.apps.length){
-        firebase.initializeApp(firebaseConfig);
-      }
-
-      db=firebase.firestore();
-      setCloud('connected');
-      return true;
-    }catch(e){
-      console.error(e);
-      setCloud('error');
-      return false;
-    }
-  }
-
-  const userRef = () =>
-    db.collection('users').doc(APP_USER.id);
-
-  const col = name =>
-    userRef().collection(name);
-
-  async function ensureUserDoc(){
-    try{
-      await userRef().set({
-        name:APP_USER.name,
-        updatedAt:firebase.firestore.FieldValue.serverTimestamp()
-      },{
-        merge:true
-      });
-    }catch(e){
-      console.warn('user doc',e);
-    }
-  }
-
-  async function loadFirestore(){
-    if(!db)return false;
-
-    state.busy=true;
-    render();
-
-    try{
-      const [
-        sitesSnap,
-        peopleSnap,
-        worksSnap
-      ]=await Promise.all([
-        col('sites').get(),
-        col('people').get(),
-        col('works').get()
-      ]);
-
-      state.sites=sitesSnap.docs.map(d=>({
-        id:d.id,
-        ...d.data()
-      }));
-
-      state.people=peopleSnap.docs.map(d=>({
-        id:d.id,
-        ...d.data()
-      }));
-
-      state.works=worksSnap.docs.map(d=>({
-        id:d.id,
-        ...d.data()
-      }));
-
-      saveLocalCache();
-      state.loaded=true;
-      setCloud('saved');
-
-      state.busy=false;
-      render();
-
-      return true;
-    }catch(e){
-      console.error(e);
-      setCloud('error');
-      state.loaded=true;
-      state.busy=false;
-      render();
-
-      toast('Firestore load नहीं हो पाया। Cache से app चला रहा हूँ।');
-      return false;
-    }
-  }
-
-  async function saveDoc(collectionName,item){
-    if(!db){
-      setCloud('error');
-      throw new Error('Firebase unavailable');
-    }
-
-    await col(collectionName)
-      .doc(item.id)
-      .set({
-        ...item,
-        updatedAt:firebase.firestore.FieldValue.serverTimestamp()
-      },{
-        merge:true
-      });
-  }
-
-  async function deleteDoc(collectionName,id){
-    if(!db){
-      throw new Error('Firebase unavailable');
-    }
-
-    await col(collectionName).doc(id).delete();
-  }
-
-  async function persistAdd(collectionName,item){
-    state[collectionName].push(item);
-    saveLocalCache();
-    render();
-
-    try{
-      await saveDoc(collectionName,item);
-      setCloud('saved');
-    }catch(e){
-      setCloud('error');
-      toast('Cloud save fail हुआ। Internet/Firestore rules check करें।');
-    }
-  }
-
-  async function persistUpdate(collectionName,item){
-    const arr=state[collectionName];
-    const i=arr.findIndex(x=>x.id===item.id);
-
-    if(i>=0)arr[i]=item;
-
-    saveLocalCache();
-    render();
-
-    try{
-      await saveDoc(collectionName,item);
-      setCloud('saved');
-    }catch(e){
-      setCloud('error');
-      toast('Cloud update fail हुआ।');
-    }
-  }
-
-  async function persistDelete(collectionName,id){
-    const arr=state[collectionName];
-    const i=arr.findIndex(x=>x.id===id);
-
-    if(i>=0)arr.splice(i,1);
-
-    saveLocalCache();
-    render();
-
-    try{
-      await deleteDoc(collectionName,id);
-      setCloud('saved');
-    }catch(e){
-      setCloud('error');
-      toast('Cloud delete fail हुआ।');
-    }
-  }
-
-  function monthNav(){
-    return `
-      <div class="monthbar">
-        <button aria-label="Previous month" onclick="changeMonth(-1)">‹</button>
-        <div class="month-label">${esc(monthLabel(state.month))}</div>
-        <button aria-label="Next month" onclick="changeMonth(1)">›</button>
-      </div>
-    `;
-  }
-
-  window.changeMonth = delta => {
-    state.month=new Date(
-      state.month.getFullYear(),
-      state.month.getMonth()+delta,
-      1
-    );
-
-    state.selectedDate=null;
-    render();
-  };
-
-  function render(){
-    const root=$('root');
-
-    if(!state.loggedIn){
-      root.innerHTML=loginHtml();
-      return;
-    }
-
-    root.innerHTML=`
-      <div class="app">
-        <header class="topbar">
-          <div class="topbar-row">
-            <div class="brand">LKR <span>Hisab</span></div>
-            <div id="cloudStatus" class="cloud"></div>
-          </div>
-        </header>
-
-        <main id="main"></main>
-
-        <nav class="bottom-nav">
-          ${navButton('home','⌂','Home')}
-          ${navButton('people','👷','Labour/Mistri')}
-          ${navButton('sites','🏠','Owner/Site')}
-          ${navButton('more','☰','More')}
-        </nav>
-
-        <div id="modalRoot"></div>
-        <div id="toastRoot"></div>
-      </div>
-    `;
-
-    setCloud(state.cloud);
-    renderMain();
-
-    if(state.modal){
-      renderModal();
-    }
-  }
-
-  function navButton(view,icon,label){
-    return `
-      <button
-        class="nav-btn ${state.view===view?'active':''}"
-        onclick="go('${view}')"
-      >
-        <span class="nav-icon">${icon}</span>
-        ${label}
-      </button>
-    `;
-  }
-
-  window.go=view=>{
-    state.view=view;
-    state.selectedPersonId=null;
-    state.selectedSiteId=null;
-    state.selectedDate=null;
-    state.modal=null;
-    render();
-  };
-
-  function loginHtml(){
-    return `
-      <div class="login">
-        <div class="login-card">
-          <div class="login-logo">LK</div>
-
-          <h1>LKR Hisab</h1>
-          <p>Personal Labour • Mistri • Site हिसाब</p>
-
-          ${
-            state.loginError
-              ? `<div class="login-error">${esc(state.loginError)}</div>`
-              : ''
-          }
-
-          <form onsubmit="event.preventDefault();login()">
-
-            <div class="field">
-              <label>Full Name</label>
-              <input
-                id="loginName"
-                class="input"
-                autocomplete="name"
-                value="Shivam Kumar"
-                required
-              >
-            </div>
-
-            <div class="field">
-              <label>Password</label>
-              <input
-                id="loginPassword"
-                class="input"
-                type="password"
-                autocomplete="current-password"
-                inputmode="numeric"
-                required
-              >
-            </div>
-
-            <button class="btn btn-primary btn-block" type="submit">
-              Login
-            </button>
-          </form>
-
-          <div class="info" style="margin-top:14px">
-            यह personal app है। Login state इस browser में localStorage में रखी जाती है।
-            मुख्य हिसाब Firestore में save होता है।
-          </div>
-        </div>
-      </div>
-    `;
-  }
-
-  window.login=async()=>{
-    const name=($('loginName')?.value||'').trim();
-    const pass=$('loginPassword')?.value||'';
-
-    if(name!==APP_USER.name || pass!==APP_USER.password){
-      state.loginError='Full Name या Password गलत है।';
-      render();
-      return;
-    }
-
-    state.loginError='';
-    state.loggedIn=true;
-
-    localStorage.setItem(LOGIN_KEY,'1');
-
-    loadLocalCache();
-    render();
-
-    const ok=await initFirebase();
-
-    if(ok){
-      await ensureUserDoc();
-      await loadFirestore();
-    }
-  };
-
-  window.logout=()=>{
-    if(unsubscribe){
-      unsubscribe();
-      unsubscribe=null;
-    }
-
-    state.loggedIn=false;
-    state.loaded=false;
-    state.modal=null;
-
-    localStorage.removeItem(LOGIN_KEY);
-
-    render();
-  };
-
-  function renderMain(){
-    const main=$('main');
-
-    if(state.view==='home'){
-      main.innerHTML=homeView();
-    }
-    else if(state.view==='people'){
-      main.innerHTML=peopleView();
-    }
-    else if(state.view==='sites'){
-      main.innerHTML=sitesView();
-    }
-    else{
-      main.innerHTML=moreView();
-    }
-  }
-
-  function homeView(){
-    const m=state.month;
-    const stats=typeStats('Labour',m);
-    const ms=typeStats('Mistri',m);
-    const comm=commissionStats(m);
-
-    return `
-      <div class="view-title">Home</div>
-      <div class="subtitle">इस महीने का पूरा सारांश</div>
-
-      ${monthNav()}
-
-      <div class="grid grid-2">
-        <div class="card orange-card stat-card">
-          <div class="stat-label">Labour count</div>
-          <div class="stat-value">${stats.count}</div>
-          <div class="stat-small">Work वाले workers</div>
-        </div>
-
-        <div class="card orange-card stat-card">
-          <div class="stat-label">Mistri count</div>
-          <div class="stat-value">${ms.count}</div>
-          <div class="stat-small">Work वाले workers</div>
-        </div>
-      </div>
-
-      <div style="height:12px"></div>
-
-      ${homeTypeCard('Labour',stats)}
-
-      <div style="height:12px"></div>
-
-      ${homeTypeCard('Mistri',ms)}
-
-      <div style="height:12px"></div>
-
-      <div class="card">
-        <div class="row-between">
-          <div>
-            <div class="section-title" style="margin:0">
-              Commission
-            </div>
-            <div class="small muted">इस महीने</div>
-          </div>
-
-          <button
-            class="btn btn-outline btn-sm"
-            onclick="openCommission()"
-          >
-            पूरा देखें
-          </button>
-        </div>
-
-        <div class="grid grid-2" style="margin-top:10px">
-          <div>
-            <div class="stat-label">Labour Commission</div>
-            <div class="stat-value">${money(comm.labour)}</div>
-          </div>
-
-          <div>
-            <div class="stat-label">Mistri Commission</div>
-            <div class="stat-value">${money(comm.mistri)}</div>
-          </div>
-        </div>
-
-        <div class="divider"></div>
-
-        <div class="row-between">
-          <span class="muted">Total Commission</span>
-          <strong class="money">${money(comm.total)}</strong>
-        </div>
-      </div>
-    `;
-  }
-
-  function homeTypeCard(type,s){
-    const balance=s.bana-s.payment;
-
-    return `
-      <div class="card">
-        <div class="section-title">${type}</div>
-
-        <div class="grid grid-2">
-
-          <div>
-            <div class="stat-label">Total Work</div>
-            <div class="stat-value">${units(s.units)}</div>
-          </div>
-
-          <div>
-            <div class="stat-label">Total Bana</div>
-            <div class="stat-value">${money(s.bana)}</div>
-          </div>
-
-          <div>
-            <div class="stat-label">Actual Payment</div>
-            <div class="stat-value">${money(s.payment)}</div>
-          </div>
-
-          <div>
-            <div class="stat-label">
-              ${balance>=0?'Baki':'Jyada diya'}
-            </div>
-            <div class="stat-value ${balance>=0?'positive':'negative'}">
-              ${money(Math.abs(balance))}
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <div class="brand-row">
+          <div class="brand">
+            <div class="brand-logo">🏙️</div>
+            <div class="brand-copy">
+              <h1 class="brand-title">R Lal College, Lakhisarai</h1>
+              <p class="brand-subtitle">Discover LKR Web Projects</p>
             </div>
           </div>
-
+          <button class="header-profile" id="headerProfileBtn" aria-label="Profile">👤</button>
+        </div>
+        <div class="search-wrap">
+          <span class="search-icon">🔍</span>
+          <input id="searchInput" class="search-input" type="search" placeholder="Search apps..." autocomplete="off" />
+          <button id="searchClear" class="search-clear" aria-label="Clear search">✕</button>
         </div>
       </div>
-    `;
-  }
+    </header>
 
-  function typeStats(type,month){
-    const ps=state.people.filter(p=>p.type===type);
+    <main>
+      <section id="homeScreen" class="screen active">
+        <div class="section-head">
+          <div>
+            <p class="section-note">Explore useful projects</p>
+            <h2 class="section-title">Categories</h2>
+          </div>
+        </div>
+        <div id="categoryRow" class="category-row"></div>
 
-    let count=0;
-    let u=0;
-    let b=0;
-    let pay=0;
+        <div class="section-head" style="margin-top:12px">
+          <div>
+            <p class="section-note" id="homeResultNote">All available projects</p>
+            <h2 class="section-title">Apps</h2>
+          </div>
+        </div>
+        <div id="homeContent"></div>
+      </section>
 
-    ps.forEach(p=>{
-      const pu=personUnits(p.id,month);
+      <section id="exploreScreen" class="screen">
+        <div class="section-head">
+          <div>
+            <p class="section-note">Browse every project</p>
+            <h2 class="section-title">Explore</h2>
+          </div>
+        </div>
+        <div id="exploreContent"></div>
+      </section>
 
-      if(pu>0)count++;
+      <section id="favoritesScreen" class="screen">
+        <div class="section-head">
+          <div>
+            <p class="section-note">Your saved projects</p>
+            <h2 class="section-title">Favorites</h2>
+          </div>
+        </div>
+        <div id="favoritesContent"></div>
+      </section>
 
-      u+=pu;
-      b+=personBana(p.id,month);
-      pay+=personPayment(p.id,month);
-    });
+      <section id="profileScreen" class="screen">
+        <div class="section-head">
+          <div>
+            <p class="section-note">Your R Lal College, Lakhisarai account</p>
+            <h2 class="section-title">Profile</h2>
+          </div>
+        </div>
+        <div id="profileContent"></div>
+      </section>
 
-    return {
-      count,
-      units:u,
-      bana:b,
-      payment:pay
-    };
-  }
+      <section id="detailScreen" class="screen">
+        <div class="detail-header">
+          <button class="back-btn" id="detailBackBtn" aria-label="Back">←</button>
+          <h2 class="detail-title">App Details</h2>
+        </div>
+        <div id="detailContent"></div>
+      </section>
+    </main>
 
-  function commissionStats(month){
-    let labour=0;
-    let mistri=0;
-
-    worksInMonth(month)
-      .filter(w=>w.status==='work')
-      .forEach(w=>{
-        const p=getPerson(w.personId);
-        const s=getSite(w.siteId);
-
-        if(!p||!s)return;
-
-        const ownerRate=
-          p.type==='Labour'
-            ? Number(s.labourRate||0)
-            : Number(s.mistriRate||0);
-
-        const diff=ownerRate-Number(p.rate||0);
-
-        if(p.type==='Labour'){
-          labour+=diff*Number(w.units||0);
-        }
-        else{
-          mistri+=diff*Number(w.units||0);
-        }
-      });
-
-    return {
-      labour,
-      mistri,
-      total:labour+mistri
-    };
-  }
-
-  function peopleView(){
-    if(state.selectedPersonId){
-      return personDetailView(state.selectedPersonId);
-    }
-
-    return `
-      <div class="view-title">Labour / Mistri</div>
-      <div class="subtitle">Workers और उनका daily हिसाब</div>
-
-      <div class="grid grid-2">
-        <button
-          class="btn btn-primary"
-          onclick="openPersonForm('Labour')"
-        >
-          + Labour
+    <nav class="bottom-nav" id="bottomNav">
+      <div class="bottom-nav-inner">
+        <button class="nav-btn active" data-screen="homeScreen" data-nav="home">
+          <span class="nav-icon">🏠</span><span>Home</span>
         </button>
-
-        <button
-          class="btn btn-outline"
-          onclick="openPersonForm('Mistri')"
-        >
-          + Mistri
+        <button class="nav-btn" data-screen="exploreScreen" data-nav="explore">
+          <span class="nav-icon">🔍</span><span>Explore</span>
+        </button>
+        <button class="nav-btn" data-screen="favoritesScreen" data-nav="favorites">
+          <span class="nav-icon">❤️</span><span>Favorites</span>
+        </button>
+        <button class="nav-btn" data-screen="profileScreen" data-nav="profile">
+          <span class="nav-icon">👤</span><span>Profile</span>
         </button>
       </div>
-
-      <div style="height:14px"></div>
-
-      <div class="segmented">
-        <button
-          class="seg ${peopleFilter==='Labour'?'active':''}"
-          onclick="setPeopleFilter('Labour')"
-        >
-          Labour (${state.people.filter(p=>p.type==='Labour').length})
-        </button>
-
-        <button
-          class="seg ${peopleFilter==='Mistri'?'active':''}"
-          onclick="setPeopleFilter('Mistri')"
-        >
-          Mistri (${state.people.filter(p=>p.type==='Mistri').length})
-        </button>
-      </div>
-
-      <div style="height:12px"></div>
-
-      <div class="person-list">
-        ${renderPeopleList()}
-      </div>
-    `;
-  }
-
-  let peopleFilter='Labour';
-
-  window.setPeopleFilter=t=>{
-    peopleFilter=t;
-    render();
-  };
-
-  /*
-    IMPORTANT FIX:
-    Open button अब direct function call करता है।
-    dataset/attribute पर dependency नहीं है।
-  */
-  function renderPeopleList(){
-    const list=state.people.filter(
-      p=>p.type===peopleFilter
-    );
-
-    if(!list.length){
-      return `
-        <div class="empty">
-          <strong>
-            अभी कोई ${peopleFilter} नहीं है
-          </strong>
-          <span>
-            ऊपर से + ${peopleFilter} दबाकर जोड़ें।
-          </span>
-        </div>
-      `;
-    }
-
-    return list.map(p=>`
-      <div class="list-item">
-
-        <div class="row">
-
-          <div class="avatar">
-            ${esc(
-              (p.name||'?')
-                .trim()
-                .charAt(0)
-                .toUpperCase()
-            )}
-          </div>
-
-          <div style="min-width:0;flex:1">
-
-            <div class="name">
-              ${esc(p.name)}
-            </div>
-
-            <div class="meta">
-              ${esc(p.type)}
-              • Worker Rate ${money(p.rate)}/day
-            </div>
-
-          </div>
-
-          <button
-            type="button"
-            class="btn btn-outline btn-sm"
-            onclick='openPerson(${JSON.stringify(p.id)})'
-          >
-            Open
-          </button>
-
-        </div>
-
-        <div class="actions">
-
-          <button
-            class="btn btn-light btn-sm"
-            onclick='openPersonForm(${JSON.stringify(p.type)},${JSON.stringify(p.id)})'
-          >
-            Edit
-          </button>
-
-          <button
-            class="btn btn-danger btn-sm"
-            onclick='deletePerson(${JSON.stringify(p.id)})'
-          >
-            Delete
-          </button>
-
-        </div>
-
-      </div>
-    `).join('');
-  }
-
-  /*
-    IMPORTANT FIX:
-    Function form में बनाया गया है ताकि Open event
-    reliably execute हो।
-  */
-  window.openPerson=function(id){
-
-    const personId=String(id||'').trim();
-
-    const person=getPerson(personId);
-
-    if(!person){
-      toast('Worker नहीं मिला।');
-      return;
-    }
-
-    state.view='people';
-    state.selectedPersonId=personId;
-    state.selectedSiteId=null;
-    state.selectedDate=null;
-    state.modal=null;
-
-    render();
-  };
-
-  window.backToPeopleList=()=>{
-    state.view='people';
-    state.selectedPersonId=null;
-    state.selectedDate=null;
-    state.modal=null;
-    render();
-  };
-
-  /*
-    IMPORTANT FIX:
-    यहाँ extra closing </div> हटाया गया है।
-  */
-  function personDetailView(id){
-
-    const p=getPerson(id);
-
-    if(!p){
-      state.selectedPersonId=null;
-      return peopleView();
-    }
-
-    const u=personUnits(id);
-    const b=personBana(id);
-    const pay=personPayment(id);
-    const bal=b-pay;
-
-    return `
-      <button
-        type="button"
-        class="btn btn-light btn-sm"
-        onclick="backToPeopleList()"
-        style="margin-bottom:10px"
-      >
-        ← Labour / Mistri
-      </button>
-
-      <div class="view-title">
-        ${esc(p.name)}
-      </div>
-
-      <div class="subtitle">
-        ${esc(p.type)}
-        • Worker Rate ${money(p.rate)}/day
-      </div>
-
-      ${monthNav()}
-
-      <div class="card orange-card">
-
-        <div class="grid grid-2">
-
-          <div>
-            <div class="stat-label">Total Work</div>
-            <div class="stat-value">${units(u)}</div>
-          </div>
-
-          <div>
-            <div class="stat-label">Total Bana</div>
-            <div class="stat-value">${money(b)}</div>
-          </div>
-
-          <div>
-            <div class="stat-label">Actual Payment</div>
-            <div class="stat-value">${money(pay)}</div>
-          </div>
-
-          <div>
-            <div class="stat-label">
-              ${bal>=0?'Baki':'Jyada diya'}
-            </div>
-
-            <div class="stat-value ${bal>=0?'positive':'negative'}">
-              ${money(Math.abs(bal))}
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-      <div style="height:13px"></div>
-
-      <div class="section-title">
-        Monthly Calendar
-      </div>
-
-      ${calendarHtml(id)}
-
-      <div style="height:13px"></div>
-
-      ${selectedDatePanel(id)}
-    `;
-  }
-
-  function calendarHtml(personId){
-
-    const first=firstOfMonth(state.month);
-    const start=new Date(first);
-
-    start.setDate(1-first.getDay());
-
-    const days=[];
-
-    for(let i=0;i<42;i++){
-
-      const d=new Date(start);
-      d.setDate(start.getDate()+i);
-
-      const key=dateKey(d);
-
-      const ws=state.works.filter(
-        w=>w.personId===personId&&w.date===key
-      );
-
-      const work=ws.filter(
-        w=>w.status==='work'
-      );
-
-      const off=ws.some(
-        w=>w.status==='off'
-      );
-
-      const u=work.reduce(
-        (s,w)=>s+Number(w.units||0),
-        0
-      );
-
-      const classes=[
-        isSameMonth(d,state.month)?'':'muted-day',
-        work.length?'has-work':'',
-        off&&!work.length?'off':'',
-        state.selectedDate===key?'selected':'',
-        dateKey(new Date())===key?'today':''
-      ].join(' ');
-
-      days.push(`
-        <button
-          class="day ${classes}"
-          onclick="selectWorkDate('${key}')"
-        >
-          <div class="day-num">${d.getDate()}</div>
-
-          ${
-            u
-              ? `<span class="units-badge">${units(u)}</span>`
-              : ''
-          }
-
-          <div class="day-status">
-            ${
-              work.length
-                ? `काम${work.length>1?' ×'+work.length:''}`
-                : off
-                  ? 'छुट्टी'
-                  : ''
-            }
-          </div>
-        </button>
-      `);
-    }
-
-    return `
-      <div class="calendar">
-
-        <div class="weekdays">
-          <div class="weekday">रवि</div>
-          <div class="weekday">सोम</div>
-          <div class="weekday">मंगल</div>
-          <div class="weekday">बुध</div>
-          <div class="weekday">गुरु</div>
-          <div class="weekday">शुक्र</div>
-          <div class="weekday">शनि</div>
-        </div>
-
-        <div class="days">
-          ${days.join('')}
-        </div>
-
-      </div>
-    `;
-  }
-
-  window.selectWorkDate=key=>{
-    state.selectedDate=key;
-    render();
-  };
-
-  function selectedDatePanel(personId){
-
-    if(!state.selectedDate){
-      return `
-        <div class="card">
-          <div class="section-title">
-            Daily Entry
-          </div>
-
-          <div class="muted small">
-            Calendar में कोई date चुनें।
-            उस date का काम/छुट्टी यहीं manage होगा।
-          </div>
-        </div>
-      `;
-    }
-
-    const p=getPerson(personId);
-    const key=state.selectedDate;
-
-    const ws=state.works.filter(
-      w=>w.personId===personId&&w.date===key
-    );
-
-    const workEntries=ws.filter(
-      w=>w.status==='work'
-    );
-
-    const hasOff=ws.some(
-      w=>w.status==='off'
-    );
-
-    return `
-      <div class="card">
-
-        <div class="row-between">
-
-          <div>
-            <div class="section-title" style="margin:0">
-              ${formatDateHindi(parseDate(key))}
-            </div>
-
-            <div class="small muted">
-              ${
-                workEntries.length
-                  ? `${workEntries.length} work ${
-                      workEntries.length===1
-                        ? 'entry'
-                        : 'entries'
-                    }`
-                  : hasOff
-                    ? 'Chhutti / No Work'
-                    : 'अभी entry नहीं है'
-              }
-            </div>
-          </div>
-
-        </div>
-
-        <div style="height:10px"></div>
-
+    </nav>
+  </div>
+
+  <div class="media-viewer" id="mediaViewer">
+    <div class="viewer-bar">
+      <strong id="viewerTitle">Media</strong>
+      <button class="viewer-close" id="viewerClose" aria-label="Close">✕</button>
+    </div>
+    <div class="viewer-content" id="viewerContent"></div>
+  </div>
+
+  <div class="modal-backdrop" id="registrationModal">
+    <div class="modal">
+      <h2>Welcome to R Lal College, Lakhisarai 👋</h2>
+      <p>R Lal College, Lakhisarai इस्तेमाल करने के लिए अपना Full Name और Mobile Number डालें।</p>
+      <form id="registrationForm">
         <div class="field">
-
-          <label>Kaam kiya?</label>
-
-          <div class="segmented">
-
-            <button
-              type="button"
-              class="seg ${workEntries.length?'active':''}"
-              onclick="openWorkForm('${personId}','${key}')"
-            >
-              Haan — Kaam kiya
-            </button>
-
-            <button
-              type="button"
-              class="seg ${hasOff&&!workEntries.length?'active':''}"
-              onclick="saveOffDay('${personId}','${key}')"
-            >
-              Nahi — Chhutti / No Work
-            </button>
-
-          </div>
+          <label for="registerName">Full Name</label>
+          <input id="registerName" required maxlength="80" placeholder="Enter full name" />
         </div>
+        <div class="field">
+          <label for="registerMobile">Mobile Number</label>
+          <input id="registerMobile" required inputmode="numeric" maxlength="15" placeholder="Enter mobile number" />
+        </div>
+        <div id="registrationError" class="form-error"></div>
+        <div class="modal-actions">
+          <button type="button" class="modal-cancel" id="registrationCancel">Cancel</button>
+          <button type="submit" class="modal-submit">Continue</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
-        ${
-          workEntries.length
-            ? `
-              <div
-                class="row-between"
-                style="margin:10px 0 8px"
-              >
-                <strong>इस date का काम</strong>
+  <div class="modal-backdrop" id="loginModal">
+    <div class="modal">
+      <h2>Login to R Lal College, Lakhisarai</h2>
+      <p>अपने registered Full Name और Mobile Number से login करें।</p>
+      <div class="login-note">Firebase Authentication, OTP या password की जरूरत नहीं है।</div>
+      <form id="loginForm">
+        <div class="field">
+          <label for="loginName">Full Name</label>
+          <input id="loginName" required maxlength="80" placeholder="Enter full name" />
+        </div>
+        <div class="field">
+          <label for="loginMobile">Mobile Number</label>
+          <input id="loginMobile" required inputmode="numeric" maxlength="15" placeholder="Enter mobile number" />
+        </div>
+        <div id="loginError" class="form-error"></div>
+        <div class="modal-actions">
+          <button type="button" class="modal-cancel" id="loginCancel">Cancel</button>
+          <button type="submit" class="modal-submit">LOGIN</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
-                <span class="pill orange">
-                  ${units(
-                    workEntries.reduce(
-                      (a,w)=>a+Number(w.units||0),
-                      0
-                    )
-                  )}
-                  total units
-                </span>
-              </div>
+  <div class="toast" id="toast"></div>
 
-              ${workEntries
-                .map(w=>workEntryHtml(w,p))
-                .join('')}
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+    import {
+      getFirestore, collection, getDocs, getDoc, doc, setDoc, updateDoc,
+      query, orderBy, limit, serverTimestamp, Timestamp
+    } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
-              <button
-                type="button"
-                class="btn btn-outline btn-block"
-                onclick="openWorkForm('${personId}','${key}')"
-              >
-                + दूसरी जगह का काम जोड़ें
-              </button>
-            `
-            : ''
-        }
-
-        ${
-          hasOff&&!workEntries.length
-            ? ws
-                .filter(w=>w.status==='off')
-                .map(w=>workEntryHtml(w,p))
-                .join('')
-            : ''
-        }
-
-      </div>
-    `;
-  }
-
-  window.saveOffDay=async(personId,date)=>{
-
-    const same=state.works.filter(
-      w=>w.personId===personId&&w.date===date
-    );
-
-    if(same.some(w=>w.status==='work')){
-      return toast(
-        'इस date पर work entries मौजूद हैं। पहले उन्हें delete करें।'
-      );
-    }
-
-    if(same.some(w=>w.status==='off')){
-      return toast(
-        'इस date पर Chhutti पहले से saved है।'
-      );
-    }
-
-    const item={
-      id:uid(),
-      personId,
-      type:getPerson(personId)?.type||'',
-      date,
-      status:'off',
-      siteId:null,
-      units:0,
-      paymentYes:false,
-      paymentAmount:0
+    const firebaseConfig = {
+      apiKey: "AIzaSyC-rSp3-LNZPbUgS0hAQe44YGnTD7kQgnY",
+      authDomain: "lkr-city.firebaseapp.com",
+      projectId: "lkr-city",
+      storageBucket: "lkr-city.firebasestorage.app",
+      messagingSenderId: "55028850349",
+      appId: "1:55028850349:web:586b7363949170d025f024"
     };
 
-    await persistAdd('works',item);
-    render();
-  };
+    const firebaseApp = initializeApp(firebaseConfig);
+    const db = getFirestore(firebaseApp);
 
-  function formatDateHindi(d){
-    return d.toLocaleDateString(
-      'hi-IN',
-      {
-        weekday:'long',
-        day:'numeric',
-        month:'long',
-        year:'numeric'
+    const els = {
+      homeScreen: document.getElementById("homeScreen"),
+      exploreScreen: document.getElementById("exploreScreen"),
+      favoritesScreen: document.getElementById("favoritesScreen"),
+      profileScreen: document.getElementById("profileScreen"),
+      detailScreen: document.getElementById("detailScreen"),
+      categoryRow: document.getElementById("categoryRow"),
+      homeContent: document.getElementById("homeContent"),
+      exploreContent: document.getElementById("exploreContent"),
+      favoritesContent: document.getElementById("favoritesContent"),
+      profileContent: document.getElementById("profileContent"),
+      detailContent: document.getElementById("detailContent"),
+      searchInput: document.getElementById("searchInput"),
+      searchClear: document.getElementById("searchClear"),
+      bottomNav: document.getElementById("bottomNav"),
+      headerProfileBtn: document.getElementById("headerProfileBtn"),
+      detailBackBtn: document.getElementById("detailBackBtn"),
+      registrationModal: document.getElementById("registrationModal"),
+      loginModal: document.getElementById("loginModal"),
+      registrationForm: document.getElementById("registrationForm"),
+      loginForm: document.getElementById("loginForm"),
+      registrationError: document.getElementById("registrationError"),
+      loginError: document.getElementById("loginError"),
+      registrationCancel: document.getElementById("registrationCancel"),
+      loginCancel: document.getElementById("loginCancel"),
+      registerName: document.getElementById("registerName"),
+      registerMobile: document.getElementById("registerMobile"),
+      loginName: document.getElementById("loginName"),
+      loginMobile: document.getElementById("loginMobile"),
+      mediaViewer: document.getElementById("mediaViewer"),
+      viewerContent: document.getElementById("viewerContent"),
+      viewerTitle: document.getElementById("viewerTitle"),
+      viewerClose: document.getElementById("viewerClose"),
+      toast: document.getElementById("toast")
+    };
+
+    const STORAGE = {
+      user: "lkrCityUser",
+      favorites: "lkrCityFavorites",
+      siteOpens: "lkrCityWebsiteOpens",
+      ratings: "lkrCityLocalRatings"
+    };
+
+    const state = {
+      apps: [],
+      ratings: new Map(),
+      media: new Map(),
+      activeScreen: "homeScreen",
+      activeNav: "home",
+      activeCategory: "All",
+      searchTerm: "",
+      selectedAppId: null,
+      dataLoaded: false,
+      dataError: false,
+      pendingOpenApp: null,
+      toastTimer: null,
+      routeVersion: 0
+    };
+
+    let currentUser = loadJSON(STORAGE.user, null);
+    let favorites = new Set(loadJSON(STORAGE.favorites, []) || []);
+    let localRatings = loadJSON(STORAGE.ratings, {}) || {};
+
+    function loadJSON(key, fallback){
+      try {
+        const value = localStorage.getItem(key);
+        return value ? JSON.parse(value) : fallback;
+      } catch {
+        return fallback;
       }
-    );
-  }
+    }
 
-  function workEntryHtml(w,p){
+    function saveJSON(key, value){
+      try { localStorage.setItem(key, JSON.stringify(value)); } catch {}
+    }
 
-    if(w.status==='off'){
+    function escapeHtml(value){
+      return String(value ?? "")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+
+    function normalize(value){
+      return String(value ?? "").trim().toLowerCase();
+    }
+
+    function cleanMobile(value){
+      return String(value ?? "").replace(/\D/g,"");
+    }
+
+    function initials(name){
+      const parts = String(name || "LKR").trim().split(/\s+/).slice(0,2);
+      return parts.map(x => x[0]?.toUpperCase() || "").join("") || "L";
+    }
+
+    function formatDate(value){
+      if (!value) return "—";
+      try {
+        let d;
+        if (value?.toDate) d = value.toDate();
+        else if (value?.seconds) d = new Date(value.seconds * 1000);
+        else d = new Date(value);
+        if (Number.isNaN(d.getTime())) return "—";
+        return d.toLocaleDateString("en-IN", {day:"2-digit", month:"short", year:"numeric"});
+      } catch { return "—"; }
+    }
+
+    function safeUrl(value){
+      try {
+        const u = new URL(String(value || "").trim());
+        return /^https?:$/.test(u.protocol) ? u.href : "";
+      } catch { return ""; }
+    }
+
+    function youtubeId(value){
+      try{
+        const u = new URL(String(value || "").trim());
+        if (u.hostname === "youtu.be") return u.pathname.slice(1).split("/")[0] || "";
+        if (u.hostname.includes("youtube.com")){
+          if (u.pathname === "/watch") return u.searchParams.get("v") || "";
+          const parts = u.pathname.split("/").filter(Boolean);
+          if (parts[0] === "shorts" || parts[0] === "embed") return parts[1] || "";
+        }
+      }catch{}
+      return "";
+    }
+
+    function youtubeEmbed(value){
+      const id = youtubeId(value);
+      if (!id) return "";
+      return "https://www.youtube.com/embed/" + encodeURIComponent(id) + "?rel=0";
+    }
+
+    function placeholderIcon(name){
+      return `<div class="icon-placeholder">${escapeHtml(initials(name))}</div>`;
+    }
+
+    function handleIconError(img){
+      if (!img || img.dataset.fallbackShown === "1") return;
+      img.dataset.fallbackShown = "1";
+      img.onerror = null;
+      img.replaceWith(placeholderIcon(img.dataset.iconName || "LKR"));
+    }
+
+    function iconHtml(url, name, cls="app-icon"){
+      const safe = safeUrl(url);
+      if (!safe) return placeholderIcon(name);
+
+      // Keep the error handler as a simple function call. Do not inject
+      // placeholder HTML directly inside the onerror attribute because
+      // the placeholder contains quoted HTML attributes, which can break
+      // the surrounding HTML and leak text such as "LH" or ">" on screen.
+      return `<img class="${cls}" src="${escapeHtml(safe)}" alt="${escapeHtml(name)}"
+        data-icon-name="${escapeHtml(name)}" loading="lazy" onerror="handleIconError(this)">`;
+    }
+
+    function showToast(message){
+      els.toast.textContent = message;
+      els.toast.classList.add("show");
+      clearTimeout(state.toastTimer);
+      state.toastTimer = setTimeout(() => els.toast.classList.remove("show"), 2400);
+    }
+
+    function getRatingSummary(appId){
+      const list = state.ratings.get(appId) || [];
+      if (!list.length) return { average: 0, count: 0 };
+      const sum = list.reduce((a,b) => a + Number(b.rating || 0), 0);
+      return { average: sum / list.length, count: list.length };
+    }
+
+    function ratingHtml(appId){
+      const r = getRatingSummary(appId);
+      if (!r.count) return `<span class="rating-inline">⭐ New</span><span class="rating-count">0 ratings</span>`;
+      return `<span class="rating-inline">⭐ ${r.average.toFixed(1)}</span><span class="rating-count">${r.count} ${r.count === 1 ? "rating" : "ratings"}</span>`;
+    }
+
+    function sortApps(apps){
+      return [...apps].sort((a,b) => {
+        const ao = Number.isFinite(Number(a.displayOrder)) ? Number(a.displayOrder) : 999999;
+        const bo = Number.isFinite(Number(b.displayOrder)) ? Number(b.displayOrder) : 999999;
+        if (ao !== bo) return ao - bo;
+        return normalize(a.name).localeCompare(normalize(b.name));
+      });
+    }
+
+    function getFilteredApps(){
+      const q = normalize(state.searchTerm);
+      return state.apps.filter(app => {
+        const categoryOk = state.activeCategory === "All" || normalize(app.category) === normalize(state.activeCategory);
+        if (!categoryOk) return false;
+        if (!q) return true;
+        return [app.name, app.description, app.category].some(v => normalize(v).includes(q));
+      });
+    }
+
+    function renderCategories(){
+      const categories = ["All", ...Array.from(new Set(state.apps.map(a => String(a.category || "").trim()).filter(Boolean)))];
+      els.categoryRow.innerHTML = categories.map(c => `
+        <button class="category-chip ${normalize(c) === normalize(state.activeCategory) ? "active" : ""}"
+          data-category="${escapeHtml(c)}">${escapeHtml(c)}</button>
+      `).join("");
+    }
+
+    function cardHtml(app){
+      const favorite = favorites.has(app.id);
       return `
-        <div class="work-entry off-entry">
-
-          <div class="row-between">
-
-            <div>
-              <strong>Chhutti / No Work</strong>
-
-              <div class="small muted">
-                इस date पर कोई काम नहीं
+        <article class="app-card" data-app-id="${escapeHtml(app.id)}">
+          <div class="card-main">
+            ${iconHtml(app.iconUrl, app.name)}
+            <div class="app-info">
+              <div class="app-name">${escapeHtml(app.name || "Untitled App")}</div>
+              <div class="app-description">${escapeHtml(app.description || "No description available.")}</div>
+              <div class="app-meta">
+                ${app.category ? `<span class="category-badge">${escapeHtml(app.category)}</span>` : ""}
+                ${ratingHtml(app.id)}
               </div>
             </div>
-
-            <button
-              class="btn btn-danger btn-sm"
-              onclick="deleteWork('${w.id}')"
-            >
-              Delete
+            <button class="favorite-btn ${favorite ? "active" : ""}" data-action="favorite" data-id="${escapeHtml(app.id)}" aria-label="Favorite">
+              ${favorite ? "♥" : "♡"}
             </button>
-
           </div>
-
-        </div>
+          <div class="card-footer">
+            <button class="secondary-btn" data-action="detail" data-id="${escapeHtml(app.id)}">Details</button>
+            <button class="open-btn" data-action="open" data-id="${escapeHtml(app.id)}">OPEN</button>
+          </div>
+        </article>
       `;
     }
 
-    const s=getSite(w.siteId);
-
-    return `
-      <div class="work-entry">
-
-        <div class="row-between">
-
-          <div>
-
-            <strong>
-              ${esc(s?s.name:'Deleted Site')}
-            </strong>
-
-            <div class="small muted">
-              ${esc(p.type)}
-              • ${units(w.units)} unit
-              • ${
-                w.paymentYes
-                  ? 'Payment '+money(w.paymentAmount)
-                  : 'Payment नहीं'
-              }
-            </div>
-
-          </div>
-
-          <button
-            class="btn btn-danger btn-sm"
-            onclick="deleteWork('${w.id}')"
-          >
-            Delete
-          </button>
-
-        </div>
-
-        <div
-          class="row wrap"
-          style="margin-top:8px"
-        >
-
-          <span class="pill orange">
-            ${
-              Number(w.units)===.5
-                ? 'Half Day'
-                : Number(w.units)===1
-                  ? 'Full Day'
-                  : 'Double Day'
-            }
-          </span>
-
-          ${
-            w.paymentYes
-              ? '<span class="pill green">Payment दिया</span>'
-              : '<span class="pill">Payment बाकी</span>'
-          }
-
-        </div>
-
-      </div>
-    `;
-  }
-
-  function sitesView(){
-
-    if(state.selectedSiteId){
-      return siteDetailView(state.selectedSiteId);
-    }
-
-    return `
-      <div class="view-title">
-        Owner / Site
-      </div>
-
-      <div class="subtitle">
-        Owner और Site एक ही record में
-      </div>
-
-      <button
-        class="btn btn-primary btn-block"
-        onclick="openSiteForm()"
-      >
-        + New Owner / Site
-      </button>
-
-      <div style="height:14px"></div>
-
-      <div class="site-list">
-        ${renderSiteList()}
-      </div>
-    `;
-  }
-
-  function renderSiteList(){
-
-    if(!state.sites.length){
-      return `
-        <div class="empty">
-          <strong>अभी कोई Site नहीं है</strong>
-          <span>
-            पहली Site जोड़कर हिसाब शुरू करें।
-          </span>
-        </div>
-      `;
-    }
-
-    return state.sites.map(s=>`
-      <div class="list-item">
-
-        <div class="row">
-
-          <div class="avatar">🏠</div>
-
-          <div style="min-width:0;flex:1">
-
-            <div class="name">
-              ${esc(s.name)}
-            </div>
-
-            <div class="meta">
-              Labour ${money(s.labourRate)}/day
-              • Mistri ${money(s.mistriRate)}/day
-            </div>
-
-          </div>
-
-          <button
-            class="btn btn-outline btn-sm"
-            onclick="openSite('${s.id}')"
-          >
-            Open
-          </button>
-
-        </div>
-
-        <div class="actions">
-
-          <button
-            class="btn btn-light btn-sm"
-            onclick="openSiteForm('${s.id}')"
-          >
-            Edit
-          </button>
-
-          <button
-            class="btn btn-danger btn-sm"
-            onclick="deleteSite('${s.id}')"
-          >
-            Delete
-          </button>
-
-        </div>
-
-      </div>
-    `).join('');
-  }
-
-  window.openSite=id=>{
-    state.selectedSiteId=id;
-    render();
-  };
-
-  function siteDetailView(id){
-
-    const s=getSite(id);
-
-    if(!s){
-      state.selectedSiteId=null;
-      return sitesView();
-    }
-
-    const labour=siteTypeStats(id,'Labour');
-    const mistri=siteTypeStats(id,'Mistri');
-
-    return `
-      <button
-        class="btn btn-light btn-sm"
-        onclick="go('sites')"
-        style="margin-bottom:10px"
-      >
-        ← Sites
-      </button>
-
-      <div class="view-title">
-        ${esc(s.name)}
-      </div>
-
-      <div class="subtitle">
-        Selected month का Owner accounting
-      </div>
-
-      ${monthNav()}
-
-      ${siteAccountingCard(
-        'Labour',
-        labour,
-        s.labourRate
-      )}
-
-      <div style="height:12px"></div>
-
-      ${siteAccountingCard(
-        'Mistri',
-        mistri,
-        s.mistriRate
-      )}
-
-      <div style="height:12px"></div>
-
-      <div class="card orange-card">
-
-        <div class="section-title">
-          Total Owner Amount
-        </div>
-
-        <div class="grid grid-2">
-
-          <div>
-            <div class="stat-label">Total Work</div>
-            <div class="stat-value">
-              ${units(labour.units+mistri.units)}
-            </div>
-          </div>
-
-          <div>
-            <div class="stat-label">
-              Total Owner Amount
-            </div>
-            <div class="stat-value">
-              ${money(labour.amount+mistri.amount)}
-            </div>
-          </div>
-
-        </div>
-
-        <div
-          class="small muted"
-          style="margin-top:8px"
-        >
-          Worker को दिया गया payment Owner/Site total से
-          subtract नहीं होता।
-        </div>
-
-      </div>
-    `;
-  }
-
-  function siteTypeStats(siteId,type){
-
-    const list=worksInMonth(state.month)
-      .filter(w=>
-        w.siteId===siteId &&
-        w.status==='work' &&
-        getPerson(w.personId)?.type===type
-      );
-
-    const by={};
-    let u=0;
-
-    list.forEach(w=>{
-
-      const p=getPerson(w.personId);
-
-      u+=Number(w.units||0);
-
-      if(!by[p.id]){
-        by[p.id]={
-          person:p,
-          units:0
-        };
+    function renderAppList(container, apps, emptyTitle, emptyText){
+      if (!apps.length){
+        container.innerHTML = `
+          <div class="state">
+            <div class="state-icon">📭</div>
+            <div class="state-title">${escapeHtml(emptyTitle)}</div>
+            <div class="state-text">${escapeHtml(emptyText)}</div>
+          </div>`;
+        return;
       }
-
-      by[p.id].units+=Number(w.units||0);
-    });
-
-    const s=getSite(siteId);
-
-    const rate=
-      type==='Labour'
-        ? Number(s?.labourRate||0)
-        : Number(s?.mistriRate||0);
-
-    return {
-      units:u,
-      amount:u*rate,
-      rate,
-      by:Object.values(by)
-    };
-  }
-
-  function siteAccountingCard(type,s,rate){
-
-    return `
-      <div class="card">
-
-        <div class="row-between">
-
-          <div class="section-title" style="margin:0">
-            ${type}
-          </div>
-
-          <span class="pill orange">
-            Owner Rate ${money(rate)}/day
-          </span>
-
-        </div>
-
-        <div
-          class="grid grid-2"
-          style="margin-top:11px"
-        >
-
-          <div>
-            <div class="stat-label">
-              ${type} work units
-            </div>
-            <div class="stat-value">
-              ${units(s.units)}
-            </div>
-          </div>
-
-          <div>
-            <div class="stat-label">
-              Total ${type} Amount
-            </div>
-            <div class="stat-value">
-              ${money(s.amount)}
-            </div>
-          </div>
-
-        </div>
-
-        <div class="divider"></div>
-
-        <div
-          class="small"
-          style="font-weight:850;margin-bottom:7px"
-        >
-          Worker-wise breakdown
-        </div>
-
-        <div class="breakdown">
-
-          ${
-            s.by.length
-              ? s.by.map(x=>`
-                  <div class="breakdown-item">
-                    <span>
-                      ${esc(x.person.name)}
-                    </span>
-
-                    <strong>
-                      ${units(x.units)}
-                      × ${money(rate)}
-                      = ${money(x.units*rate)}
-                    </strong>
-                  </div>
-                `).join('')
-              : `
-                <div class="muted small">
-                  इस महीने कोई ${type} work नहीं।
-                </div>
-              `
-          }
-
-        </div>
-      </div>
-    `;
-  }
-
-  function moreView(){
-
-    return `
-      <div class="view-title">More</div>
-
-      <div class="subtitle">
-        App settings और reports
-      </div>
-
-      <div class="grid">
-
-        <div class="card">
-
-          <div class="row">
-
-            <div class="avatar">SK</div>
-
-            <div>
-              <div class="name">
-                Shivam Kumar
-              </div>
-
-              <div class="meta">
-                Personal account
-              </div>
-            </div>
-
-          </div>
-
-          <div style="height:11px"></div>
-
-          <button
-            class="btn btn-light btn-block"
-            onclick="openProfile()"
-          >
-            Profile
-          </button>
-
-        </div>
-
-        <div class="card">
-
-          <div class="section-title">
-            Commission
-          </div>
-
-          <div
-            class="small muted"
-            style="margin-bottom:10px"
-          >
-            Rate difference × work units
-          </div>
-
-          <button
-            class="btn btn-primary btn-block"
-            onclick="openCommission()"
-          >
-            Commission खोलें
-          </button>
-
-        </div>
-
-        <div class="card">
-
-          <div class="section-title">
-            Cloud Data
-          </div>
-
-          <div class="small muted">
-            मुख्य data Firestore में रहता है।
-            LocalStorage केवल login/cache के लिए है।
-          </div>
-
-          <div style="height:10px"></div>
-
-          <button
-            class="btn btn-light btn-block"
-            onclick="reloadCloud()"
-          >
-            Firestore से Refresh
-          </button>
-
-        </div>
-
-        <div class="card">
-
-          <button
-            class="btn btn-danger btn-block"
-            onclick="logout()"
-          >
-            Logout
-          </button>
-
-        </div>
-
-      </div>
-    `;
-  }
-
-  window.reloadCloud=async()=>{
-    const ok=await initFirebase();
-
-    if(ok){
-      await loadFirestore();
+      container.innerHTML = `<div class="app-list">${sortApps(apps).map(cardHtml).join("")}</div>`;
     }
-  };
 
-  window.openProfile=()=>{
-    state.modal={type:'profile'};
-    renderModal();
-  };
-
-  window.openCommission=()=>{
-    state.modal={type:'commission'};
-    renderModal();
-  };
-
-  function commissionPage(){
-
-    const c=commissionStats(state.month);
-
-    const rows=worksInMonth(state.month)
-      .filter(w=>w.status==='work')
-      .map(w=>{
-
-        const p=getPerson(w.personId);
-        const s=getSite(w.siteId);
-
-        if(!p||!s)return null;
-
-        const ownerRate=
-          p.type==='Labour'
-            ? Number(s.labourRate||0)
-            : Number(s.mistriRate||0);
-
-        const value=
-          (ownerRate-Number(p.rate||0)) *
-          Number(w.units||0);
-
-        return {
-          p,
-          s,
-          w,
-          ownerRate,
-          value
-        };
-      })
-      .filter(Boolean);
-
-    return `
-      <div class="view-title">
-        Commission
-      </div>
-
-      <div class="subtitle">
-        Owner rate और worker rate के अंतर से
-      </div>
-
-      ${monthNav()}
-
-      <div class="grid grid-2">
-
-        <div class="card orange-card">
-          <div class="stat-label">
-            Labour Commission
-          </div>
-          <div class="stat-value">
-            ${money(c.labour)}
-          </div>
-        </div>
-
-        <div class="card orange-card">
-          <div class="stat-label">
-            Mistri Commission
-          </div>
-          <div class="stat-value">
-            ${money(c.mistri)}
-          </div>
-        </div>
-
-      </div>
-
-      <div style="height:12px"></div>
-
-      <div class="card">
-
-        <div class="row-between">
-
-          <div class="section-title" style="margin:0">
-            Total Commission
-          </div>
-
-          <strong class="stat-value">
-            ${money(c.total)}
-          </strong>
-
-        </div>
-
-        <div class="divider"></div>
-
-        <div class="breakdown">
-
-          ${
-            rows.length
-              ? rows.map(r=>`
-                  <div class="breakdown-item">
-
-                    <div>
-
-                      <strong>
-                        ${esc(r.p.name)}
-                      </strong>
-
-                      <div class="small muted">
-                        ${esc(r.s.name)}
-                        • ${esc(r.p.type)}
-                        • ${units(r.w.units)} unit
-                      </div>
-
-                    </div>
-
-                    <div class="right">
-
-                      <strong>
-                        ${money(r.value)}
-                      </strong>
-
-                      <div class="small muted">
-                        ${money(r.ownerRate)}
-                        - ${money(r.p.rate)}
-                      </div>
-
-                    </div>
-
-                  </div>
-                `).join('')
-              : `
-                <div class="empty">
-                  <strong>
-                    इस महीने commission data नहीं है
-                  </strong>
-                  <span>
-                    Work entries होने पर यहाँ calculation दिखेगी।
-                  </span>
-                </div>
-              `
-          }
-
-        </div>
-      </div>
-    `;
-  }
-
-  function renderModal(){
-
-    const r=$('modalRoot');
-
-    if(!r)return;
-
-    r.innerHTML=modalHtml();
-  }
-
-  function modalShell(title,body){
-
-    return `
-      <div
-        class="modal-backdrop"
-        onclick="modalBackdrop(event)"
-      >
-
-        <div class="modal">
-
-          <div class="modal-head">
-
-            <div class="modal-title">
-              ${title}
-            </div>
-
-            <button
-              class="close"
-              onclick="closeModal()"
-            >
-              ×
-            </button>
-
-          </div>
-
-          ${body}
-
-        </div>
-      </div>
-    `;
-  }
-
-  window.modalBackdrop=e=>{
-    if(e.target.classList.contains('modal-backdrop')){
-      closeModal();
+    function renderHome(){
+      const apps = getFilteredApps();
+      document.getElementById("homeResultNote").textContent =
+        state.searchTerm ? `${apps.length} result${apps.length === 1 ? "" : "s"} for "${state.searchTerm}"` : `${apps.length} available project${apps.length === 1 ? "" : "s"}`;
+      if (!state.dataLoaded){
+        if (state.dataError){
+          els.homeContent.innerHTML = `
+            <div class="state">
+              <div class="state-icon">⚠️</div>
+              <div class="state-title">Unable to load apps.</div>
+              <div class="state-text">Please check your internet connection.</div>
+              <button class="retry-btn" id="retryApps">Retry</button>
+            </div>`;
+        } else {
+          els.homeContent.innerHTML = `<div class="skeleton-list"><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div></div>`;
+        }
+        return;
+      }
+      renderAppList(els.homeContent, apps,
+        state.searchTerm ? "No apps found" : "No apps available yet.",
+        state.searchTerm ? "Try another app name, description or category." : "New projects will appear here.");
     }
-  };
 
-  window.closeModal=()=>{
-    state.modal=null;
-    render();
-  };
+    function renderExplore(){
+      const apps = getFilteredApps();
+      renderAppList(els.exploreContent, apps,
+        state.searchTerm ? "No apps found" : "No apps available yet.",
+        state.searchTerm ? "Try another search term." : "There are no projects to explore yet.");
+    }
 
-  function modalHtml(){
+    function renderFavorites(){
+      const apps = state.apps.filter(a => favorites.has(a.id));
+      renderAppList(els.favoritesContent, apps, "No favorites yet.", "Tap the heart on any app to save it here.");
+    }
 
-    const m=state.modal;
-
-    if(!m)return '';
-
-    if(m.type==='profile'){
-      return modalShell(
-        'Profile',
-        `
-          <div
-            class="card"
-            style="box-shadow:none;background:#fafafa"
-          >
-            <div class="row">
-
-              <div class="avatar">SK</div>
-
+    function renderProfile(){
+      if (!currentUser){
+        els.profileContent.innerHTML = `
+          <div class="profile-card">
+            <div class="profile-head">
+              <div class="avatar">👤</div>
               <div>
-                <div class="name">
-                  Shivam Kumar
-                </div>
-
-                <div class="meta">
-                  Personal account
-                </div>
+                <h3 class="profile-name">Guest User</h3>
+                <p class="profile-mobile">Browse R Lal College, Lakhisarai without registration.</p>
               </div>
-
             </div>
-          </div>
-
-          <div
-            class="info"
-            style="margin-top:12px"
-          >
-            इस app में mobile number रखा या दिखाया नहीं जाता।
-          </div>
-        `
-      );
-    }
-
-    if(m.type==='commission'){
-      return modalShell(
-        'Commission',
-        commissionPage()
-      );
-    }
-
-    if(m.type==='person'){
-      return personFormHtml(m);
-    }
-
-    if(m.type==='site'){
-      return siteFormHtml(m);
-    }
-
-    if(m.type==='work'){
-      return workFormHtml(m);
-    }
-
-    if(m.type==='confirm'){
-      return confirmHtml(m);
-    }
-
-    return '';
-  }
-
-  window.openPersonForm=(type='Labour',id=null)=>{
-    state.modal={
-      type:'person',
-      mode:id?'edit':'add',
-      personType:type,
-      id
-    };
-
-    renderModal();
-  };
-
-  function personFormHtml(m){
-
-    const p=m.id
-      ? getPerson(m.id)
-      : {
-          name:'',
-          type:m.personType||'Labour',
-          rate:''
-        };
-
-    return modalShell(
-      m.mode==='edit'
-        ? 'Edit Worker'
-        : 'Add Worker',
-      `
-        <form
-          onsubmit="event.preventDefault();savePerson('${m.mode}','${m.id||''}')"
-        >
-
-          <div class="field">
-
-            <label>Name</label>
-
-            <input
-              id="personName"
-              class="input"
-              value="${esc(p.name)}"
-              required
-            >
-
-          </div>
-
-          <div class="field">
-
-            <label>Type</label>
-
-            <div class="segmented">
-
-              <button
-                type="button"
-                class="seg ${p.type==='Labour'?'active':''}"
-                onclick="setModalPersonType('Labour')"
-              >
-                Labour
-              </button>
-
-              <button
-                type="button"
-                class="seg ${p.type==='Mistri'?'active':''}"
-                onclick="setModalPersonType('Mistri')"
-              >
-                Mistri
-              </button>
-
+            <div class="info-row" style="margin-top:16px">
+              <span class="info-label">Account</span><span class="info-value">Not registered</span>
             </div>
-
-            <input
-              type="hidden"
-              id="personType"
-              value="${esc(p.type)}"
-            >
-
-          </div>
-
-          <div class="field">
-
-            <label>
-              Worker payment rate (₹/day)
-            </label>
-
-            <input
-              id="personRate"
-              class="input"
-              type="number"
-              min="0"
-              step="1"
-              value="${esc(p.rate)}"
-              required
-            >
-
-          </div>
-
-          <div class="sticky-actions">
-
-            <button
-              class="btn btn-primary btn-block"
-              type="submit"
-            >
-              ${m.mode==='edit'
-                ? 'Save Changes'
-                : 'Add Worker'}
-            </button>
-
-          </div>
-
-        </form>
-      `
-    );
-  }
-
-  window.setModalPersonType=t=>{
-    $('personType').value=t;
-
-    document
-      .querySelectorAll('#modalRoot .segmented .seg')
-      .forEach(b=>{
-        b.classList.toggle(
-          'active',
-          b.textContent.trim()===t
-        );
-      });
-  };
-
-  window.savePerson=async(mode,id)=>{
-
-    const name=$('personName').value.trim();
-    const type=$('personType').value;
-    const rate=Number($('personRate').value);
-
-    if(!name||rate<0){
-      return toast('Name और valid rate भरें।');
-    }
-
-    const item={
-      id:id||uid(),
-      name,
-      type,
-      rate
-    };
-
-    state.modal=null;
-
-    if(mode==='edit'){
-      await persistUpdate('people',item);
-    }
-    else{
-      await persistAdd('people',item);
-    }
-
-    render();
-  };
-
-  window.openSiteForm=id=>{
-    state.modal={
-      type:'site',
-      mode:id?'edit':'add',
-      id:id||null
-    };
-
-    renderModal();
-  };
-
-  function siteFormHtml(m){
-
-    const s=m.id
-      ? getSite(m.id)
-      : {
-          name:'',
-          labourRate:'',
-          mistriRate:''
-        };
-
-    return modalShell(
-      m.mode==='edit'
-        ? 'Edit Site'
-        : 'New Owner / Site',
-      `
-        <form
-          onsubmit="event.preventDefault();saveSite('${m.mode}','${m.id||''}')"
-        >
-
-          <div class="field">
-
-            <label>Site / Owner name</label>
-
-            <input
-              id="siteName"
-              class="input"
-              placeholder="Rajesh ji ka do talla ka makan"
-              value="${esc(s.name)}"
-              required
-            >
-
-          </div>
-
-          <div class="field">
-
-            <label>
-              Labour Owner Rate (₹/day)
-            </label>
-
-            <input
-              id="siteLabourRate"
-              class="input"
-              type="number"
-              min="0"
-              step="1"
-              value="${esc(s.labourRate)}"
-              required
-            >
-
-          </div>
-
-          <div class="field">
-
-            <label>
-              Mistri Owner Rate (₹/day)
-            </label>
-
-            <input
-              id="siteMistriRate"
-              class="input"
-              type="number"
-              min="0"
-              step="1"
-              value="${esc(s.mistriRate)}"
-              required
-            >
-
-          </div>
-
-          <div class="info">
-            Site edit करने पर Site ID वही रहती है
-            और पुराने work records delete नहीं होते।
-          </div>
-
-          <div
-            class="sticky-actions"
-            style="margin-top:10px"
-          >
-
-            <button
-              class="btn btn-primary btn-block"
-              type="submit"
-            >
-              ${m.mode==='edit'
-                ? 'Save Changes'
-                : 'Add Site'}
-            </button>
-
-          </div>
-
-        </form>
-      `
-    );
-  }
-
-  window.saveSite=async(mode,id)=>{
-
-    const name=$('siteName').value.trim();
-    const labourRate=Number($('siteLabourRate').value);
-    const mistriRate=Number($('siteMistriRate').value);
-
-    if(
-      !name ||
-      labourRate<0 ||
-      mistriRate<0
-    ){
-      return toast(
-        'Site name और valid rates भरें।'
-      );
-    }
-
-    const item={
-      id:id||uid(),
-      name,
-      labourRate,
-      mistriRate
-    };
-
-    state.modal=null;
-
-    if(mode==='edit'){
-      await persistUpdate('sites',item);
-    }
-    else{
-      await persistAdd('sites',item);
-    }
-
-    render();
-  };
-
-  window.openWorkForm=(personId,date)=>{
-
-    state.modal={
-      type:'work',
-      personId,
-      date,
-      mode:'add',
-      units:1,
-      paymentYes:false
-    };
-
-    renderModal();
-  };
-
-  function workFormHtml(m){
-
-    const p=getPerson(m.personId);
-
-    return modalShell(
-      `Work Entry • ${formatDateHindi(parseDate(m.date))}`,
-      `
-        <div
-          class="small muted"
-          style="margin-bottom:12px"
-        >
-          Worker:
-          <strong>${esc(p?.name||'')}</strong>
-        </div>
-
-        <div class="field">
-
-          <label>Kaam kiya?</label>
-
-          <div class="segmented">
-
-            <button
-              type="button"
-              id="workYesBtn"
-              class="seg active"
-              onclick="setWorkStatus(true)"
-            >
-              Haan
-            </button>
-
-            <button
-              type="button"
-              id="workNoBtn"
-              class="seg"
-              onclick="setWorkStatus(false)"
-            >
-              Nahi
-            </button>
-
-          </div>
-
-          <input
-            type="hidden"
-            id="workStatus"
-            value="work"
-          >
-
-        </div>
-
-        <div id="workFields">
-
-          <div class="field">
-
-            <label>Owner / Site</label>
-
-            <select
-              id="workSite"
-              class="select"
-            >
-              <option value="">
-                Site चुनें
-              </option>
-
-              ${state.sites.map(s=>`
-                <option value="${esc(s.id)}">
-                  ${esc(s.name)}
-                </option>
-              `).join('')}
-
-            </select>
-
-          </div>
-
-          <div class="field">
-
-            <label>Work type</label>
-
-            <div class="segmented three">
-
-              <button
-                type="button"
-                class="seg"
-                onclick="setWorkUnits(.5,this)"
-              >
-                Half Day
-              </button>
-
-              <button
-                type="button"
-                class="seg active"
-                onclick="setWorkUnits(1,this)"
-              >
-                Full Day
-              </button>
-
-              <button
-                type="button"
-                class="seg"
-                onclick="setWorkUnits(2,this)"
-              >
-                Double Day
-              </button>
-
-            </div>
-
-            <input
-              type="hidden"
-              id="workUnits"
-              value="1"
-            >
-
-          </div>
-
-          <div class="field">
-
-            <label>Payment diya?</label>
-
-            <div class="segmented">
-
-              <button
-                type="button"
-                class="seg active"
-                onclick="setPayment(true)"
-              >
-                Haan
-              </button>
-
-              <button
-                type="button"
-                class="seg"
-                onclick="setPayment(false)"
-              >
-                Nahi
-              </button>
-
-            </div>
-
-            <input
-              type="hidden"
-              id="paymentYes"
-              value="1"
-            >
-
-          </div>
-
-          <div
-            class="field"
-            id="paymentAmountField"
-          >
-
-            <label>Payment amount (₹)</label>
-
-            <input
-              id="paymentAmount"
-              class="input"
-              type="number"
-              min="0"
-              step="1"
-              value=""
-            >
-
-          </div>
-
-        </div>
-
-        <div
-          class="warning"
-          style="margin-bottom:10px"
-        >
-          एक date पर कई जगह काम जोड़ सकते हैं।
-          हर entry अलग record बनेगी।
-        </div>
-
-        <div class="sticky-actions">
-
-          <button
-            class="btn btn-primary btn-block"
-            onclick="saveWork()"
-          >
-            Save Work
-          </button>
-
-        </div>
-      `
-    );
-  }
-
-  window.setWorkStatus=work=>{
-
-    $('workStatus').value=
-      work ? 'work' : 'off';
-
-    $('workYesBtn').classList.toggle(
-      'active',
-      work
-    );
-
-    $('workNoBtn').classList.toggle(
-      'active',
-      !work
-    );
-
-    $('workFields').classList.toggle(
-      'hidden',
-      !work
-    );
-  };
-
-  window.setWorkUnits=(u,el)=>{
-
-    $('workUnits').value=u;
-
-    el.parentElement
-      .querySelectorAll('.seg')
-      .forEach(x=>x.classList.remove('active'));
-
-    el.classList.add('active');
-  };
-
-  window.setPayment=yes=>{
-
-    $('paymentYes').value=
-      yes ? '1' : '0';
-
-    const parent=$('paymentYes').parentElement;
-
-    parent
-      .querySelectorAll('.seg')
-      .forEach((x,i)=>{
-        x.classList.toggle(
-          'active',
-          yes ? i===0 : i===1
-        );
-      });
-
-    $('paymentAmountField')
-      .classList.toggle(
-        'hidden',
-        !yes
-      );
-  };
-
-  window.saveWork=async()=>{
-
-    const m=state.modal;
-
-    if(!m)return;
-
-    const status=$('workStatus').value;
-
-    if(status==='off'){
-
-      const same=state.works.filter(
-        w=>
-          w.personId===m.personId &&
-          w.date===m.date
-      );
-
-      if(same.length){
-        return toast(
-          'इस date पर existing work entries हैं। पहले उन्हें delete करें, फिर Chhutti save करें।'
-        );
+            <button class="full-btn" id="profileLoginBtn">LOGIN</button>
+            <button class="outline-btn" id="profileRegisterBtn">REGISTER</button>
+          </div>`;
+        return;
       }
+      els.profileContent.innerHTML = `
+        <div class="profile-card">
+          <div class="profile-head">
+            <div class="avatar">${escapeHtml(initials(currentUser.fullName))}</div>
+            <div>
+              <h3 class="profile-name">${escapeHtml(currentUser.fullName)}</h3>
+              <p class="profile-mobile">${escapeHtml(currentUser.mobileNumber)}</p>
+              <div class="profile-status"><span class="status-dot"></span> Logged in</div>
+            </div>
+          </div>
+          <div class="profile-info">
+            <div class="info-row"><span class="info-label">Full Name</span><span class="info-value">${escapeHtml(currentUser.fullName)}</span></div>
+            <div class="info-row"><span class="info-label">Mobile Number</span><span class="info-value">${escapeHtml(currentUser.mobileNumber)}</span></div>
+            <div class="info-row"><span class="info-label">Registered Date</span><span class="info-value">${formatDate(currentUser.createdAt)}</span></div>
+            <div class="info-row"><span class="info-label">Status</span><span class="info-value">Active</span></div>
+          </div>
+          <button class="outline-btn danger-btn" id="logoutBtn">Logout</button>
+        </div>`;
+    }
 
-      const item={
-        id:uid(),
-        personId:m.personId,
-        type:getPerson(m.personId)?.type||'',
-        date:m.date,
-        status:'off',
-        siteId:null,
-        units:0,
-        paymentYes:false,
-        paymentAmount:0
+    function renderDetail(){
+      const app = state.apps.find(a => a.id === state.selectedAppId);
+      if (!app){
+        els.detailContent.innerHTML = `<div class="state"><div class="state-icon">🔎</div><div class="state-title">App not found</div><div class="state-text">This project is no longer available.</div></div>`;
+        return;
+      }
+      const favorite = favorites.has(app.id);
+      const r = getRatingSummary(app.id);
+      const mine = getMyRating(app.id);
+
+      els.detailContent.innerHTML = `
+        <div class="detail-hero">
+          <div class="detail-top">
+            ${iconHtml(app.iconUrl, app.name, "detail-icon")}
+            <div style="min-width:0;flex:1">
+              <div class="detail-app-name">${escapeHtml(app.name)}</div>
+              <div class="app-meta">
+                ${app.category ? `<span class="category-badge">${escapeHtml(app.category)}</span>` : ""}
+                ${r.count ? `<span class="rating-inline">⭐ ${r.average.toFixed(1)}</span><span class="rating-count">${r.count} ratings</span>` : `<span class="rating-inline">⭐ New</span>`}
+              </div>
+            </div>
+          </div>
+          <div class="detail-description">${escapeHtml(app.description || "No description available.")}</div>
+          <div class="detail-actions">
+            <button class="open-btn" data-action="open" data-id="${escapeHtml(app.id)}">OPEN</button>
+            <button class="favorite-btn ${favorite ? "active" : ""}" data-action="favorite" data-id="${escapeHtml(app.id)}" style="width:45px;height:45px">
+              ${favorite ? "♥" : "♡"}
+            </button>
+          </div>
+          <div class="rating-box">
+            <div class="rating-label">Rate this app</div>
+            <div class="stars">
+              ${[1,2,3,4,5].map(n => `<button class="star-btn ${n <= mine ? "selected" : ""}" data-action="rate" data-rating="${n}" data-id="${escapeHtml(app.id)}">★</button>`).join("")}
+            </div>
+            <div class="rating-message">${mine ? `Your rating: ${mine}/5` : "You can give one rating. Rating again will update your previous rating."}</div>
+          </div>
+        </div>
+        <div class="media-section">
+          <div class="section-head">
+            <div><p class="section-note">Admin-defined combined order</p><h2 class="section-title">Media</h2></div>
+          </div>
+          <div id="detailMediaList" class="media-list"></div>
+        </div>`;
+
+      renderMedia(app.id);
+    }
+
+    function renderMedia(appId){
+      const media = state.media.get(appId) || [];
+      const box = document.getElementById("detailMediaList");
+      if (!box) return;
+      if (!media.length){
+        box.innerHTML = `<div class="state"><div class="state-icon">🖼️</div><div class="state-title">No media yet</div><div class="state-text">Images and videos added by the admin will appear here.</div></div>`;
+        return;
+      }
+      box.innerHTML = media.map((item, index) => {
+        if (item.type === "image"){
+          const url = safeUrl(item.url);
+          if (!url) return "";
+          return `<div class="media-card">
+            <img class="media-image" src="${escapeHtml(url)}" alt="${escapeHtml(state.apps.find(a=>a.id===appId)?.name || "App image")}" data-action="view-media" data-type="image" data-url="${escapeHtml(url)}" data-index="${index}"
+              onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+            <div class="media-caption" style="display:none">Unable to load this image.</div>
+            <div class="media-caption">Image ${index + 1}</div>
+          </div>`;
+        }
+        if (item.type === "youtube"){
+          const embed = youtubeEmbed(item.url);
+          if (!embed) return `<div class="media-card"><div class="media-caption">Invalid YouTube URL — this media item was skipped.</div></div>`;
+          return `<div class="media-card">
+            <iframe class="video-frame" src="${escapeHtml(embed)}" title="R Lal College, Lakhisarai video" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            <div class="media-caption">YouTube Video ${index + 1}</div>
+          </div>`;
+        }
+        return "";
+      }).join("");
+    }
+
+    function getMyRating(appId){
+      if (!currentUser) return Number(localRatings[appId] || 0);
+      const list = state.ratings.get(appId) || [];
+      const mine = list.find(x => x.userId === currentUser.id);
+      return Number(mine?.rating || localRatings[appId] || 0);
+    }
+
+    function setActiveScreen(screenId, navName, push=true){
+      const valid = ["homeScreen","exploreScreen","favoritesScreen","profileScreen","detailScreen"];
+      if (!valid.includes(screenId)) screenId = "homeScreen";
+      state.activeScreen = screenId;
+      if (navName) state.activeNav = navName;
+
+      document.querySelectorAll(".screen").forEach(s => s.classList.toggle("active", s.id === screenId));
+      document.querySelectorAll(".nav-btn").forEach(btn => btn.classList.toggle("active", btn.dataset.nav === state.activeNav));
+      els.bottomNav.style.display = screenId === "detailScreen" ? "none" : "block";
+      window.scrollTo({top:0,behavior:"auto"});
+
+      if (screenId === "homeScreen") renderHome();
+      if (screenId === "exploreScreen") renderExplore();
+      if (screenId === "favoritesScreen") renderFavorites();
+      if (screenId === "profileScreen") renderProfile();
+      if (screenId === "detailScreen") renderDetail();
+
+      if (push){
+        history.pushState({screenId, navName:state.activeNav, appId:state.selectedAppId, v:++state.routeVersion}, "", "");
+      }
+    }
+
+    function openDetail(appId, push=true){
+      if (!state.apps.some(a => a.id === appId)) return;
+      state.selectedAppId = appId;
+      setActiveScreen("detailScreen", null, push);
+    }
+
+    function toggleFavorite(appId){
+      if (favorites.has(appId)) favorites.delete(appId);
+      else favorites.add(appId);
+      saveJSON(STORAGE.favorites, Array.from(favorites));
+      renderHome(); renderExplore(); renderFavorites(); renderDetail();
+      showToast(favorites.has(appId) ? "Added to Favorites" : "Removed from Favorites");
+    }
+
+    function getWebsiteOpenCount(){
+      return Number(localStorage.getItem(STORAGE.siteOpens) || "0");
+    }
+
+    function incrementWebsiteOpenCount(){
+      const next = getWebsiteOpenCount() + 1;
+      localStorage.setItem(STORAGE.siteOpens, String(next));
+      return next;
+    }
+
+    function needsRegistrationForOpen(){
+      return !currentUser && getWebsiteOpenCount() >= 3;
+    }
+
+    function requestWebsiteOpen(app){
+      const url = safeUrl(app.websiteUrl);
+      if (!url){
+        showToast("This app does not have a valid website URL.");
+        return;
+      }
+      if (needsRegistrationForOpen()){
+        state.pendingOpenApp = app;
+        openRegistration();
+        return;
+      }
+      incrementWebsiteOpenCount();
+      window.open(url, "_blank", "noopener,noreferrer");
+    }
+
+    function completePendingOpen(){
+      const app = state.pendingOpenApp;
+      state.pendingOpenApp = null;
+      if (!app) return;
+      const url = safeUrl(app.websiteUrl);
+      if (!url) return;
+      incrementWebsiteOpenCount();
+      window.open(url, "_blank", "noopener,noreferrer");
+    }
+
+    function openRegistration(){
+      els.registrationError.textContent = "";
+      els.registrationForm.reset();
+      els.registrationModal.classList.add("show");
+      setTimeout(() => els.registerName.focus(), 50);
+    }
+
+    function closeRegistration(){
+      els.registrationModal.classList.remove("show");
+      state.pendingOpenApp = null;
+    }
+
+    function openLogin(){
+      els.loginError.textContent = "";
+      els.loginForm.reset();
+      els.loginModal.classList.add("show");
+      setTimeout(() => els.loginName.focus(), 50);
+    }
+
+    function closeLogin(){
+      els.loginModal.classList.remove("show");
+    }
+
+    async function findUserByIdentity(name, mobile){
+      const usersSnap = await getDocs(collection(db, "users"));
+      const wantedName = normalize(name);
+      const wantedMobile = cleanMobile(mobile);
+      let found = null;
+      usersSnap.forEach(s => {
+        const d = s.data() || {};
+        if (!found && normalize(d.fullName) === wantedName && cleanMobile(d.mobileNumber) === wantedMobile){
+          found = {id:s.id, ...d};
+        }
+      });
+      return found;
+    }
+
+    async function saveUserActivity(user){
+      if (!user?.id) return;
+      try{
+        await updateDoc(doc(db, "users", user.id), {
+          lastActive: serverTimestamp(),
+          isActive: true
+        });
+      }catch(e){
+        console.warn("Activity update failed:", e);
+      }
+    }
+
+    async function registerUser(name, mobile){
+      const fullName = String(name).trim();
+      const phone = cleanMobile(mobile);
+      if (fullName.length < 2) throw new Error("Please enter a valid full name.");
+      if (phone.length < 10 || phone.length > 15) throw new Error("Please enter a valid mobile number.");
+
+      const existing = await findUserByIdentity(fullName, phone);
+      if (existing) throw new Error("Already Registered. Please use Login.");
+
+      const userId = crypto.randomUUID ? crypto.randomUUID() : ("u_" + Date.now() + "_" + Math.random().toString(36).slice(2));
+      const payload = {
+        fullName,
+        mobileNumber: phone,
+        createdAt: serverTimestamp(),
+        lastActive: serverTimestamp(),
+        isActive: true
       };
+      await setDoc(doc(db, "users", userId), payload);
 
-      state.modal=null;
-
-      await persistAdd('works',item);
-      render();
-
-      return;
+      currentUser = {
+        id:userId,
+        fullName,
+        mobileNumber:phone,
+        createdAt:new Date().toISOString(),
+        lastActive:new Date().toISOString(),
+        isActive:true
+      };
+      saveJSON(STORAGE.user, currentUser);
+      await loadRatingsForCurrentUser();
+      renderProfile();
+      closeRegistration();
+      showToast("Registration successful");
+      completePendingOpen();
     }
 
-    const siteId=$('workSite').value;
+    async function loginUser(name, mobile){
+      const fullName = String(name).trim();
+      const phone = cleanMobile(mobile);
+      if (fullName.length < 2 || phone.length < 10) throw new Error("Please enter a valid name and mobile number.");
 
-    if(!siteId){
-      return toast(
-        'Owner/Site चुनें।'
-      );
+      const found = await findUserByIdentity(fullName, phone);
+      if (!found) throw new Error("Name or mobile number is incorrect.");
+
+      currentUser = {
+        id:found.id,
+        fullName:found.fullName,
+        mobileNumber:found.mobileNumber,
+        createdAt:found.createdAt || null,
+        lastActive:new Date().toISOString(),
+        isActive:true
+      };
+      saveJSON(STORAGE.user, currentUser);
+      await saveUserActivity(currentUser);
+      await loadRatingsForCurrentUser();
+      closeLogin();
+      renderProfile();
+      renderDetail();
+      showToast("Login successful");
     }
 
-    const paymentYes=
-      $('paymentYes').value==='1';
-
-    const paymentAmount=
-      paymentYes
-        ? Number($('paymentAmount').value||0)
-        : 0;
-
-    const item={
-      id:uid(),
-      personId:m.personId,
-      type:getPerson(m.personId)?.type||'',
-      date:m.date,
-      status:'work',
-      siteId,
-      units:Number($('workUnits').value),
-      paymentYes,
-      paymentAmount
-    };
-
-    /*
-      selectedDate को जानबूझकर clear नहीं किया गया।
-      इसलिए Save के बाद उसी date पर वापस आकर
-      "+ दूसरी जगह का काम जोड़ें" दिखेगा।
-    */
-    state.modal=null;
-
-    await persistAdd('works',item);
-    render();
-  };
-
-  window.deleteWork=id=>{
-
-    const w=state.works.find(
-      x=>x.id===id
-    );
-
-    if(!w)return;
-
-    state.modal={
-      type:'confirm',
-      action:'deleteWork',
-      id,
-      title:'Work delete करें?',
-      message:'यह work entry permanently delete होगी।'
-    };
-
-    renderModal();
-  };
-
-  window.deletePerson=id=>{
-
-    const p=getPerson(id);
-
-    const related=state.works.filter(
-      w=>w.personId===id
-    ).length;
-
-    state.modal={
-      type:'confirm',
-      action:'deletePerson',
-      id,
-      title:'Worker delete करें?',
-      message:
-        `${p?.name||'यह worker'} delete होगा। `+
-        `${related} related work/payment record`+
-        `${related===1?'':'s'} भी delete होंगे। `+
-        `यह action वापस नहीं होगा।`
-    };
-
-    renderModal();
-  };
-
-  window.deleteSite=id=>{
-
-    const s=getSite(id);
-
-    const related=state.works.filter(
-      w=>w.siteId===id
-    ).length;
-
-    state.modal={
-      type:'confirm',
-      action:'deleteSite',
-      id,
-      title:'Site delete करें?',
-      message:
-        `${s?.name||'यह site'} delete होगी। `+
-        `${related} related work record`+
-        `${related===1?'':'s'} भी delete होंगे। `+
-        `Site edit करने से records delete नहीं होते; `+
-        `यह केवल Delete पर होगा।`
-    };
-
-    renderModal();
-  };
-
-  function confirmHtml(m){
-
-    return modalShell(
-      m.title,
-      `
-        <div class="confirm-text">
-          ${esc(m.message)}
-        </div>
-
-        <div
-          class="actions"
-          style="margin-top:17px"
-        >
-
-          <button
-            class="btn btn-light"
-            onclick="closeModal()"
-          >
-            Cancel
-          </button>
-
-          <button
-            class="btn btn-danger"
-            onclick="confirmAction()"
-          >
-            Delete
-          </button>
-
-        </div>
-      `
-    );
-  }
-
-  window.confirmAction=async()=>{
-
-    const m=state.modal;
-
-    state.modal=null;
-
-    if(m.action==='deleteWork'){
-
-      await persistDelete(
-        'works',
-        m.id
-      );
-    }
-
-    else if(m.action==='deletePerson'){
-
-      const related=state.works
-        .filter(w=>w.personId===m.id)
-        .map(w=>w.id);
-
-      for(const id of related){
-        await persistDelete(
-          'works',
-          id
-        );
+    async function logoutUser(){
+      if (currentUser?.id){
+        try{
+          await updateDoc(doc(db, "users", currentUser.id), {
+            lastActive: serverTimestamp(),
+            isActive: false
+          });
+        }catch(e){ console.warn(e); }
       }
+      currentUser = null;
+      saveJSON(STORAGE.user, null);
+      renderProfile();
+      showToast("Logged out");
+    }
 
-      await persistDelete(
-        'people',
-        m.id
-      );
-
-      if(state.selectedPersonId===m.id){
-        state.selectedPersonId=null;
+    async function loadApps(){
+      state.dataLoaded = false;
+      state.dataError = false;
+      renderCategories();
+      renderHome();
+      try{
+        const snap = await getDocs(collection(db, "apps"));
+        state.apps = sortApps(snap.docs.map(d => ({id:d.id, ...d.data()})));
+        await loadAllMedia();
+        await loadAllRatings();
+        state.dataLoaded = true;
+        renderCategories();
+        renderHome();
+        renderExplore();
+        renderFavorites();
+      }catch(e){
+        console.error("Apps load failed:", e);
+        state.dataError = true;
+        state.dataLoaded = false;
+        renderHome();
       }
     }
 
-    else if(m.action==='deleteSite'){
+    async function loadAllMedia(){
+      state.media.clear();
+      await Promise.all(state.apps.map(async app => {
+        try{
+          const snap = await getDocs(query(collection(db, "apps", app.id, "media"), orderBy("order","asc")));
+          let media = snap.docs.map(d => ({id:d.id, ...d.data()}));
+          media.sort((a,b) => Number(a.order ?? 999999) - Number(b.order ?? 999999));
+          state.media.set(app.id, media);
+        }catch(e){
+          // If orderBy is unavailable because of missing indexes, load without ordering.
+          try{
+            const snap = await getDocs(collection(db, "apps", app.id, "media"));
+            let media = snap.docs.map(d => ({id:d.id, ...d.data()}));
+            media.sort((a,b) => Number(a.order ?? 999999) - Number(b.order ?? 999999));
+            state.media.set(app.id, media);
+          }catch(err){
+            console.warn("Media load failed for", app.id, err);
+            state.media.set(app.id, []);
+          }
+        }
+      }));
+    }
 
-      const related=state.works
-        .filter(w=>w.siteId===m.id)
-        .map(w=>w.id);
+    async function loadAllRatings(){
+      state.ratings.clear();
+      await Promise.all(state.apps.map(async app => {
+        try{
+          const snap = await getDocs(collection(db, "apps", app.id, "ratings"));
+          state.ratings.set(app.id, snap.docs.map(d => ({userId:d.id, ...d.data()})));
+        }catch(e){
+          console.warn("Ratings load failed for", app.id, e);
+          state.ratings.set(app.id, []);
+        }
+      }));
+    }
 
-      for(const id of related){
-        await persistDelete(
-          'works',
-          id
-        );
+    async function loadRatingsForCurrentUser(){
+      // Ratings are already loaded globally; refresh the detail state after login/logout.
+      if (state.selectedAppId) renderDetail();
+    }
+
+    async function rateApp(appId, rating){
+      rating = Number(rating);
+      if (!Number.isInteger(rating) || rating < 1 || rating > 5) return;
+
+      if (!currentUser){
+        localRatings[appId] = rating;
+        saveJSON(STORAGE.ratings, localRatings);
+        showToast("Rating saved on this device. Login/register to sync it to Firestore.");
+        renderDetail();
+        return;
       }
 
-      await persistDelete(
-        'sites',
-        m.id
-      );
+      try{
+        const ratingRef = doc(db, "apps", appId, "ratings", currentUser.id);
+        const existing = state.ratings.get(appId)?.find(x => x.userId === currentUser.id);
+        await setDoc(ratingRef, {
+          rating,
+          createdAt: existing?.createdAt || serverTimestamp(),
+          updatedAt: serverTimestamp()
+        }, {merge:true});
 
-      if(state.selectedSiteId===m.id){
-        state.selectedSiteId=null;
+        const list = state.ratings.get(appId) || [];
+        const index = list.findIndex(x => x.userId === currentUser.id);
+        const item = {userId:currentUser.id, rating, createdAt:existing?.createdAt || new Date().toISOString(), updatedAt:new Date().toISOString()};
+        if (index >= 0) list[index] = item;
+        else list.push(item);
+        state.ratings.set(appId, list);
+        localRatings[appId] = rating;
+        saveJSON(STORAGE.ratings, localRatings);
+        showToast("Your rating has been saved");
+        renderDetail();
+        renderHome();
+        renderExplore();
+      }catch(e){
+        console.error(e);
+        showToast("Unable to save rating. Check Firestore rules.");
       }
     }
 
-    render();
-  };
-
-  /*
-    Toast helper
-  */
-  function toast(message){
-
-    const root=$('toastRoot');
-
-    if(!root)return;
-
-    root.innerHTML=`
-      <div class="toast">
-        ${esc(message)}
-      </div>
-    `;
-
-    clearTimeout(window.__lkrToastTimer);
-
-    window.__lkrToastTimer=setTimeout(()=>{
-      if(root)root.innerHTML='';
-    },2600);
-  }
-
-  /*
-    Restore login across refresh/browser reopen.
-    Firestore is always reloaded when possible.
-  */
-  async function boot(){
-
-    const logged=
-      localStorage.getItem(LOGIN_KEY)==='1';
-
-    if(!logged){
-      render();
-      return;
-    }
-
-    state.loggedIn=true;
-
-    loadLocalCache();
-    render();
-
-    const ok=await initFirebase();
-
-    if(ok){
-      await ensureUserDoc();
-      await loadFirestore();
-    }
-  }
-
-  window.addEventListener(
-    'online',
-    ()=>{
-      if(state.loggedIn){
-        setCloud('connected');
+    function showMediaViewer(type, url, title){
+      if (type === "image"){
+        els.viewerContent.innerHTML = `<img src="${escapeHtml(url)}" alt="${escapeHtml(title || "Image")}">`;
+      }else{
+        const embed = youtubeEmbed(url);
+        if (!embed) return;
+        els.viewerContent.innerHTML = `<iframe src="${escapeHtml(embed)}" title="YouTube video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`;
       }
+      els.viewerTitle.textContent = title || "Media";
+      els.mediaViewer.classList.add("show");
     }
-  );
 
-  window.addEventListener(
-    'offline',
-    ()=>{
-      setCloud('offline');
+    function closeMediaViewer(){
+      els.mediaViewer.classList.remove("show");
+      els.viewerContent.innerHTML = "";
     }
-  );
 
-  boot();
+    function handleAppAction(event){
+      const el = event.target.closest("[data-action]");
+      if (!el) return;
+      const action = el.dataset.action;
+      const id = el.dataset.id;
+      if (action === "favorite") toggleFavorite(id);
+      if (action === "detail") openDetail(id);
+      if (action === "open"){
+        const app = state.apps.find(a => a.id === id);
+        if (app) requestWebsiteOpen(app);
+      }
+      if (action === "rate") rateApp(id, Number(el.dataset.rating));
+      if (action === "view-media") showMediaViewer(el.dataset.type, el.dataset.url, "R Lal College, Lakhisarai Media");
+    }
 
-})();
-</script>
+    document.addEventListener("click", handleAppAction);
+
+    document.querySelectorAll(".nav-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        state.searchTerm = "";
+        els.searchInput.value = "";
+        els.searchClear.classList.remove("show");
+        state.activeCategory = "All";
+        renderCategories();
+        setActiveScreen(btn.dataset.screen, btn.dataset.nav, true);
+      });
+    });
+
+    els.headerProfileBtn.addEventListener("click", () => setActiveScreen("profileScreen", "profile", true));
+
+    els.searchInput.addEventListener("input", e => {
+      state.searchTerm = e.target.value.trim();
+      els.searchClear.classList.toggle("show", Boolean(state.searchTerm));
+      if (state.activeScreen !== "homeScreen" && state.activeScreen !== "exploreScreen"){
+        setActiveScreen("homeScreen","home",true);
+      }else{
+        renderHome(); renderExplore();
+      }
+    });
+
+    els.searchClear.addEventListener("click", () => {
+      els.searchInput.value = "";
+      state.searchTerm = "";
+      els.searchClear.classList.remove("show");
+      renderHome(); renderExplore();
+      els.searchInput.focus();
+    });
+
+    els.categoryRow.addEventListener("click", e => {
+      const btn = e.target.closest("[data-category]");
+      if (!btn) return;
+      state.activeCategory = btn.dataset.category;
+      renderCategories();
+      renderHome();
+    });
+
+    els.detailBackBtn.addEventListener("click", () => history.back());
+
+    els.profileContent.addEventListener("click", e => {
+      if (e.target.closest("#profileLoginBtn")) openLogin();
+      if (e.target.closest("#profileRegisterBtn")) openRegistration();
+      if (e.target.closest("#logoutBtn")) logoutUser();
+    });
+
+    els.registrationCancel.addEventListener("click", closeRegistration);
+    els.loginCancel.addEventListener("click", closeLogin);
+
+    els.registrationModal.addEventListener("click", e => {
+      if (e.target === els.registrationModal) closeRegistration();
+    });
+    els.loginModal.addEventListener("click", e => {
+      if (e.target === els.loginModal) closeLogin();
+    });
+
+    els.registrationForm.addEventListener("submit", async e => {
+      e.preventDefault();
+      els.registrationError.textContent = "Saving...";
+      try{
+        await registerUser(els.registerName.value, els.registerMobile.value);
+      }catch(err){
+        els.registrationError.textContent = err?.message || "Unable to register.";
+      }
+    });
+
+    els.loginForm.addEventListener("submit", async e => {
+      e.preventDefault();
+      els.loginError.textContent = "Checking...";
+      try{
+        await loginUser(els.loginName.value, els.loginMobile.value);
+      }catch(err){
+        els.loginError.textContent = err?.message || "Name or mobile number is incorrect.";
+      }
+    });
+
+    els.viewerClose.addEventListener("click", closeMediaViewer);
+
+    document.addEventListener("keydown", e => {
+      if (e.key === "Escape"){
+        closeMediaViewer();
+        closeRegistration();
+        closeLogin();
+      }
+    });
+
+    window.addEventListener("popstate", event => {
+      const s = event.state;
+      if (s?.screenId){
+        state.selectedAppId = s.appId || null;
+        setActiveScreen(s.screenId, s.navName || "home", false);
+      }else{
+        state.selectedAppId = null;
+        setActiveScreen("homeScreen","home",false);
+      }
+    });
+
+    window.addEventListener("beforeunload", () => {
+      if (currentUser?.id){
+        // Fire-and-forget activity marker; normal logout explicitly sets inactive.
+        try{
+          updateDoc(doc(db, "users", currentUser.id), {
+            lastActive: serverTimestamp(),
+            isActive: true
+          });
+        }catch{}
+      }
+    });
+
+    // Initial route is Home. Every in-app transition gets its own history entry.
+    history.replaceState({screenId:"homeScreen",navName:"home",appId:null,v:0},"","");
+    renderCategories();
+    renderHome();
+    renderProfile();
+    loadApps();
+
+    // Keep the local session alive on returning to the app.
+    setInterval(() => {
+      if (currentUser?.id) saveUserActivity(currentUser);
+    }, 5 * 60 * 1000);
+  </script>
 </body>
 </html>
